@@ -1,0 +1,59 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Login Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link href="~/CSS/Registro.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="card">
+        <h2>Registro de Usuarios</h2>
+        <form action="@Url.Action("Registrar", "Acceso")" method="post">
+            @if (ViewData["Mensaje"] != null)
+            {
+            <div class="alert alert-danger" role="alert">
+                Las contraseñas no coinciden
+            </div>
+            }
+            <input type="text" placeholder="Nombre" name="Nombre" required>
+
+            <input type="text" placeholder="Apellidos" name="Apellidos" required>
+
+            <input type="text" placeholder="DNI" name="Dni" required>
+
+            <input type="email" placeholder="Email" name="Email" required>
+
+            <input type="tel" placeholder="Teléfono" name="Telefono" required>
+
+            <input type="password" placeholder="Contraseña" name="Contraseña" required>
+
+            <input type="password" placeholder="Confirmar contraseña" name="confirmarContraseña" required>
+
+            <input type="date" placeholder="Fecha de Nacimiento" name="FechaNacimiento" required>
+
+            <input type="submit" value="Registrar">
+
+        </form>
+    </div>
+
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</body>
+</html>
+
+@*<div class="card-footer">
+    <div class="d-flex justify-content-center links">
+        ¿Ya tienes una cuenta?<a href="@Url.Action("Login", "Acceso")">Iniciar Sesión</a>
+    </div>
+
+</div>*@

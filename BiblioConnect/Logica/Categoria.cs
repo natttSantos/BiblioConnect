@@ -1,5 +1,4 @@
 ﻿using BiblioConnect.Modelo;
-using BiblioConnect.Logica;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -100,7 +99,7 @@ namespace BiblioConnect.Logica
             {
                 try
                 {
-                    SqlCommand cmd = new SqlCommand("select IdCategoria,Descripcion,Estado from categoria", oConexion);
+                    SqlCommand cmd = new SqlCommand("Select Id,Descripcion,Estado from Categoria", oConexion);
                     cmd.CommandType = CommandType.Text;
 
                     oConexion.Open();
@@ -110,7 +109,7 @@ namespace BiblioConnect.Logica
                         {
                             Lista.Add(new Categoria()
                             {
-                                Id = Convert.ToInt32(dr["IdCategoria"]),
+                                Id = Convert.ToInt32(dr["Id"]),
                                 Descripcion = dr["Descripcion"].ToString(),
                                 Estado = Convert.ToBoolean(dr["Estado"])
                             });
@@ -131,10 +130,9 @@ namespace BiblioConnect.Logica
             bool respuesta = true;
             using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
             {
-
                 try
                 {
-                    SqlCommand cmd = new SqlCommand("delete from CATEGORIA where idcategoria = @id", oConexion);
+                    SqlCommand cmd = new SqlCommand("delete from Categoria where Id = @id", oConexion);
                     cmd.Parameters.AddWithValue("@id", id);
                     cmd.CommandType = CommandType.Text;
 

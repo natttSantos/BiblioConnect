@@ -2,8 +2,16 @@
 @{ ViewBag.Title = "Categoria";
     Layout = "~/Views/Shared/_Layout.cshtml"; }
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<link href="~/Content/bootstrap.css" rel="stylesheet">
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    @* Boostrap CSS *@
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet">
+    @* DataTables CSS BÁSICO *@
+    <link href="~/Content/datatables.min.css" rel="stylesheet" type="text/css"/>
+    @* DataTables estilo Boostrap 5 CSS *@
+    <link href="~/DataTables-1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+</head>
 
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
@@ -28,15 +36,6 @@
                                 <th></th>
                             </tr>
                         </thead>
-                        <tfoot>
-                            <tr>
-                                <th>Descricion</th>
-                                <th>Estado</th>
-                                <th></th>
-                            </tr>
-                        </tfoot>
-                        <tbody>
-                        </tbody>
                     </table>
                 </div>
             </div>
@@ -92,10 +91,12 @@
     </div>
 </div>
 
+@* JQquery, Popper.js, Boostrap.js *@
+<script src="~/Scripts/jquery-3.7.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
-<script src="~/Scripts/jquery-3.4.1.js"></script>
 <script src="~/Scripts/bootstrap.js"></script>
-
+@* DataTable JS *@
+<script src="~/Scripts//datatables.min.js" defer></script>
 
 @section scripts{
 

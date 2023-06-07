@@ -103,7 +103,7 @@ namespace BiblioConnect.Controllers
 
                 Session["usuario"] = oUsuario;
                 //TempData["nombreUsuario"] = oUsuario.nombreUsuario;
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Dashboard", "Inicio");
             }
             else
             {

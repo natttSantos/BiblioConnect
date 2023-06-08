@@ -1,5 +1,5 @@
 ﻿
-@{ ViewBag.Title = "Categoria";
+@{ ViewBag.Title = "Editorial";
     Layout = "~/Views/Shared/_Layout.cshtml"; }
 
 
@@ -8,7 +8,7 @@
     @* Boostrap CSS *@
     <link href="~/Content/bootstrap.min.css" rel="stylesheet">
     @* DataTables CSS BÁSICO *@
-    <link href="~/Content/datatables.min.css" rel="stylesheet" type="text/css"/>
+    <link href="~/Content/datatables.min.css" rel="stylesheet" type="text/css" />
     @* DataTables estilo Boostrap 5 CSS *@
     <link href="~/DataTables-1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
 </head>
@@ -16,7 +16,7 @@
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
     <div class="card-header py-3 bg-primary">
-        <h6 class="m-0 font-weight-bold text-white">Lista de Categorias</h6>
+        <h6 class="m-0 font-weight-bold text-white">Lista de Editoriales</h6>
     </div>
     <div class="card-body">
         <div class="row">
@@ -51,7 +51,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="exampleModalLabel">Categoria</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Editorial</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -105,7 +105,7 @@
                 tabladata = $('#tabla').DataTable({
                     responsive:true,
                     "ajax": {
-                        "url": '@Url.Action("ListarCategoria", "Recursos")',
+                        "url": '@Url.Action("ListarEditorial", "Recursos")',
                         "type": "GET",
                         "datatype": "json"
                     },
@@ -171,7 +171,7 @@
             var json = $(this).data("informacion")
 
             jQuery.ajax({
-                url: '@Url.Action("EliminarCategoria", "Recursos")',
+                url: '@Url.Action("EliminarEditorial", "Recursos")',
                 type: "POST",
                 data: JSON.stringify({ id: json.Id}),
                 dataType: "json",
@@ -203,7 +203,7 @@
             }
 
             jQuery.ajax({
-                url: '@Url.Action("GuardarCategoria", "Recursos")',
+                url: '@Url.Action("GuardarEditorial", "Recursos")',
                 type: "POST",
                 data: JSON.stringify(request),
                 dataType: "json",

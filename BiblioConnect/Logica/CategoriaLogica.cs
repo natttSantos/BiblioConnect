@@ -40,6 +40,7 @@ namespace BiblioConnect.Logica
                 {
                     SqlCommand cmd = new SqlCommand("sp_RegistrarCategoria", oConexion);
                     cmd.Parameters.AddWithValue("Descripcion", oCategoria.Descripcion);
+                    cmd.Parameters.AddWithValue("Estado", oCategoria.Estado);
                     cmd.Parameters.Add("Resultado", SqlDbType.Bit).Direction = ParameterDirection.Output;
                     cmd.CommandType = CommandType.StoredProcedure;
 

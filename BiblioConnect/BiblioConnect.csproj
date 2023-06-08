@@ -162,9 +162,15 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Logica\Categoria.cs" />
+    <Compile Include="Logica\LibroLogica.cs" />
+    <Compile Include="Logica\AutorLogica.cs" />
+    <Compile Include="Logica\EditorialLogica.cs" />
+    <Compile Include="Logica\CategoriaLogica.cs" />
     <Compile Include="Logica\Conexion.cs" />
+    <Compile Include="Modelo\Autor.cs" />
     <Compile Include="Modelo\Categoria.cs" />
+    <Compile Include="Modelo\Editorial.cs" />
+    <Compile Include="Modelo\Libro.cs" />
     <Compile Include="Modelo\Usuario.cs" />
     <Compile Include="Permisos\ValidarSesionAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -309,9 +315,13 @@
     <Content Include="Views\Acceso\Registrar.cshtml" />
     <Content Include="Views\Inicio\Dashboard.cshtml" />
     <Content Include="Views\Recursos\Categoria.cshtml" />
+    <Content Include="Views\Recursos\Editorial.cshtml" />
+    <Content Include="Views\Recursos\Autores.cshtml" />
+    <Content Include="Views\Recursos\Libros.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Editorial\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

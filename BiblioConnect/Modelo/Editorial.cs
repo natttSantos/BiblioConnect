@@ -5,7 +5,7 @@ using System.Web;
 
 namespace BiblioConnect.Modelo
 {
-    public class Categoria
+    public class Editorial
     {
         public int Id { get; set; }
         public string Descripcion { get; set; }

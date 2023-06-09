@@ -9,6 +9,13 @@ using System.Web;
 using System.Web.Mvc;
 using BiblioConnect.Logica;
 using ProyectoBiblioteca.Logica;
+using System.Threading.Tasks;
+using Firebase.Auth;
+using Firebase.Storage;
+using System.Data.SqlClient;
+using System.Data;
+using System.Threading;
+
 
 namespace BiblioConnect.Controllers
 {
@@ -34,6 +41,47 @@ namespace BiblioConnect.Controllers
         {
             return View();
         }
+
+        //[HttpPost]
+        //public async Task<int> Registrar(Libro objeto, HttpPostedFileBase imagenArchivo)
+        //{
+        //    //RECIBIR LOS DATOS DEL FORMULARIO
+        //    Stream image = imagenArchivo.InputStream;
+        //    string fileName = Path.GetFileName(imagenArchivo.FileName);
+        //    string urlimagen = await SubirStorage(image, fileName);
+
+
+        //    int respuesta = 0;
+        //    using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
+        //    {
+        //        try
+        //        {
+        //            SqlCommand cmd = new SqlCommand("sp_RegistrarLibro", oConexion);
+        //            cmd.Parameters.AddWithValue("Titulo", objeto.Titulo);
+        //            cmd.Parameters.AddWithValue("Foto", urlimagen);
+        //            cmd.Parameters.AddWithValue("idAutor", objeto.oAutor.Id);
+        //            cmd.Parameters.AddWithValue("idCategoria", objeto.oCategoria.Id);
+        //            cmd.Parameters.AddWithValue("idEditorial", objeto.oEditorial.Id);
+        //            cmd.Parameters.AddWithValue("Ubicacion", objeto.Ubicacion);
+        //            cmd.Parameters.AddWithValue("numEjemplares", objeto.numEjemplares);
+        //            cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
+        //            cmd.CommandType = CommandType.StoredProcedure;
+
+        //            oConexion.Open();
+
+        //            cmd.ExecuteNonQuery();
+
+        //            respuesta = Convert.ToInt32(cmd.Parameters["Resultado"].Value);
+
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            respuesta = 0;
+        //        }
+        //    }
+        //    return RedirectToAction("Libros");
+        //}
+        //FIN NUEVO
 
         [HttpGet]
         public JsonResult ListarCategoria()
@@ -116,24 +164,51 @@ namespace BiblioConnect.Controllers
 
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
         }
-        [HttpPost]
-        public JsonResult GuardarLibro(string objeto, HttpPostedFileBase imagenArchivo)
-        {
 
+        //Subir los archivos a Firebase 
+        public async Task<string> SubirStorage(Stream archivo, string nombre)
+        {
+            //INGRESA AQUÍ TUS PROPIAS CREDENCIALES
+            string email = "codigo@gmail.com";
+            string clave = "codigo111";
+            string ruta = "tfgportalreservas.appspot.com";
+            string api_key = "AIzaSyA_4kSyoW9gwGiCX3xCXnTFCmtlIkwItoA";
+
+            var auth = new FirebaseAuthProvider(new FirebaseConfig(api_key));
+            var a = await auth.SignInWithEmailAndPasswordAsync(email, clave);
+
+            var cancellation = new CancellationTokenSource();
+
+            var task = new FirebaseStorage(
+                ruta,
+                new FirebaseStorageOptions
+                {
+                    AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
+                    ThrowOnCancel = true
+                })
+                .Child("Fotos_Perfil")
+                .Child(nombre)
+                .PutAsync(archivo, cancellation.Token);
+
+
+            var downloadURL = await task;
+            return downloadURL;
+        }
+        [HttpPost]
+        public async Task <JsonResult> GuardarLibro(string objeto, HttpPostedFileBase imagenArchivo)
+        {
             Response oresponse = new Response() { resultado = true, mensaje = "" };
 
             try
             {
+                Stream image = imagenArchivo.InputStream;
+                string fileName = Path.GetFileName(imagenArchivo.FileName);
+                string urlimagen = await SubirStorage(image, fileName);
+
                 Libro oLibro = new Libro();
                 oLibro = JsonConvert.DeserializeObject<Libro>(objeto);
 
-                string GuardarEnRuta = ConfigurationManager.AppSettings["ruta_imagenes_libros"];
-
-                oLibro.Foto = GuardarEnRuta;
-                oLibro.Titulo = "";
-
-                if (!Directory.Exists(GuardarEnRuta))
-                    Directory.CreateDirectory(GuardarEnRuta);
+                oLibro.Foto = urlimagen;
 
                 if (oLibro.Id == 0)
                 {
@@ -146,19 +221,6 @@ namespace BiblioConnect.Controllers
                 {
                     oresponse.resultado = LibroLogica.Instancia.Modificar(oLibro);
                 }
-
-
-                if (imagenArchivo != null && oLibro.Id != 0)
-                {
-                    string extension = Path.GetExtension(imagenArchivo.FileName);
-                    GuardarEnRuta = Path.Combine(GuardarEnRuta, oLibro.Id.ToString() + extension);
-                    oLibro.Titulo = oLibro.Id.ToString() + extension;
-
-                    imagenArchivo.SaveAs(GuardarEnRuta);
-
-                    oresponse.resultado = LibroLogica.Instancia.ActualizarRutaImagen(oLibro);
-                }
-
             }
             catch (Exception e)
             {
@@ -176,43 +238,6 @@ namespace BiblioConnect.Controllers
             respuesta = LibroLogica.Instancia.Eliminar(id);
             return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
         }
-
-
-        //[HttpGet]
-        //public JsonResult ListarTipoPersona()
-        //{
-        //    List<TipoPersona> oLista = new List<TipoPersona>();
-        //    oLista = TipoPersonaLogica.Instancia.Listar();
-        //    return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
-        //}
-
-
-        //[HttpGet]
-        //public JsonResult ListarPersona()
-        //{
-        //    List<Persona> oLista = new List<Persona>();
-
-        //    oLista = PersonaLogica.Instancia.Listar();
-
-        //    return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
-        //}
-        //[HttpPost]
-        //public JsonResult GuardarPersona(Persona objeto)
-        //{
-        //    bool respuesta = false;
-        //    objeto.Clave = objeto.Clave == null ? "" : objeto.Clave;
-        //    respuesta = (objeto.IdPersona == 0) ? PersonaLogica.Instancia.Registrar(objeto) : PersonaLogica.Instancia.Modificar(objeto);
-        //    return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
-        //}
-        //[HttpPost]
-        //public JsonResult EliminarPersona(int id)
-        //{
-        //    bool respuesta = false;
-        //    respuesta = PersonaLogica.Instancia.Eliminar(id);
-        //    return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
-        //}
-
-
     }
     public class Response
     {

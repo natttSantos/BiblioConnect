@@ -1,5 +1,6 @@
 ﻿using BiblioConnect.Logica;
 using BiblioConnect.Modelo;
+using BiblioConnect.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,6 +9,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
+using System.Threading.Tasks;
+using Firebase.Auth;
 
 namespace ProyectoBiblioteca.Logica
 {
@@ -37,59 +40,57 @@ namespace ProyectoBiblioteca.Logica
         public List<Libro> Listar()
         {
 
-            List<Libro> rptListaLibro = new List<Libro>();
-            //using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
-            //{
-            //    StringBuilder sb = new StringBuilder();
-            //    sb.AppendLine("select l.IdLibro,l.Titulo,l.RutaPortada,l.NombrePortada,");
-            //    sb.AppendLine("a.IdAutor,a.Descripcion[DescripcionAutor],");
-            //    sb.AppendLine("c.IdCategoria,c.Descripcion[DescripcionCategoria],");
-            //    sb.AppendLine("e.IdEditorial,e.Descripcion[DescripcionEditorial],");
-            //    sb.AppendLine("l.Ubicacion,l.Ejemplares,l.Estado");
-            //    sb.AppendLine("from LIBRO l");
-            //    sb.AppendLine("inner join AUTOR a on a.IdAutor = l.IdAutor");
-            //    sb.AppendLine("inner join CATEGORIA c on c.IdCategoria = l.IdCategoria");
-            //    sb.AppendLine("inner join EDITORIAL e on e.IdEditorial = l.IdEditorial");
+            List<Libro> listaLibros = new List<Libro>();
+            using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine("select l.Id,l.Titulo,l.Foto,");
+                sb.AppendLine("a.Id,a.Descripcion[DescripcionAutor],");
+                sb.AppendLine("c.Id,c.Descripcion[DescripcionCategoria],");
+                sb.AppendLine("e.Id,e.Descripcion[DescripcionEditorial],");
+                sb.AppendLine("l.Ubicacion,l.numEjemplares,l.Estado");
+                sb.AppendLine("from LIBRO l");
+                sb.AppendLine("inner join AUTOR a on a.Id = l.idAutor");
+                sb.AppendLine("inner join CATEGORIA c on c.Id = l.idCategoria");
+                sb.AppendLine("inner join EDITORIAL e on e.Id = l.idEditorial");
 
-            //    SqlCommand cmd = new SqlCommand(sb.ToString(), oConexion);
-            //    cmd.CommandType = CommandType.Text;
+                SqlCommand cmd = new SqlCommand(sb.ToString(), oConexion);
+                cmd.CommandType = CommandType.Text;
 
-            //    try
-            //    {
-            //        oConexion.Open();
-            //        SqlDataReader dr = cmd.ExecuteReader();
+                try
+                {
+                    oConexion.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
 
-            //        while (dr.Read())
-            //        {
-            //            rptListaLibro.Add(new Libro()
-            //            {
-            //                IdLibro = Convert.ToInt32(dr["IdLibro"].ToString()),
-            //                Titulo = dr["Titulo"].ToString(),
-            //                RutaPortada = dr["RutaPortada"].ToString(),
-            //                NombrePortada = dr["NombrePortada"].ToString(),
-            //                oAutor = new Autor() { IdAutor = Convert.ToInt32(dr["IdAutor"].ToString()), Descripcion = dr["DescripcionAutor"].ToString() },
-            //                oCategoria = new Categoria() { IdCategoria = Convert.ToInt32(dr["IdCategoria"].ToString()), Descripcion = dr["DescripcionCategoria"].ToString() },
-            //                oEditorial = new Editorial() { IdEditorial = Convert.ToInt32(dr["IdEditorial"].ToString()), Descripcion = dr["DescripcionEditorial"].ToString() },
-            //                Ubicacion = dr["Ubicacion"].ToString(),
-            //                Ejemplares = Convert.ToInt32(dr["Ejemplares"].ToString()),
-            //                base64 = Utilidades.convertirBase64(Path.Combine(dr["RutaPortada"].ToString(), dr["NombrePortada"].ToString())),
-            //                extension = Path.GetExtension(dr["NombrePortada"].ToString()).Replace(".", ""),
-            //                Estado = Convert.ToBoolean(dr["Estado"].ToString())
-            //            });
-            //        }
-            //        dr.Close();
+                    while (dr.Read())
+                    {
+                        listaLibros.Add(new Libro()
+                        {
+                            Id = Convert.ToInt32(dr["Id"].ToString()),
+                            Titulo = dr["Titulo"].ToString(),
+                            Foto = dr["Foto"].ToString(),
+                            oAutor = new Autor() { Id = Convert.ToInt32(dr["Id"].ToString()), Descripcion = dr["DescripcionAutor"].ToString() },
+                            oCategoria = new Categoria() { Id = Convert.ToInt32(dr["Id"].ToString()), Descripcion = dr["DescripcionCategoria"].ToString() },
+                            oEditorial = new Editorial() { Id = Convert.ToInt32(dr["Id"].ToString()), Descripcion = dr["DescripcionEditorial"].ToString() },
+                            Ubicacion = dr["Ubicacion"].ToString(),
+                            numEjemplares = Convert.ToInt32(dr["numEjemplares"].ToString()),
+                            //base64 = Utilidades.convertirBase64(Path.Combine(dr["RutaPortada"].ToString(), dr["NombrePortada"].ToString())),
+                            //extension = Path.GetExtension(dr["NombrePortada"].ToString()).Replace(".", ""),
+                            Estado = Convert.ToBoolean(dr["Estado"].ToString())
+                        });
+                    }
+                    dr.Close();
 
-                    return rptListaLibro;
+                    return listaLibros;
 
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        rptListaLibro = null;
-            //        return rptListaLibro;
-            //    }
-            //}
+                }
+                catch (Exception ex)
+                {
+                    listaLibros = null;
+                    return listaLibros;
+                }
+            }
         }
-
 
         public int Registrar(Libro objeto)
         {
@@ -101,6 +102,7 @@ namespace ProyectoBiblioteca.Logica
                     SqlCommand cmd = new SqlCommand("sp_registrarLibro", oConexion);
                     cmd.Parameters.AddWithValue("Titulo", objeto.Titulo);
                     cmd.Parameters.AddWithValue("Foto", objeto.Foto);
+                    cmd.Parameters.AddWithValue("Estado", objeto.Estado);
                     cmd.Parameters.AddWithValue("idAutor", objeto.oAutor.Id);
                     cmd.Parameters.AddWithValue("idCategoria", objeto.oCategoria.Id);
                     cmd.Parameters.AddWithValue("idEditorial", objeto.oEditorial.Id);
@@ -125,91 +127,91 @@ namespace ProyectoBiblioteca.Logica
         }
 
 
-        //public bool Modificar(Libro objeto)
-        //{
-        //    bool respuesta = false;
-        //    using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
-        //    {
-        //        try
-        //        {
-        //            SqlCommand cmd = new SqlCommand("sp_modificarLibro", oConexion);
-        //            cmd.Parameters.AddWithValue("IdLibro", objeto.IdLibro);
-        //            cmd.Parameters.AddWithValue("Titulo", objeto.Titulo);
-        //            cmd.Parameters.AddWithValue("IdAutor", objeto.oAutor.IdAutor);
-        //            cmd.Parameters.AddWithValue("IdCategoria", objeto.oCategoria.IdCategoria);
-        //            cmd.Parameters.AddWithValue("IdEditorial", objeto.oEditorial.IdEditorial);
-        //            cmd.Parameters.AddWithValue("Ubicacion", objeto.Ubicacion);
-        //            cmd.Parameters.AddWithValue("Ejemplares", objeto.Ejemplares);
-        //            cmd.Parameters.AddWithValue("Estado", objeto.Estado);
-        //            cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
-        //            cmd.CommandType = CommandType.StoredProcedure;
+        public bool Modificar(Libro objeto)
+        {
+            bool respuesta = false;
+            using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand("sp_ModificarLibro", oConexion);
+                    cmd.Parameters.AddWithValue("Titulo", objeto.Titulo);
+                    cmd.Parameters.AddWithValue("Foto", objeto.Foto);
+                    cmd.Parameters.AddWithValue("Estado", objeto.Estado);
+                    cmd.Parameters.AddWithValue("idAutor", objeto.oAutor.Id);
+                    cmd.Parameters.AddWithValue("idCategoria", objeto.oCategoria.Id);
+                    cmd.Parameters.AddWithValue("idEditorial", objeto.oEditorial.Id);
+                    cmd.Parameters.AddWithValue("Ubicacion", objeto.Ubicacion);
+                    cmd.Parameters.AddWithValue("numEjemplares", objeto.numEjemplares);
+                    cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
+                    cmd.CommandType = CommandType.StoredProcedure;
 
-        //            oConexion.Open();
+                    oConexion.Open();
 
-        //            cmd.ExecuteNonQuery();
+                    cmd.ExecuteNonQuery();
 
-        //            respuesta = Convert.ToBoolean(cmd.Parameters["Resultado"].Value);
+                    respuesta = Convert.ToBoolean(cmd.Parameters["Resultado"].Value);
 
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            respuesta = false;
-        //        }
-        //    }
-        //    return respuesta;
-        //}
+                }
+                catch (Exception ex)
+                {
+                    respuesta = false;
+                }
+            }
+            return respuesta;
+        }
 
-        //public bool ActualizarRutaImagen(Libro objeto)
-        //{
-        //    bool respuesta = true;
-        //    using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
-        //    {
-        //        try
-        //        {
-        //            SqlCommand cmd = new SqlCommand("sp_actualizarRutaImagen", oConexion);
-        //            cmd.Parameters.AddWithValue("IdLibro", objeto.IdLibro);
-        //            cmd.Parameters.AddWithValue("NombrePortada", objeto.NombrePortada);
-        //            cmd.CommandType = CommandType.StoredProcedure;
-        //            oConexion.Open();
-        //            cmd.ExecuteNonQuery();
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            respuesta = false;
-        //        }
-        //    }
-        //    return respuesta;
-        //}
+        public bool ActualizarRutaImagen(Libro objeto)
+        {
+            bool respuesta = true;
+            using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand("sp_actualizarRutaImagen", oConexion);
+                    cmd.Parameters.AddWithValue("Id", objeto.Id);
+                    cmd.Parameters.AddWithValue("Titulo", objeto.Titulo);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    oConexion.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    respuesta = false;
+                }
+            }
+            return respuesta;
+        }
 
 
-        //public bool Eliminar(int id)
-        //{
-        //    bool respuesta = true;
-        //    using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
-        //    {
-        //        try
-        //        {
-        //            SqlCommand cmd = new SqlCommand("delete from LIBRO where IdLibro = @id", oConexion);
-        //            cmd.Parameters.AddWithValue("@id", id);
-        //            cmd.CommandType = CommandType.Text;
+        public bool Eliminar(int id)
+        {
+            bool respuesta = true;
+            using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand("delete from LIBRO where Id = @id", oConexion);
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.CommandType = CommandType.Text;
 
-        //            oConexion.Open();
+                    oConexion.Open();
 
-        //            cmd.ExecuteNonQuery();
+                    cmd.ExecuteNonQuery();
 
-        //            respuesta = true;
+                    respuesta = true;
 
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            respuesta = false;
-        //        }
+                }
+                catch (Exception ex)
+                {
+                    respuesta = false;
+                }
 
-        //    }
+            }
 
-        //    return respuesta;
+            return respuesta;
 
-        //}
+        }
 
 
     }

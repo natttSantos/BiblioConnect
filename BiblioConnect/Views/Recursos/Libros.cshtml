@@ -1,7 +1,16 @@
 ﻿
 @{ ViewBag.Title = "Libros";
-                Layout = "~/Views/Shared/_Layout.cshtml"; }
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
 
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    @* Boostrap CSS *@
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet">
+    @* DataTables CSS BÁSICO *@
+    <link href="~/Content/datatables.min.css" rel="stylesheet" type="text/css" />
+    @* DataTables estilo Boostrap 5 CSS *@
+    <link href="~/DataTables-1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+</head>
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
     <div class="card-header py-3 bg-primary">
@@ -21,6 +30,7 @@
                     <table class="table table-bordered" id="tabla" style="width:100%" cellspacing="0">
                         <thead>
                             <tr>
+                                <th>Imagen</th>
                                 <th>Titulo</th>
                                 <th>Autor</th>
                                 <th>Categoria</th>
@@ -121,6 +131,12 @@
     </div>
 </div>
 
+@* JQquery, Popper.js, Boostrap.js *@
+<script src="~/Scripts/jquery-3.7.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+<script src="~/Scripts/bootstrap.js"></script>
+@* DataTable JS *@
+<script src="~/Scripts//datatables.min.js" defer></script>
 
 @section scripts{
 
@@ -142,6 +158,7 @@
             }
         }
 
+        //CONSUMEN LA API REST CREADA PARA EL DROPDOWNLIST
         $(document).ready(function () {
             jQuery.ajax({
                 url: '@Url.Action("ListarCategoria", "Recursos")',
@@ -151,7 +168,7 @@
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
                     $.each(data.data, function (index, value) {
-                        $("<option>").attr({ "value": value.IdCategoria }).text(value.Descripcion).appendTo("#cbocategoria");
+                        $("<option>").attr({ "value": value.Id }).text(value.Descripcion).appendTo("#cbocategoria");
                     });
                 },
                 error: function (error) {
@@ -167,7 +184,7 @@
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
                     $.each(data.data, function (index, value) {
-                        $("<option>").attr({ "value": value.IdAutor }).text(value.Descripcion).appendTo("#cboautor");
+                        $("<option>").attr({ "value": value.Id }).text(value.Descripcion).appendTo("#cboautor");
                     });
                 },
                 error: function (error) {
@@ -183,7 +200,7 @@
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
                     $.each(data.data, function (index, value) {
-                        $("<option>").attr({ "value": value.IdEditorial }).text(value.Descripcion).appendTo("#cboeditorial");
+                        $("<option>").attr({ "value": value.Id }).text(value.Descripcion).appendTo("#cboeditorial");
                     });
                 },
                 error: function (error) {
@@ -191,6 +208,8 @@
                 }
             });
 
+
+            //LISTADO DE LIBROS
             tabladata = $('#tabla').DataTable({
                 responsive:true,
                 "ajax": {
@@ -199,6 +218,11 @@
                     "datatype": "json"
                 },
                 "columns": [
+                    {
+                        "data": "Foto", render: function (data) {
+                            return '<img src=' + '"' +  data + '"' + 'width="70" height="100">'
+                        }
+                    },
                     { "data": "Titulo" },
                     {
                         "data": "oAutor", render: function (data) {
@@ -216,18 +240,18 @@
                         }
                     },
                     { "data": "Ubicacion" },
-                    { "data": "Ejemplares" },
+                    { "data": "numEjemplares" },
                     {
                         "data": "Estado", "render": function (data) {
                             if (data) {
-                                return '<span class="badge badge-success p-2">Activo</span>'
+                                return '<span class="badge text-bg-success p-2">Activo</span>'
                             } else {
-                                return '<span class="badge badge-danger p-2">No Activo</span>'
+                                return '<span class="badge text-bg-danger p-2">No Activo</span>'
                             }
                         }
                     },
                     {
-                        "data": "IdLibro", "render": function (data, type, row, meta) {
+                        "data": "Id", "render": function (data, type, row, meta) {
 
                             return $("<button>").addClass("btn btn-primary btn-editar btn-sm").append(
                                 $("<i>").addClass("fas fa-pen")
@@ -251,7 +275,7 @@
         });
 
 
-
+        //MODIFICAR LIBROS
         $(document).on('click', '.btn-editar', function (event) {
             var json = $(this).data("informacion")
 
@@ -275,24 +299,25 @@
                 $("#txtid").val(json.IdLibro);
                 $("#imglibro").attr({ "src": "data:image/" + json.extension + ";base64," + json.base64 });
                 $("#txttitulo").val(json.Titulo);
-                $("#cboautor").val(json.oAutor.IdAutor);
-                $("#cbocategoria").val(json.oCategoria.IdCategoria)
-                $("#cboeditorial").val(json.oEditorial.IdEditorial)
+                $("#cboautor").val(json.oAutor.Id);
+                $("#cbocategoria").val(json.oCategoria.Id);
+                $("#cboeditorial").val(json.oEditorial.Id);
                 $("#txtubicacion").val(json.Ubicacion);
-                $("#txtejemplares").val(json.Ejemplares);
+                $("#txtejemplares").val(json.numEjemplares);
                 $("#cboEstado").val(json.Estado == true ? 1 : 0);
             }
 
             $('#FormModal').modal('show');
         }
 
+        //ELIMINAR LIBROS  
         $(document).on('click', '.btn-eliminar', function (event) {
             var json = $(this).data("informacion")
 
             jQuery.ajax({
                 url: '@Url.Action("EliminarLibro", "Recursos")',
                 type: "POST",
-                data: JSON.stringify({ id: json.IdLibro}),
+                data: JSON.stringify({ id: json.Id}),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
@@ -317,13 +342,13 @@
             var ImagenSeleccionada = ($("#filelibro"))[0].files[0];
 
             var objeto = {
-                IdLibro: $("#txtid").val(),
+                Id: $("#txtid").val(),
                 Titulo: $("#txttitulo").val(),
-                oAutor: { IdAutor: $("#cboautor option:selected").val() },
-                oCategoria: { IdCategoria: $("#cbocategoria option:selected").val() },
-                oEditorial: { IdEditorial: $("#cboeditorial option:selected").val() },
+                oAutor: { Id: $("#cboautor option:selected").val() },
+                oCategoria: { Id: $("#cbocategoria option:selected").val() },
+                oEditorial: { Id: $("#cboeditorial option:selected").val() },
                 Ubicacion: $("#txtubicacion").val(),
-                Ejemplares: $("#txtejemplares").val(),
+                numEjemplares: $("#txtejemplares").val(),
                 Estado: parseInt($("#cboEstado").val()) == 1 ? true : false
             }
 

@@ -300,13 +300,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Logica\BibliotecaLogica.cs" />
-    <Compile Include="Logica\Helpers.cs" />
-    <Compile Include="Logica\LibroLogica.cs" />
-    <Compile Include="Logica\AutorLogica.cs" />
-    <Compile Include="Logica\EditorialLogica.cs" />
-    <Compile Include="Logica\CategoriaLogica.cs" />
-    <Compile Include="Logica\Conexion.cs" />
+    <Compile Include="Data\BibliotecaDAL.cs" />
+    <Compile Include="Data\Helpers.cs" />
+    <Compile Include="Data\LibroDAL.cs" />
+    <Compile Include="Data\AutorDAL.cs" />
+    <Compile Include="Data\EditorialDAL.cs" />
+    <Compile Include="Data\CategoriaDAL.cs" />
+    <Compile Include="Data\Conexion.cs" />
     <Compile Include="Modelo\Autor.cs" />
     <Compile Include="Modelo\Categoria.cs" />
     <Compile Include="Modelo\Editorial.cs" />

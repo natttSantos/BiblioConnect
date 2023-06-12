@@ -9,23 +9,23 @@ using System.Web;
 
 namespace BiblioConnect.Logica
 {
-    public class BibliotecaLogica
+    public class BibliotecaDAL
     {
 
-        private static BibliotecaLogica instancia = null;
+        private static BibliotecaDAL instancia = null;
 
-        public BibliotecaLogica()
+        public BibliotecaDAL()
         {
 
         }
 
-        public static BibliotecaLogica Instancia
+        public static BibliotecaDAL Instancia
         {
             get
             {
                 if (instancia == null)
                 {
-                    instancia = new BibliotecaLogica();
+                    instancia = new BibliotecaDAL();
                 }
 
                 return instancia;
@@ -47,6 +47,8 @@ namespace BiblioConnect.Logica
                     cmd.Parameters.AddWithValue("Telefono", oBiblioteca.Telefono);
                     cmd.Parameters.AddWithValue("Contraseña", oBiblioteca.Contraseña);
                     cmd.Parameters.AddWithValue("Calle", oBiblioteca.Calle);
+                    cmd.Parameters.AddWithValue("Pais", oBiblioteca.Pais);
+                    cmd.Parameters.AddWithValue("Estado", oBiblioteca.Estado);
                     cmd.Parameters.AddWithValue("CodPostal", oBiblioteca.CodPostal);
                     cmd.Parameters.AddWithValue("Foto", oBiblioteca.Foto);
                     cmd.Parameters.AddWithValue("Ciudad", oBiblioteca.Ciudad);
@@ -72,7 +74,7 @@ namespace BiblioConnect.Logica
         public Biblioteca ObtenerBiblio(int Id)
         {
             Biblioteca oBiblioteca = new Biblioteca();
-            string consultaSql = "SELECT Nombre, Calle, Ciudad, CodPostal, Descripcion, Email, Telefono, Foto FROM Biblioteca WHERE Id = @Id";
+            string consultaSql = "SELECT Nombre, Calle, Ciudad, CodPostal, Descripcion, Email, Telefono, Estado, Pais, Foto FROM Biblioteca WHERE Id = @Id";
 
             using (SqlConnection connection = new SqlConnection(Conexion.CN))
             {
@@ -90,7 +92,9 @@ namespace BiblioConnect.Logica
                     oBiblioteca.Nombre = reader["Nombre"].ToString();
                     oBiblioteca.Email = reader["Email"].ToString();
                     oBiblioteca.Telefono = reader["Telefono"].ToString();
-                    oBiblioteca.Foto = reader["Foto"].ToString();                   
+                    oBiblioteca.Foto = reader["Foto"].ToString();
+                    oBiblioteca.Estado = reader["Estado"].ToString();
+                    oBiblioteca.Pais = reader["Pais"].ToString();
                 }
                 connection.Close();
                 reader.Close();

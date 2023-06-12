@@ -14,23 +14,23 @@ using Firebase.Auth;
 
 namespace ProyectoBiblioteca.Logica
 {
-    public class LibroLogica
+    public class LibroDAL
     {
 
-        private static LibroLogica instancia = null;
+        private static LibroDAL instancia = null;
 
-        public LibroLogica()
+        public LibroDAL()
         {
 
         }
 
-        public static LibroLogica Instancia
+        public static LibroDAL Instancia
         {
             get
             {
                 if (instancia == null)
                 {
-                    instancia = new LibroLogica();
+                    instancia = new LibroDAL();
                 }
 
                 return instancia;

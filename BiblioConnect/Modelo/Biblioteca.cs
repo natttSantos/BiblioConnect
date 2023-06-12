@@ -15,6 +15,8 @@ namespace BiblioConnect.Modelo
         public string Contraseña { get; set; }
         public string Ciudad { get; set; }
         public string Calle { get; set; }
+        public string Pais { get; set; }
+        public string Estado { get; set; }
         public string CodPostal { get; set; }
         public string Foto { get; set; }
         public DateTime FechaNacimiento { get; set; }

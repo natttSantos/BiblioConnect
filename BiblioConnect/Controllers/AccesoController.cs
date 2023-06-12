@@ -41,7 +41,7 @@ namespace BiblioConnect.Controllers
             oBiblioteca.Foto = urlImagen;
 
             bool respuesta = false;
-            respuesta = BibliotecaLogica.Instancia.Registrar(oBiblioteca); 
+            respuesta = BibliotecaDAL.Instancia.Registrar(oBiblioteca); 
             return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
         }
 

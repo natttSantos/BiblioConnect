@@ -9,23 +9,23 @@ using System.Web;
 
 namespace ProyectoBiblioteca.Logica
 {
-    public class EditorialLogica
+    public class EditorialDAL
     {
 
-        private static EditorialLogica instancia = null;
+        private static EditorialDAL instancia = null;
 
-        public EditorialLogica()
+        public EditorialDAL()
         {
 
         }
 
-        public static EditorialLogica Instancia
+        public static EditorialDAL Instancia
         {
             get
             {
                 if (instancia == null)
                 {
-                    instancia = new EditorialLogica();
+                    instancia = new EditorialDAL();
                 }
 
                 return instancia;

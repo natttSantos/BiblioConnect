@@ -47,21 +47,21 @@ namespace BiblioConnect.Controllers
         public JsonResult ListarCategoria()
         {
             List<Categoria> oLista = new List<Categoria>();
-            oLista = CategoriaLogica.Instancia.Listar();
+            oLista = CategoriaDAL.Instancia.Listar();
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public JsonResult GuardarCategoria(Categoria objeto)
         {
             bool respuesta = false;
-            respuesta = (objeto.Id == 0) ? CategoriaLogica.Instancia.Registrar(objeto) : CategoriaLogica.Instancia.Modificar(objeto);
+            respuesta = (objeto.Id == 0) ? CategoriaDAL.Instancia.Registrar(objeto) : CategoriaDAL.Instancia.Modificar(objeto);
             return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public JsonResult EliminarCategoria(int id)
         {
             bool respuesta = false;
-            respuesta = CategoriaLogica.Instancia.Eliminar(id);
+            respuesta = CategoriaDAL.Instancia.Eliminar(id);
             return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
         }
 
@@ -71,21 +71,21 @@ namespace BiblioConnect.Controllers
         public JsonResult ListarEditorial()
         {
             List<Editorial> oLista = new List<Editorial>();
-            oLista = EditorialLogica.Instancia.Listar();
+            oLista = EditorialDAL.Instancia.Listar();
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public JsonResult GuardarEditorial(Editorial objeto)
         {
             bool respuesta = false;
-            respuesta = (objeto.Id == 0) ? EditorialLogica.Instancia.Registrar(objeto) : EditorialLogica.Instancia.Modificar(objeto);
+            respuesta = (objeto.Id == 0) ? EditorialDAL.Instancia.Registrar(objeto) : EditorialDAL.Instancia.Modificar(objeto);
             return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public JsonResult EliminarEditorial(int id)
         {
             bool respuesta = false;
-            respuesta = EditorialLogica.Instancia.Eliminar(id);
+            respuesta = EditorialDAL.Instancia.Eliminar(id);
             return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
         }
 
@@ -95,21 +95,21 @@ namespace BiblioConnect.Controllers
         public JsonResult ListarAutor()
         {
             List<Autor> oLista = new List<Autor>();
-            oLista = AutorLogica.Instancia.Listar();
+            oLista = AutorDAL.Instancia.Listar();
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public JsonResult GuardarAutor(Autor objeto)
         {
             bool respuesta = false;
-            respuesta = (objeto.Id == 0) ? AutorLogica.Instancia.Registrar(objeto) : AutorLogica.Instancia.Modificar(objeto);
+            respuesta = (objeto.Id == 0) ? AutorDAL.Instancia.Registrar(objeto) : AutorDAL.Instancia.Modificar(objeto);
             return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public JsonResult EliminarAutor(int id)
         {
             bool respuesta = false;
-            respuesta = AutorLogica.Instancia.Eliminar(id);
+            respuesta = AutorDAL.Instancia.Eliminar(id);
             return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
         }
 
@@ -120,7 +120,7 @@ namespace BiblioConnect.Controllers
         {
             List<Libro> oLista = new List<Libro>();
 
-            oLista = LibroLogica.Instancia.Listar();
+            oLista = LibroDAL.Instancia.Listar();
 
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
         }
@@ -174,7 +174,7 @@ namespace BiblioConnect.Controllers
                 //Registro Libro
                 if (oLibro.Id == 0)
                 {
-                    int id = LibroLogica.Instancia.Registrar(oLibro);
+                    int id = LibroDAL.Instancia.Registrar(oLibro);
                     oLibro.Id = id;
                     oresponse.resultado = oLibro.Id == 0 ? false : true;
 
@@ -182,7 +182,7 @@ namespace BiblioConnect.Controllers
                 //Modificacion Libro
                 else
                 {
-                    oresponse.resultado = LibroLogica.Instancia.Modificar(oLibro);
+                    oresponse.resultado = LibroDAL.Instancia.Modificar(oLibro);
                 }
             }
             catch (Exception e)
@@ -198,7 +198,7 @@ namespace BiblioConnect.Controllers
         public JsonResult EliminarLibro(int id)
         {
             bool respuesta = false;
-            respuesta = LibroLogica.Instancia.Eliminar(id);
+            respuesta = LibroDAL.Instancia.Eliminar(id);
             return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
         }
     }

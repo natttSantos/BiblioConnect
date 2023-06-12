@@ -18,32 +18,34 @@
 <body>
     <div class="card">
         <h2>Registro Bibliotecas</h2>
-            @if (ViewData["Mensaje"] != null)
-            {
-                <div class="alert alert-danger" role="alert">
-                    Las contraseñas no coinciden
-                </div>
-            }
-
-            <input type="text" placeholder="Nombre" id="Nombre" required>
-            <input type="email" placeholder="Email" id="Email" required>
-            <input type="text" placeholder="Calle" id="Calle" required>
-            <input type="text" placeholder="Ciudad" id="Ciudad" required>
-            <input type="text" placeholder="Código Postal" id="CodPostal" required>
-            <input type="text" placeholder="Descipción" id="Descripcion" required>
-            <input type="text" placeholder="Teléfono" id="Telefono" required>
-            <input type="password" placeholder="Contraseña" id="Contraseña" required>
-            <input type="password" placeholder="Confirmar contraseña" id="confirmarContraseña" required>
-            <input type="date" placeholder="Fecha de Nacimiento" id="FechaNacimiento" required>
-            <div class="col-sm-6">
-                <div class="form-group">
-                    <img id="imglibro" height="100" width="100" class="border border-dark" />
-                </div>
-                <div class="form-group">
-                    <input class="form-control-file" type="file" id="filelibro" onchange="readURL(this);">
-                </div>
+        @if (ViewData["Mensaje"] != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                Las contraseñas no coinciden
             </div>
-            <button type="button" class="btn btn-primary" onclick="Guardar()">Registrar</button>
+        }
+
+        <input type="text" placeholder="Nombre" id="Nombre" required>
+        <input type="email" placeholder="Email" id="Email" required>
+        <input type="text" placeholder="Calle" id="Calle" required>
+        <input type="text" placeholder="Ciudad" id="Ciudad" required>
+        <input type="text" placeholder="Estado" id="Estado" required>
+        <input type="text" placeholder="Pais" id="Pais" required>
+        <input type="text" placeholder="Código Postal" id="CodPostal" required>
+        <input type="text" placeholder="Descipción" id="Descripcion" required>
+        <input type="text" placeholder="Teléfono" id="Telefono" required>
+        <input type="password" placeholder="Contraseña" id="Contraseña" required>
+        <input type="password" placeholder="Confirmar contraseña" id="confirmarContraseña" required>
+        <input type="date" placeholder="Fecha de Nacimiento" id="FechaNacimiento" required>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <img id="imglibro" height="100" width="100" class="border border-dark" />
+            </div>
+            <div class="form-group">
+                <input class="form-control-file" type="file" id="filelibro" onchange="readURL(this);">
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="Guardar()">Registrar</button>
     </div>
 
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
@@ -83,6 +85,8 @@
                 Descripcion: $("#Descripcion").val(),
                 Telefono: $("#Telefono").val(),
                 Contraseña: $("#Contraseña").val(),
+                Estado: $("#Estado").val(),
+                Pais: $("#Pais").val(),
             }
 
             var request = new FormData();

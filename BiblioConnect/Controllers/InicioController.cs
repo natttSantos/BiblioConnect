@@ -22,7 +22,7 @@ namespace BiblioConnect.Controllers
             Biblioteca biblioSession = Session["Usuario"] as Biblioteca;
             int Id = biblioSession.Id;
 
-            Biblioteca biblio = new BibliotecaLogica().ObtenerBiblio(Id);
+            Biblioteca biblio = new BibliotecaDAL().ObtenerBiblio(Id);
             return View(biblio);
         }
         public ActionResult CerrarSesion()

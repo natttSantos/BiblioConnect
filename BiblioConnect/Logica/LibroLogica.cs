@@ -106,6 +106,7 @@ namespace ProyectoBiblioteca.Logica
                     cmd.Parameters.AddWithValue("idAutor", objeto.oAutor.Id);
                     cmd.Parameters.AddWithValue("idCategoria", objeto.oCategoria.Id);
                     cmd.Parameters.AddWithValue("idEditorial", objeto.oEditorial.Id);
+                    cmd.Parameters.AddWithValue("idBiblioteca", objeto.oBiblioteca.Id);
                     cmd.Parameters.AddWithValue("Ubicacion", objeto.Ubicacion);
                     cmd.Parameters.AddWithValue("numEjemplares", objeto.numEjemplares);
                     cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;

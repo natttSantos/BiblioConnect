@@ -1,13 +1,17 @@
 ﻿using BiblioConnect.Modelo;
+using BiblioConnect.Logica;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace BiblioConnect.Controllers
 {
@@ -18,97 +22,65 @@ namespace BiblioConnect.Controllers
         {
             return View();
         }
-        public ActionResult Registrar()
+        public ActionResult RegistrarBiblioteca()
         {
             return View();
         }
 
+
         [HttpPost]
-        public ActionResult Registrar(Usuario oUsuario)
+        public async Task<JsonResult> RegistrarBiblioteca(string objeto, HttpPostedFileBase imagenArchivo)
         {
-            {
-                bool registrado;
-                string mensaje;
+            //Get url de la imagen subida a Firebase
+            Stream image = imagenArchivo.InputStream;
+            string fileName = Path.GetFileName(imagenArchivo.FileName);
+            string urlImagen = await new Helpers().SetImageToFirebase(image, fileName, "Fotos_Bibliotecas");
 
-                if (oUsuario.Contraseña == oUsuario.confirmarContraseña)
-                {
+            Biblioteca oBiblioteca = new Biblioteca();
+            oBiblioteca = JsonConvert.DeserializeObject<Biblioteca>(objeto);
+            oBiblioteca.Foto = urlImagen;
 
-                    oUsuario.Contraseña = ConvertirSha256(oUsuario.Contraseña);
-                }
-                else
-                {
-                    ViewData["Mensaje"] = "Las contraseñas no coinciden";
-                    return View();
-                }
-
-                //Utilizar el procedimiento almacenado de registrar usuario
-                using (SqlConnection cn = new SqlConnection(cadena))
-                {
-
-                    SqlCommand cmd = new SqlCommand("sp_RegistrarUsuario", cn);
-                    cmd.Parameters.AddWithValue("Nombre", oUsuario.Nombre);
-                    cmd.Parameters.AddWithValue("Apellidos", oUsuario.Apellidos);
-                    cmd.Parameters.AddWithValue("Dni", oUsuario.Dni);
-                    cmd.Parameters.AddWithValue("Email", oUsuario.Email);
-                    cmd.Parameters.AddWithValue("Telefono", oUsuario.Telefono);
-                    cmd.Parameters.AddWithValue("Contraseña", oUsuario.Contraseña);
-                    cmd.Parameters.AddWithValue("FechaNacimiento", oUsuario.FechaNacimiento);
-                    cmd.Parameters.Add("Registrado", SqlDbType.Bit).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 100).Direction = ParameterDirection.Output;
-                    cmd.CommandType = CommandType.StoredProcedure;
-
-                    cn.Open();
-
-                    cmd.ExecuteNonQuery();
-
-                    registrado = Convert.ToBoolean(cmd.Parameters["Registrado"].Value);
-                    mensaje = cmd.Parameters["Mensaje"].Value.ToString();
-
-
-                }
-
-                ViewData["Mensaje"] = mensaje;
-
-                if (registrado)
-                {
-                    return RedirectToAction("Login", "Acceso");
-                }
-                else
-                {
-                    return View();
-                }
-
-            }
+            bool respuesta = false;
+            respuesta = BibliotecaLogica.Instancia.Registrar(oBiblioteca); 
+            return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
-        public ActionResult Login(Usuario oUsuario)
+        public ActionResult Login(Biblioteca oBiblioteca)
         {
-            oUsuario.Contraseña = ConvertirSha256(oUsuario.Contraseña);
+            //oUsuario.Contraseña = ConvertirSha256(oUsuario.Contraseña);
 
-            using (SqlConnection cn = new SqlConnection(cadena))
+            string consultaSql = "SELECT Nombre, Calle, Ciudad, CodPostal, Id FROM Biblioteca WHERE Email = @Email AND Contraseña = @Contraseña";
+
+            using (SqlConnection connection = new SqlConnection(cadena))
             {
-                SqlCommand cmd = new SqlCommand("sp_ValidarUsuario", cn);
-                cmd.Parameters.AddWithValue("Email", oUsuario.Email);
-                cmd.Parameters.AddWithValue("Contraseña", oUsuario.Contraseña);
-                cmd.CommandType = CommandType.StoredProcedure;
+                SqlCommand command = new SqlCommand(consultaSql, connection);
+                command.Parameters.AddWithValue("@Email", oBiblioteca.Email);
+                command.Parameters.AddWithValue("@Contraseña", oBiblioteca.Contraseña);
+                connection.Open();
 
-                cn.Open();
-
-                oUsuario.Id = Convert.ToInt32(cmd.ExecuteScalar().ToString());
-
-            }
-            if (oUsuario.Id != 0)
-            {
-
-                Session["usuario"] = oUsuario;
-                //TempData["nombreUsuario"] = oUsuario.nombreUsuario;
-                return RedirectToAction("Dashboard", "Inicio");
-            }
-            else
-            {
-                ViewData["Mensaje"] = "Usuario no encontrado";
-                return View();
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    if (reader.GetValue(0) != DBNull.Value)
+                    {
+                        oBiblioteca.Nombre = reader["Nombre"].ToString();
+                        oBiblioteca.Id = int.Parse(reader["Id"].ToString());
+                    }
+                }
+                connection.Close();
+                reader.Close();
+                if (oBiblioteca.Id != 0)
+                {
+                    Session["Usuario"] = oBiblioteca;
+                    //TempData["nombreUsuario"] = oUsuario.nombreUsuario;
+                    return RedirectToAction("Dashboard", "Inicio");
+                }
+                else
+                {
+                    ViewData["Mensaje"] = "Usuario no encontrado";
+                    return View();
+                }
             }
         }
 

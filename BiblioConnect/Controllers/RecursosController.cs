@@ -42,46 +42,6 @@ namespace BiblioConnect.Controllers
             return View();
         }
 
-        //[HttpPost]
-        //public async Task<int> Registrar(Libro objeto, HttpPostedFileBase imagenArchivo)
-        //{
-        //    //RECIBIR LOS DATOS DEL FORMULARIO
-        //    Stream image = imagenArchivo.InputStream;
-        //    string fileName = Path.GetFileName(imagenArchivo.FileName);
-        //    string urlimagen = await SubirStorage(image, fileName);
-
-
-        //    int respuesta = 0;
-        //    using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
-        //    {
-        //        try
-        //        {
-        //            SqlCommand cmd = new SqlCommand("sp_RegistrarLibro", oConexion);
-        //            cmd.Parameters.AddWithValue("Titulo", objeto.Titulo);
-        //            cmd.Parameters.AddWithValue("Foto", urlimagen);
-        //            cmd.Parameters.AddWithValue("idAutor", objeto.oAutor.Id);
-        //            cmd.Parameters.AddWithValue("idCategoria", objeto.oCategoria.Id);
-        //            cmd.Parameters.AddWithValue("idEditorial", objeto.oEditorial.Id);
-        //            cmd.Parameters.AddWithValue("Ubicacion", objeto.Ubicacion);
-        //            cmd.Parameters.AddWithValue("numEjemplares", objeto.numEjemplares);
-        //            cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
-        //            cmd.CommandType = CommandType.StoredProcedure;
-
-        //            oConexion.Open();
-
-        //            cmd.ExecuteNonQuery();
-
-        //            respuesta = Convert.ToInt32(cmd.Parameters["Resultado"].Value);
-
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            respuesta = 0;
-        //        }
-        //    }
-        //    return RedirectToAction("Libros");
-        //}
-        //FIN NUEVO
 
         [HttpGet]
         public JsonResult ListarCategoria()
@@ -209,7 +169,9 @@ namespace BiblioConnect.Controllers
                 oLibro = JsonConvert.DeserializeObject<Libro>(objeto);
 
                 oLibro.Foto = urlimagen;
+                oLibro.oBiblioteca = Session["Usuario"] as Biblioteca;
 
+                //Registro Libro
                 if (oLibro.Id == 0)
                 {
                     int id = LibroLogica.Instancia.Registrar(oLibro);
@@ -217,6 +179,7 @@ namespace BiblioConnect.Controllers
                     oresponse.resultado = oLibro.Id == 0 ? false : true;
 
                 }
+                //Modificacion Libro
                 else
                 {
                     oresponse.resultado = LibroLogica.Instancia.Modificar(oLibro);

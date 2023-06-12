@@ -14,6 +14,7 @@ namespace BiblioConnect.Modelo
         public Autor oAutor { get; set; }
         public Categoria oCategoria { get; set; }
         public Editorial oEditorial { get; set; }
+        public Biblioteca oBiblioteca { get; set; }
         public int numEjemplares { get; set; }
         public bool Estado { get; set; }
     }

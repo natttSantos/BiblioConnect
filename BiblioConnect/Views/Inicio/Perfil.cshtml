@@ -1,0 +1,67 @@
+﻿
+@{
+    ViewBag.Title = "Perfil";
+}
+@using BiblioConnect.Modelo
+@model Biblioteca
+
+<head>
+    @* CSS DE MAPAS *@
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin="" />
+    <link rel="stylesheet" type="text/css" href="~/CSS/Mapa.css" />
+</head>
+<body>
+    <div style="display: flex; align-items: center;">
+        <img src=@Model.Foto alt="Imagen" style="width: 300px; height: 300px; margin-right: 10px;">
+        <div>
+            <h3>@Model.Nombre</h3>
+            <p>@Model.Descripcion</p>
+            <p>@Model.Telefono</p>
+            <p>@Model.Email</p>
+        </div>
+    </div>
+    <h3>Ubicación biblioteca</h3>
+    <div id="map"></div>
+    @* JS DE MAPAS *@
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+    @* Jquery *@
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    <script>
+        $.ajax({
+            url: "https://nominatim.openstreetmap.org/search.php",
+            data: {
+                street: "Plaça de Magúncia, 1",
+                city: "Valencia",
+                county: "Valencia",
+                state: "Comunidad Valenciana",
+                country: "España",
+                postalcode: "46018",
+                format: "jsonv2"
+            },
+            type: "GET",
+            success: function (data) {
+                console.log("Petición OK!");
+                console.log(data); // Aquí puedes hacer lo que quieras con los datos recibidos
+                var latitud = data[0].lat;
+                var longitud = data[0].lon;
+                var map = L.map('map').setView([latitud, longitud], 17);
+                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                }).addTo(map);
+
+                L.marker([latitud, longitud]).addTo(map)
+                    .bindPopup('A pretty CSS popup.<br> Easily customizable.')
+                    .openPopup();
+            },
+            error: function (xhr, status, error) {
+                console.log("Error:", error);
+            }
+        });
+    </script>
+</body>
+

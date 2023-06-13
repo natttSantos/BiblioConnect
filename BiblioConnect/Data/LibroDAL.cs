@@ -1,4 +1,4 @@
-﻿using BiblioConnect.Logica;
+﻿using BiblioConnect.Data;
 using BiblioConnect.Modelo;
 using BiblioConnect.Controllers;
 using System;

@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
-    <link rel="stylesheet" type="text/css" href="styles.css">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <link href="~/CSS/Registro.css" rel="stylesheet" />
 </head>
@@ -28,9 +27,15 @@
         <input type="text" placeholder="Nombre" id="Nombre" required>
         <input type="email" placeholder="Email" id="Email" required>
         <input type="text" placeholder="Calle" id="Calle" required>
-        <input type="text" placeholder="Ciudad" id="Ciudad" required>
-        <input type="text" placeholder="Estado" id="Estado" required>
-        <input type="text" placeholder="Pais" id="Pais" required>
+        <div class="form-group">
+            <select id="Pais" class="form-control"></select>
+        </div>
+        <div class="form-group">
+            <select id="Estado" class="form-control"></select>
+        </div>
+        <div class="form-group">
+            <select id="Ciudad" class="form-control"></select>
+        </div>
         <input type="text" placeholder="Código Postal" id="CodPostal" required>
         <input type="text" placeholder="Descipción" id="Descripcion" required>
         <input type="text" placeholder="Teléfono" id="Telefono" required>
@@ -48,8 +53,9 @@
         <button type="button" class="btn btn-primary" onclick="Guardar()">Registrar</button>
     </div>
 
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 </body>
 </html>
 
@@ -80,13 +86,13 @@
                 Nombre: $("#Nombre").val(),
                 Email: $("#Email").val(),
                 Calle: $("#Calle").val(),
-                Ciudad: $("#Ciudad").val(),
+                Ciudad: $("#Ciudad").find("option:selected").text(),
                 CodPostal: $("#CodPostal").val(),
                 Descripcion: $("#Descripcion").val(),
                 Telefono: $("#Telefono").val(),
                 Contraseña: $("#Contraseña").val(),
-                Estado: $("#Estado").val(),
-                Pais: $("#Pais").val(),
+                Estado: $("#Estado").find("option:selected").text(),
+                Pais: $("#Pais").find("option:selected").text(),
             }
 
             var request = new FormData();
@@ -116,6 +122,117 @@
             });
 
         }
+        //CONSUMEN LA API REST CREADA PARA EL DROPDOWNLIST
+    $(document).ready(function () {
+        $.ajax({
+            url: "https://www.universal-tutorial.com/api/getaccesstoken",
+            type: "GET",
+            headers: {
+                "Accept": "application/json",
+                "api-token": "4TtTboEhH8Qb-Xx3QHOeacz4RiEenMI7rqHDdjZt4oeosXPWeEsARjPVDgI5p1iaTys",
+                "user-email": "nsantosbalterra@gmail.com"
+            },
+            success: function (response) {
+                var selectedCountry;
+                var selectedState;
+                var auth_token = response.auth_token;
+                getCountries(auth_token);
+                // Manejar el cambio de selección del país
+                $("#Pais").change(function () {
+                    selectedCountry = $(this).find("option:selected").text();
+                    console.log(selectedCountry);
+                    getStates(auth_token, selectedCountry);
+                });
+                
+                // Manejar el cambio de selección del estado
+                $("#Estado").change(function () {
+                    selectedState = $(this).find("option:selected").text();
+                    console.log(selectedState);
+                    getCities(auth_token, selectedState);
+                });
+            },
+            error: function (error) {
+                console.log("Error al obtener el access token:", error);
+            }
+        });
+    });
+
+     // Obtener la lista de países
+    function getCountries(auth_token) {
+        $.ajax({
+            url: "https://www.universal-tutorial.com/api/countries/",
+            type: "GET",
+            headers: {
+                "Authorization": "Bearer " + auth_token,
+                "Accept": "application/json"
+            },
+            success: function (data) {
+                data.forEach(function (country, index) {
+                    $("<option>").attr({ "value": index }).text(country.country_name).appendTo("#Pais");
+                });
+            },
+            error: function (error) {
+                console.log("Error al obtener la lista de países:", error);
+            }
+        });
+    }
+    // Obtener la lista de estados en función del país seleccionado
+    function getStates(auth_token, selectedCountry) {
+        $.ajax({
+            url: "https://www.universal-tutorial.com/api/states/" + selectedCountry,
+            type: "GET",
+            headers: {
+                "Authorization": "Bearer " + auth_token,
+                "Accept": "application/json"
+            },
+            success: function (data) {
+                data.forEach(function (state, index) {
+                    $("<option>").attr({ "value": index }).text(state.state_name).appendTo("#Estado");
+                });
+            },
+            error: function (error) {
+                console.log("Error al obtener la lista de estados:", error);
+            }
+        });
+    }
+    // Obtener la lista de ciudades en función del estado seleccionado
+    function getStates(auth_token, selectedCountry) {
+        $.ajax({
+            url: "https://www.universal-tutorial.com/api/states/" + selectedCountry,
+            type: "GET",
+            headers: {
+                "Authorization": "Bearer " + auth_token,
+                "Accept": "application/json"
+            },
+            success: function (data) {
+                data.forEach(function (state, index) {
+                    $("<option>").attr({ "value": index }).text(state.state_name).appendTo("#Estado");
+                });
+            },
+            error: function (error) {
+                console.log("Error al obtener la lista de estados:", error);
+            }
+        });
+    }
+    // Obtener la lista de ciudades en función del estado seleccionado
+    function getCities(auth_token, selectedState) {
+        $.ajax({
+            url: "https://www.universal-tutorial.com/api/cities/" + selectedState,
+            type: "GET",
+            headers: {
+                "Authorization": "Bearer " + auth_token,
+                "Accept": "application/json"
+            },
+            success: function (data) {
+                data.forEach(function (city, index) {
+                    $("<option>").attr({ "value": index }).text(city.city_name).appendTo("#Ciudad");
+                });
+            },
+            error: function (error) {
+                console.log("Error al obtener la lista de ciudades:", error);
+            }
+        });
+    }
 
 </script>
 

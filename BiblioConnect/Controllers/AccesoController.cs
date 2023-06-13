@@ -1,5 +1,5 @@
 ﻿using BiblioConnect.Modelo;
-using BiblioConnect.Logica;
+using BiblioConnect.Data;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -74,7 +74,7 @@ namespace BiblioConnect.Controllers
                 {
                     Session["Usuario"] = oBiblioteca;
                     //TempData["nombreUsuario"] = oUsuario.nombreUsuario;
-                    return RedirectToAction("Dashboard", "Inicio");
+                    return RedirectToAction("Dashboard", "Biblioteca");
                 }
                 else
                 {

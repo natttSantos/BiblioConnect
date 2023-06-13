@@ -161,7 +161,7 @@
         //CONSUMEN LA API REST CREADA PARA EL DROPDOWNLIST
         $(document).ready(function () {
             jQuery.ajax({
-                url: '@Url.Action("ListarCategoria", "Recursos")',
+                url: '@Url.Action("ListarCategoria", "Biblioteca")',
                 type: "GET",
                 data: null,
                 dataType: "json",
@@ -177,7 +177,7 @@
             });
 
             jQuery.ajax({
-                url: '@Url.Action("ListarAutor", "Recursos")',
+                url: '@Url.Action("ListarAutor", "Biblioteca")',
                 type: "GET",
                 data: null,
                 dataType: "json",
@@ -193,7 +193,7 @@
             });
 
             jQuery.ajax({
-                url: '@Url.Action("ListarEditorial", "Recursos")',
+                url: '@Url.Action("ListarEditorial", "Biblioteca")',
                 type: "GET",
                 data: null,
                 dataType: "json",
@@ -213,7 +213,7 @@
             tabladata = $('#tabla').DataTable({
                 responsive:true,
                 "ajax": {
-                    "url": '@Url.Action("ListarLibro", "Recursos")',
+                    "url": '@Url.Action("ListarLibro", "Biblioteca")',
                     "type": "GET",
                     "datatype": "json"
                 },
@@ -315,7 +315,7 @@
             var json = $(this).data("informacion")
 
             jQuery.ajax({
-                url: '@Url.Action("EliminarLibro", "Recursos")',
+                url: '@Url.Action("EliminarLibro", "Biblioteca")',
                 type: "POST",
                 data: JSON.stringify({ id: json.Id}),
                 dataType: "json",
@@ -357,7 +357,7 @@
             request.append("objeto", JSON.stringify(objeto));
 
             jQuery.ajax({
-                url: '@Url.Action("GuardarLibro", "Recursos")',
+                url: '@Url.Action("GuardarLibro", "Biblioteca")',
                 type: "POST",
                 data: request,
                 processData: false,

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 
-namespace BiblioConnect.Logica
+namespace BiblioConnect.Data
 {
     public class CategoriaDAL
     {

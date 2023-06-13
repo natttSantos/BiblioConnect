@@ -1,4 +1,4 @@
-﻿using BiblioConnect.Logica;
+﻿using BiblioConnect.Data;
 using BiblioConnect.Modelo;
 using System;
 using System.Collections.Generic;

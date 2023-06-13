@@ -23,14 +23,17 @@
     <div style="display: flex; align-items: center;">
         <img src=@Model.Foto alt="Imagen" style="width: 300px; height: 300px; margin-right: 10px;">
         <div>
-            <h3>@Model.Nombre</h3>
+            <h5>@Model.Nombre</h5>
             <p>@Model.Descripcion</p>
-            <p>@Model.Telefono</p>
-            <p>@Model.Email</p>
         </div>
     </div>
-    <h3>Ubicación biblioteca</h3>
+    <br />
+    <h5>Ubicación biblioteca:</h5>
     <div id="map"></div>
+    <br />
+    <h5>Información de contacto:</h5>
+    <p>Teléfono: @Model.Telefono</p>
+    <p>Email: @Model.Email</p>
 
     @* JQquery, Popper.js, Boostrap.js *@
     <script src="~/Scripts/jquery-3.7.0.min.js"></script>

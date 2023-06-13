@@ -1,4 +1,4 @@
-﻿using BiblioConnect.Logica;
+﻿using BiblioConnect.Data;
 using BiblioConnect.Modelo;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
-namespace ProyectoBiblioteca.Logica
+namespace ProyectoBiblioteca.Data
 {
     public class AutorDAL
     {

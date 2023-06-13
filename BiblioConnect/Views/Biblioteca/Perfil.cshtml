@@ -1,0 +1,70 @@
+﻿
+@{
+    ViewBag.Title = "Perfil";
+}
+@using BiblioConnect.Modelo
+@model Biblioteca
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    @* Boostrap CSS *@
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet">
+    @* DataTables CSS BÁSICO *@
+    <link href="~/Content/datatables.min.css" rel="stylesheet" />
+    @* DataTables estilo Boostrap 5 CSS *@
+    <link href="~/DataTables-1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    @* CSS DE MAPAS *@
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <link rel="stylesheet" type="text/css" href="~/CSS/Mapa.css" />
+</head>
+<body>
+    <div id="biblioContainer">
+        <img id="txtimagen" src="#" alt="Imagen" style="width: 300px; height: 300px; margin-right: 10px;">
+        <div>
+            <h5 id="txtnombre"></h5>
+            <p id="txtdescripcion"></p>
+        </div>
+    </div>
+
+    <h5>Ubicación biblioteca:</h5>
+    <div id="map"></div>
+
+    <h5>Información de contacto:</h5>
+    <p id="txttelefono"></p>
+    <p id="txtemail"></p>
+
+    @* JQquery, Popper.js, Boostrap.js *@
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    @* DataTable JS *@
+    <script src="~/Scripts//datatables.min.js"></script>
+    @* Jquery *@
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    @* JS DE MAPAS *@
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="~/Scripts/mapa.js"></script> 
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: "/Biblioteca/ObtenerBiblio",
+                type: "GET",
+                success: function (data) {
+                    var biblio = data.data;
+                    $("#txtimagen").attr("src", biblio.Foto);
+                    $("#txtdescripcion").text(biblio.Descripcion);
+                    $("#txtnombre").text(biblio.Nombre);
+                    $("#txtemail").text(biblio.Email);
+                    $("#txttelefono").text(biblio.Telefono);
+
+                    //Mostrar Mapa
+                    getLatLong(biblio.Calle, biblio.Ciudad, biblio.Estado, biblio.Pais, biblio.CodPostal);
+                },
+                error: function (error) {
+                    console.log("Error al obtener los datos de la biblioteca:", error);
+                }
+            });
+        });
+    </script>
+</body>
+

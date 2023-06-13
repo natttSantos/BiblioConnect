@@ -105,7 +105,7 @@
                 tabladata = $('#tabla').DataTable({
                     responsive:true,
                     "ajax": {
-                        "url": '@Url.Action("ListarEditorial", "Recursos")',
+                        "url": '@Url.Action("ListarEditorial", "Biblioteca")',
                         "type": "GET",
                         "datatype": "json"
                     },
@@ -171,7 +171,7 @@
             var json = $(this).data("informacion")
 
             jQuery.ajax({
-                url: '@Url.Action("EliminarEditorial", "Recursos")',
+                url: '@Url.Action("EliminarEditorial", "Biblioteca")',
                 type: "POST",
                 data: JSON.stringify({ id: json.Id}),
                 dataType: "json",
@@ -203,7 +203,7 @@
             }
 
             jQuery.ajax({
-                url: '@Url.Action("GuardarEditorial", "Recursos")',
+                url: '@Url.Action("GuardarEditorial", "Biblioteca")',
                 type: "POST",
                 data: JSON.stringify(request),
                 dataType: "json",

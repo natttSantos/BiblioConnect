@@ -1,4 +1,4 @@
-﻿using BiblioConnect.Logica;
+﻿using BiblioConnect.Data;
 using BiblioConnect.Modelo;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
-namespace BiblioConnect.Logica
+namespace BiblioConnect.Data
 {
     public class BibliotecaDAL
     {
@@ -34,7 +34,7 @@ namespace BiblioConnect.Logica
 
         public bool Registrar(Biblioteca oBiblioteca)
         {
-            bool registrado;
+            bool registrado = true;
             string mensaje;
             using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
             {

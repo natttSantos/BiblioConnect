@@ -294,9 +294,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccesoController.cs" />
-    <Compile Include="Controllers\InicioController.cs" />
-    <Compile Include="Controllers\RecursosController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Controllers\BibliotecaController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -457,17 +455,22 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Acceso\Login.cshtml" />
     <Content Include="Views\Acceso\Registrar.cshtml" />
-    <Content Include="Views\Inicio\Dashboard.cshtml" />
-    <Content Include="Views\Recursos\Categoria.cshtml" />
-    <Content Include="Views\Recursos\Editorial.cshtml" />
-    <Content Include="Views\Recursos\Autores.cshtml" />
-    <Content Include="Views\Recursos\Libros.cshtml" />
+    <Content Include="Views\BibliotecaAntigua\Categoria.cshtml" />
+    <Content Include="Views\BibliotecaAntigua\Editorial.cshtml" />
+    <Content Include="Views\BibliotecaAntigua\Autores.cshtml" />
+    <Content Include="Views\BibliotecaAntigua\Libros.cshtml" />
     <Content Include="Views\Acceso\RegistrarBiblioteca.cshtml" />
-    <Content Include="Views\Inicio\Perfil.cshtml" />
+    <Content Include="Views\BibliotecaAntigua\Dashboard.cshtml" />
+    <Content Include="Views\BibliotecaAntigua\Perfil.cshtml" />
+    <Content Include="Views\Biblioteca\Dashboard.cshtml" />
+    <Content Include="Views\Biblioteca\Perfil.cshtml" />
+    <Content Include="Views\Biblioteca\Libros.cshtml" />
+    <Content Include="Views\Biblioteca\Autores.cshtml" />
+    <Content Include="Views\Biblioteca\Editorial.cshtml" />
+    <Content Include="Views\Biblioteca\Categoria.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Perfil\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

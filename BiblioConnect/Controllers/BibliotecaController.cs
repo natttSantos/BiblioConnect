@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using BiblioConnect.Modelo;
+using BiblioConnect.Data; 
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -7,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using BiblioConnect.Logica;
 using ProyectoBiblioteca.Logica;
 using System.Threading.Tasks;
 using Firebase.Auth;
@@ -15,13 +15,28 @@ using Firebase.Storage;
 using System.Data.SqlClient;
 using System.Data;
 using System.Threading;
-
+using BiblioConnect.Permisos;
+using ProyectoBiblioteca.Data;
 
 namespace BiblioConnect.Controllers
 {
-    public class RecursosController : Controller
+    public class BibliotecaController : Controller
     {
-        // GET: Biblioteca
+        [ValidarSesion] //Antes de que se ejecute cualquiera de las vistas anteriores se ejecuta la clase validarsesion
+        public ActionResult Dashboard() 
+        {
+            return View();
+        }
+        public ActionResult Perfil() 
+        {
+            return View();
+        }
+        public ActionResult CerrarSesion()
+        {
+            Session["usuario"] = null;
+            return RedirectToAction("Login", "Acceso");
+        }
+
         public ActionResult Libros()
         {
             return View();
@@ -42,6 +57,15 @@ namespace BiblioConnect.Controllers
             return View();
         }
 
+
+        [HttpGet]
+        public JsonResult ObtenerBiblio()
+        {
+            Biblioteca biblioSession = Session["Usuario"] as Biblioteca;
+            int Id = biblioSession.Id;
+            Biblioteca oBiblioteca = BibliotecaDAL.Instancia.ObtenerBiblio(Id);
+            return Json(new { data = oBiblioteca }, JsonRequestBehavior.AllowGet);
+        }
 
         [HttpGet]
         public JsonResult ListarCategoria()

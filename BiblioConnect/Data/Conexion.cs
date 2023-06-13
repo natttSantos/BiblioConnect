@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace BiblioConnect.Logica
+namespace BiblioConnect.Data
 {
     public class Conexion
     {

@@ -16,7 +16,7 @@ namespace BiblioConnect
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Inicio", action = "Dashboard", id = UrlParameter.Optional }
+                defaults: new { controller = "Biblioteca", action = "Dashboard", id = UrlParameter.Optional }
             );
         }
     }

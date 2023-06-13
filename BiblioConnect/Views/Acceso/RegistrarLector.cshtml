@@ -15,46 +15,86 @@
     <link href="~/CSS/Registro.css" rel="stylesheet" />
 </head>
 <body>
-    <div class="card">
-        <h2>Registro Bibliotecas</h2>
+    <div class="container">
+        <h2>Registro Lector</h2>
         @if (ViewData["Mensaje"] != null)
         {
             <div class="alert alert-danger" role="alert">
                 Las contraseñas no coinciden
             </div>
         }
-
-        <input type="text" placeholder="Nombre" id="Nombre" required>
-        <input type="email" placeholder="Email" id="Email" required>
-        <input type="text" placeholder="Calle" id="Calle" required>
-        <div class="form-group">
-            <select id="Pais" class="form-control"></select>
-        </div>
-        <div class="form-group">
-            <select id="Estado" class="form-control"></select>
-        </div>
-        <div class="form-group">
-            <select id="Ciudad" class="form-control"></select>
-        </div>
-        <input type="text" placeholder="Código Postal" id="CodPostal" required>
-        <input type="text" placeholder="Descipción" id="Descripcion" required>
-        <input type="text" placeholder="Teléfono" id="Telefono" required>
-        <input type="password" placeholder="Contraseña" id="Contraseña" required>
-        <input type="password" placeholder="Confirmar contraseña" id="confirmarContraseña" required>
-        <input type="date" placeholder="Fecha de Nacimiento" id="FechaNacimiento" required>
-        <div class="col-sm-6">
-            <div class="form-group">
-                <img id="imglibro" height="100" width="100" class="border border-dark" />
+        <div class="row">
+            <div class="col-md-4">
+                <input type="text" placeholder="Nombre" id="Nombre" class="form-control" required>
             </div>
-            <div class="form-group">
-                <input class="form-control-file" type="file" id="filelibro" onchange="readURL(this);">
+            <div class="col-md-4">
+                <input type="text" placeholder="Apellidos" id="Apellidos" class="form-control" required>
+            </div>
+            <div class="col-md-4">
+                <input type="text" placeholder="Dni" id="Dni" class="form-control" required>
             </div>
         </div>
-        <button type="button" class="btn btn-primary" onclick="Guardar()">Registrar</button>
-    </div>
+        <div class="row">
+            <div class="col-md-4">
+                <input type="email" placeholder="Email" id="Email" class="form-control" required>
+            </div>
+            <div class="col-md-4">
+                <input type="text" placeholder="Teléfono" id="Telefono" class="form-control" required>
+            </div>
+            <div class="col-md-4">
+                <input type="text" placeholder="Calle" id="Calle" class="form-control" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <select id="Pais" class="form-control"></select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <select id="Estado" class="form-control"></select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <select id="Ciudad" class="form-control"></select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <input type="text" placeholder="Código Postal" id="CodPostal" class="form-control" required>
+            </div>
+            <div class="col-md-4">
+                <input type="date" placeholder="Fecha de Nacimiento" id="FechaNacimiento" class="form-control" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <input type="password" placeholder="Contraseña" id="Contraseña" class="form-control" required>
+            </div>
+            <div class="col-md-4">
+                <input type="password" placeholder="Confirmar contraseña" id="confirmarContraseña" class="form-control" required>
+            </div>
 
-    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <img id="imglibro" height="100" width="100" class="border border-dark" />
+                </div>
+                <div class="form-group">
+                    <input class="form-control-file" type="file" id="filelibro" onchange="readURL(this);">
+                </div>
+            </div>
+            <div class="col-md-8">
+                <button type="button" class="btn btn-primary" onclick="Guardar()">Registrar</button>
+            </div>
+        </div>
+
+        <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 
 </body>
 </html>
@@ -83,13 +123,13 @@
             var ImagenSeleccionada = ($("#filelibro"))[0].files[0];
 
             var objeto = {
-/*                Id: $("#txtid").val(),*/
                 Nombre: $("#Nombre").val(),
                 Email: $("#Email").val(),
                 Calle: $("#Calle").val(),
                 Ciudad: $("#Ciudad").find("option:selected").text(),
                 CodPostal: $("#CodPostal").val(),
-                Descripcion: $("#Descripcion").val(),
+                Apellidos: $("#Apellidos").val(),
+                Dni: $("#Dni").val(),
                 Telefono: $("#Telefono").val(),
                 Contraseña: $("#Contraseña").val(),
                 Estado: $("#Estado").find("option:selected").text(),
@@ -101,7 +141,7 @@
             request.append("objeto", JSON.stringify(objeto));
 
             jQuery.ajax({
-                url: '@Url.Action("RegistrarBiblioteca", "Acceso")',
+                url: '@Url.Action("RegistrarLector", "Acceso")',
                 type: "POST",
                 data: request,
                 processData: false,
@@ -122,8 +162,8 @@
                 },
             });
 
-        }
-        //CONSUMEN LA API REST CREADA PARA EL SELECT
+    }
+    //API DE PAISES
     $(document).ready(function () {
         $.ajax({
             url: "https://www.universal-tutorial.com/api/getaccesstoken",

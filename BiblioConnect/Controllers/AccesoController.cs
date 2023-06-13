@@ -26,6 +26,10 @@ namespace BiblioConnect.Controllers
         {
             return View();
         }
+        public ActionResult RegistrarLector()
+        {
+            return View();
+        }
 
 
         [HttpPost]
@@ -42,6 +46,23 @@ namespace BiblioConnect.Controllers
 
             bool respuesta = false;
             respuesta = BibliotecaDAL.Instancia.Registrar(oBiblioteca); 
+            return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> RegistrarLector(string objeto, HttpPostedFileBase imagenArchivo)
+        {
+            //Get url de la imagen subida a Firebase
+            Stream image = imagenArchivo.InputStream;
+            string fileName = Path.GetFileName(imagenArchivo.FileName);
+            string urlImagen = await new Helpers().SetImageToFirebase(image, fileName, "Fotos_Lectores");
+
+            Lector oLector = new Lector();
+            oLector = JsonConvert.DeserializeObject<Lector>(objeto);
+            oLector.Foto = urlImagen;
+
+            bool respuesta = false;
+            respuesta = LectorDAL.Instancia.Registrar(oLector);
             return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
         }
 

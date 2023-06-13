@@ -295,6 +295,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccesoController.cs" />
     <Compile Include="Controllers\BibliotecaController.cs" />
+    <Compile Include="Data\LectorDAL.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -407,7 +408,8 @@
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-reboot.min.css.map" />
-    <Content Include="Scripts\mapa.js" />
+    <Content Include="Scripts\API_paises.js" />
+    <Content Include="Scripts\API_mapa.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -454,20 +456,14 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Acceso\Login.cshtml" />
-    <Content Include="Views\Acceso\Registrar.cshtml" />
-    <Content Include="Views\BibliotecaAntigua\Categoria.cshtml" />
-    <Content Include="Views\BibliotecaAntigua\Editorial.cshtml" />
-    <Content Include="Views\BibliotecaAntigua\Autores.cshtml" />
-    <Content Include="Views\BibliotecaAntigua\Libros.cshtml" />
     <Content Include="Views\Acceso\RegistrarBiblioteca.cshtml" />
-    <Content Include="Views\BibliotecaAntigua\Dashboard.cshtml" />
-    <Content Include="Views\BibliotecaAntigua\Perfil.cshtml" />
     <Content Include="Views\Biblioteca\Dashboard.cshtml" />
     <Content Include="Views\Biblioteca\Perfil.cshtml" />
     <Content Include="Views\Biblioteca\Libros.cshtml" />
     <Content Include="Views\Biblioteca\Autores.cshtml" />
     <Content Include="Views\Biblioteca\Editorial.cshtml" />
     <Content Include="Views\Biblioteca\Categoria.cshtml" />
+    <Content Include="Views\Acceso\RegistrarLector.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

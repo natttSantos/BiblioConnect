@@ -1,40 +1,18 @@
-﻿body {
+﻿
+.row {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
 }
 
-.card {
-    max-width: 400px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+.col-md-4 {
+    padding-right: 15px;
+    padding-top: 15px;
+    padding-left: 15px;
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
 }
-
-    .card h2 {
-        text-align: center;
-    }
-
-    .card form {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .card label {
-        margin-bottom: 10px;
-    }
-
-    .card input[type="text"],
-    .card input[type="email"],
-    .card input[type="tel"],
-    .card input[type="password"],
-    .card input[type="date"] {
-        padding: 8px;
-        margin-bottom: 10px;
-    }
-
-    .card input[type="submit"] {
-        margin-top: 10px;
-        width: 100%;
-    }
+.col-md-8 {
+    padding-top: 15px;
+}

@@ -52,6 +52,7 @@ namespace BiblioConnect.Data
                     cmd.Parameters.AddWithValue("CodPostal", oBiblioteca.CodPostal);
                     cmd.Parameters.AddWithValue("Foto", oBiblioteca.Foto);
                     cmd.Parameters.AddWithValue("Ciudad", oBiblioteca.Ciudad);
+                    cmd.Parameters.AddWithValue("TipoUsuario", "biblioteca");
                     cmd.Parameters.Add("Registrado", SqlDbType.Bit).Direction = ParameterDirection.Output;
                     cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 100).Direction = ParameterDirection.Output;
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -74,12 +75,15 @@ namespace BiblioConnect.Data
         public Biblioteca ObtenerBiblio(int Id)
         {
             Biblioteca oBiblioteca = new Biblioteca();
-            string consultaSql = "SELECT Nombre, Calle, Ciudad, CodPostal, Descripcion, Email, Telefono, Estado, Pais, Foto FROM Biblioteca WHERE Id = @Id";
+            string consultaSql = "SELECT u.Nombre, u.Calle, u.Ciudad, u.CodPostal, u.Email, u.Telefono, u.Estado, u.Pais, u.Foto, b.Descripcion " +
+                "FROM Usuario u JOIN Biblioteca b " +
+                "ON u.Id = b.Id " +
+                "WHERE u.Id = @usuarioId ";
 
             using (SqlConnection connection = new SqlConnection(Conexion.CN))
             {
                 SqlCommand command = new SqlCommand(consultaSql, connection);
-                command.Parameters.AddWithValue("@Id", Id);
+                command.Parameters.AddWithValue("@usuarioId", Id);
                 connection.Open();
 
                 SqlDataReader reader = command.ExecuteReader();

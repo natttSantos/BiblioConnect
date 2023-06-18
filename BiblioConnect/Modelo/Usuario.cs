@@ -18,6 +18,7 @@ namespace BiblioConnect.Modelo
         public string Estado { get; set; }
         public string CodPostal { get; set; }
         public string Foto { get; set; }
+        public string TipoUsuario { get; set; }
         public string confirmarContraseña { get; set; }
     }
 }

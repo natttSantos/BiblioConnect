@@ -20,35 +20,59 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/Biblioteca/Dashboard">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Préstamos</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Recursos
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/Biblioteca/Categoria">Categorías</a></li>
-                            <li><a class="dropdown-item" href="/Biblioteca/Editorial">Editoriales</a></li>
-                            <li><a class="dropdown-item" href="/Biblioteca/Autores">Autores</a></li>
-                            <li><a class="dropdown-item" href="/Biblioteca/Libros">Libros</a></li>
+                @* BIBLIOTECA NAVRBAR *@
+                @{ Usuario oUsuario = Session["Usuario"] as Usuario;
+                    String tipoUsuario = oUsuario.TipoUsuario;
+                    if (tipoUsuario.Equals("biblioteca"))
+                    {
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="/Biblioteca/Dashboard">Dashboard</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Préstamos</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Recursos
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="/Biblioteca/Categoria">Categorías</a></li>
+                                    <li><a class="dropdown-item" href="/Biblioteca/Editorial">Editoriales</a></li>
+                                    <li><a class="dropdown-item" href="/Biblioteca/Autores">Autores</a></li>
+                                    <li><a class="dropdown-item" href="/Biblioteca/Libros">Libros</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Biblioteca/Perfil">Perfil</a>
+                            </li>
                         </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Biblioteca/Perfil">Perfil</a>
-                    </li>
-                </ul>
+                    }
+                    @* LECTOR NAVRBAR *@
+                    else
+                    {
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="/Lector/Inicio">Inicio</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Lector/Catalogo">Catálogo</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Eventos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Biblioteca/Perfil">Reservas</a>
+                            </li>
+                        </ul>
+                    }
+                }
                 <form class="d-flex">
                     <div class="fs-5 mb-3">
-                        @{ Biblioteca biblio = Session["Usuario"] as Biblioteca;
-                            String nombre = biblio.Nombre; }
+                        @{ String nombre = oUsuario.Nombre; }
 
                         <i class="bi bi-person-circle"></i>
-                        <span class="ms-2">@nombre</span>
+                        <span class="ms-2">Bienvenido, @nombre</span>
                     </div>
                 </form>
             </div>

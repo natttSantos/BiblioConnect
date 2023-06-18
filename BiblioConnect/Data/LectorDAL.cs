@@ -46,6 +46,7 @@ namespace BiblioConnect.Data
                     cmd.Parameters.AddWithValue("Dni", oLector.Dni);
                     cmd.Parameters.AddWithValue("Email", oLector.Email);
                     cmd.Parameters.AddWithValue("Telefono", oLector.Telefono);
+                    cmd.Parameters.AddWithValue("FechaNacimiento", oLector.FechaNacimiento);
                     cmd.Parameters.AddWithValue("Contraseña", oLector.Contraseña);
                     cmd.Parameters.AddWithValue("Calle", oLector.Calle);
                     cmd.Parameters.AddWithValue("Pais", oLector.Pais);
@@ -53,6 +54,7 @@ namespace BiblioConnect.Data
                     cmd.Parameters.AddWithValue("CodPostal", oLector.CodPostal);
                     cmd.Parameters.AddWithValue("Foto", oLector.Foto);
                     cmd.Parameters.AddWithValue("Ciudad", oLector.Ciudad);
+                    cmd.Parameters.AddWithValue("TipoUsuario", "lector");
                     cmd.Parameters.Add("Registrado", SqlDbType.Bit).Direction = ParameterDirection.Output;
                     cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 100).Direction = ParameterDirection.Output;
                     cmd.CommandType = CommandType.StoredProcedure;

@@ -61,8 +61,8 @@ namespace BiblioConnect.Controllers
         [HttpGet]
         public JsonResult ObtenerBiblio()
         {
-            Biblioteca biblioSession = Session["Usuario"] as Biblioteca;
-            int Id = biblioSession.Id;
+            Usuario userSession = Session["Usuario"] as Usuario;
+            int Id = userSession.Id;
             Biblioteca oBiblioteca = BibliotecaDAL.Instancia.ObtenerBiblio(Id);
             return Json(new { data = oBiblioteca }, JsonRequestBehavior.AllowGet);
         }
@@ -143,9 +143,7 @@ namespace BiblioConnect.Controllers
         public JsonResult ListarLibro()
         {
             List<Libro> oLista = new List<Libro>();
-
             oLista = LibroDAL.Instancia.Listar();
-
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
         }
 
@@ -193,7 +191,8 @@ namespace BiblioConnect.Controllers
                 oLibro = JsonConvert.DeserializeObject<Libro>(objeto);
 
                 oLibro.Foto = urlimagen;
-                oLibro.oBiblioteca = Session["Usuario"] as Biblioteca;
+                Usuario oUsuario = Session["Usuario"] as Usuario;
+                oLibro.idBiblioteca = oUsuario.Id;
 
                 //Registro Libro
                 if (oLibro.Id == 0)

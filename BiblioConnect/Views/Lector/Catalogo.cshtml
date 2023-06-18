@@ -1,0 +1,66 @@
+﻿
+@{ ViewBag.Title = "Categoria";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+
+<head>
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        @* Boostrap CSS *@
+        <link href="~/Content/bootstrap.min.css" rel="stylesheet">
+        @* DataTables CSS BÁSICO *@
+        <link href="~/Content/datatables.min.css" rel="stylesheet" />
+        @* DataTables estilo Boostrap 5 CSS *@
+        <link href="~/DataTables-1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+        @* CSS DE MAPAS *@
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+        <link rel="stylesheet" type="text/css" href="~/CSS/Catalogo.css" />
+    </head>
+
+    <body>
+        <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="Título, Descripción, Autor, ISBN, Editorial" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+        <section>
+            <ul id="image-list"></ul>
+        </section>
+    </body>
+
+
+    @* JQquery, Popper.js, Boostrap.js *@
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    @* DataTable JS *@
+    <script src="~/Scripts//datatables.min.js"></script>
+
+    <script>
+    $(document).ready(function () {
+        $.ajax({
+            url: '@Url.Action("ListarLibro", "Biblioteca")',
+            dataType: "json",
+            success: function (data) {
+                console.log("success")
+                $.each(data.data, function (index, libro) {
+                    var listItem = $("<li></li>");
+                    // Crea el enlace alrededor de la imagen
+                    console.log(libro)
+                    var link = $("<a></a>").attr("href", '@Url.Action("DetallesLibro", "Lector")?id=' + libro.Id);
+                    var image = $("<img>").attr("src", libro.Foto);
+                    var title = $("<div></div>").addClass("title").text(libro.Titulo);
+
+                    link.append(image);
+                    listItem.append(link);
+                    listItem.append(title);
+
+                    $("#image-list").append(listItem);
+                });
+            },
+            error: function () {
+                console.log("Error al obtener los datos mediante AJAX.");
+            }
+        });
+    });
+    </script>
+

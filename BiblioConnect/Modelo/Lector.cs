@@ -9,5 +9,7 @@ namespace BiblioConnect.Modelo
     {
         public string Apellidos { get; set; }
         public string Dni { get; set; }
+
+        public DateTime FechaNacimiento { get; set; }
     }
 }

@@ -45,7 +45,7 @@ namespace BiblioConnect.Controllers
             oBiblioteca.Foto = urlImagen;
 
             bool respuesta = false;
-            respuesta = BibliotecaDAL.Instancia.Registrar(oBiblioteca); 
+            respuesta = BibliotecaDAL.Instancia.Registrar(oBiblioteca);
             return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
         }
 
@@ -67,17 +67,14 @@ namespace BiblioConnect.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(Biblioteca oBiblioteca)
+        public ActionResult Login(Usuario oUsuario)
         {
-            //oUsuario.Contraseña = ConvertirSha256(oUsuario.Contraseña);
-
-            string consultaSql = "SELECT Nombre, Calle, Ciudad, CodPostal, Id FROM Biblioteca WHERE Email = @Email AND Contraseña = @Contraseña";
+            string tipoUsuario = "";
 
             using (SqlConnection connection = new SqlConnection(cadena))
             {
-                SqlCommand command = new SqlCommand(consultaSql, connection);
-                command.Parameters.AddWithValue("@Email", oBiblioteca.Email);
-                command.Parameters.AddWithValue("@Contraseña", oBiblioteca.Contraseña);
+                SqlCommand command = new SqlCommand("SELECT TipoUsuario FROM Usuario WHERE Email = @Email", connection);
+                command.Parameters.AddWithValue("@Email", oUsuario.Email);
                 connection.Open();
 
                 SqlDataReader reader = command.ExecuteReader();
@@ -85,17 +82,39 @@ namespace BiblioConnect.Controllers
                 {
                     if (reader.GetValue(0) != DBNull.Value)
                     {
-                        oBiblioteca.Nombre = reader["Nombre"].ToString();
-                        oBiblioteca.Id = int.Parse(reader["Id"].ToString());
+                        tipoUsuario = reader["TipoUsuario"].ToString();
                     }
                 }
                 connection.Close();
                 reader.Close();
-                if (oBiblioteca.Id != 0)
+            }
+            using (SqlConnection connection = new SqlConnection(cadena))
+            {
+                SqlCommand command = new SqlCommand("SELECT Nombre, Id, TipoUsuario FROM Usuario WHERE Email = @Email AND Contraseña = @Contraseña", connection);
+                command.Parameters.AddWithValue("@Email", oUsuario.Email);
+                command.Parameters.AddWithValue("@Contraseña", oUsuario.Contraseña);
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    Session["Usuario"] = oBiblioteca;
-                    //TempData["nombreUsuario"] = oUsuario.nombreUsuario;
-                    return RedirectToAction("Dashboard", "Biblioteca");
+                    if (reader.GetValue(0) != DBNull.Value)
+                    {
+                        oUsuario.Nombre = reader["Nombre"].ToString();
+                        oUsuario.TipoUsuario = reader["TipoUsuario"].ToString();
+                        oUsuario.Id = int.Parse(reader["Id"].ToString());
+                    }
+                }
+                connection.Close();
+                reader.Close();
+                if (oUsuario.Id != 0)
+                {
+                    Session["Usuario"] = oUsuario;
+                    if (tipoUsuario.Equals("biblioteca"))
+                    {
+                        return RedirectToAction("Dashboard", "Biblioteca");
+                    }
+                    else { return RedirectToAction("Inicio", "Lector"); }
                 }
                 else
                 {
@@ -104,7 +123,7 @@ namespace BiblioConnect.Controllers
                 }
             }
         }
-
+        [HttpPost]
         public static string ConvertirSha256(string texto)
         {
             StringBuilder Sb = new StringBuilder();

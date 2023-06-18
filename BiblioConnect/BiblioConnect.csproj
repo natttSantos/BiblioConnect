@@ -295,6 +295,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccesoController.cs" />
     <Compile Include="Controllers\BibliotecaController.cs" />
+    <Compile Include="Controllers\LectorController.cs" />
     <Compile Include="Data\LectorDAL.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -341,6 +342,7 @@
     <Content Include="Content\jquery-ui.theme.css" />
     <Content Include="Content\Site.css" />
     <Content Include="CSS\Mapa.css" />
+    <Content Include="CSS\Catalogo.css" />
     <Content Include="CSS\Registro.css" />
     <Content Include="DataTables-1.13.4\css\dataTables.bootstrap.css" />
     <Content Include="DataTables-1.13.4\css\dataTables.bootstrap.min.css" />
@@ -464,6 +466,9 @@
     <Content Include="Views\Biblioteca\Editorial.cshtml" />
     <Content Include="Views\Biblioteca\Categoria.cshtml" />
     <Content Include="Views\Acceso\RegistrarLector.cshtml" />
+    <Content Include="Views\Lector\Catalogo.cshtml" />
+    <Content Include="Views\Lector\Inicio.cshtml" />
+    <Content Include="Views\Lector\DetallesLibro.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -11,10 +11,10 @@ namespace BiblioConnect.Modelo
         public string Titulo { get; set; }
         public string Foto { get; set; }
         public string Ubicacion { get; set; }
-        public Autor oAutor { get; set; }
-        public Categoria oCategoria { get; set; }
-        public Editorial oEditorial { get; set; }
-        public Biblioteca oBiblioteca { get; set; }
+        public int idAutor { get; set; }
+        public int idCategoria { get; set; }
+        public int idEditorial { get; set; }
+        public int idBiblioteca { get; set; }
         public int numEjemplares { get; set; }
         public bool Estado { get; set; }
     }

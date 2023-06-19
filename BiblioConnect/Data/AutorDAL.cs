@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
-namespace ProyectoBiblioteca.Data
+namespace BiblioConnect.Data
 {
     public class AutorDAL
     {
@@ -41,7 +41,7 @@ namespace ProyectoBiblioteca.Data
                 {
                     SqlCommand cmd = new SqlCommand("sp_RegistrarAutor", oConexion);
                     cmd.Parameters.AddWithValue("Estado", oAutor.Estado);
-                    cmd.Parameters.AddWithValue("Descripcion", oAutor.Descripcion);
+                    cmd.Parameters.AddWithValue("Nombre", oAutor.Nombre);
                     cmd.Parameters.Add("Resultado", SqlDbType.Bit).Direction = ParameterDirection.Output;
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -69,7 +69,7 @@ namespace ProyectoBiblioteca.Data
                 {
                     SqlCommand cmd = new SqlCommand("sp_ModificarAutor", oConexion);
                     cmd.Parameters.AddWithValue("Id", oAutor.Id);
-                    cmd.Parameters.AddWithValue("Descripcion", oAutor.Descripcion);
+                    cmd.Parameters.AddWithValue("Nombre", oAutor.Nombre);
                     cmd.Parameters.AddWithValue("Estado", oAutor.Estado);
                     cmd.Parameters.Add("Resultado", SqlDbType.Bit).Direction = ParameterDirection.Output;
 
@@ -101,7 +101,7 @@ namespace ProyectoBiblioteca.Data
             {
                 try
                 {
-                    SqlCommand cmd = new SqlCommand("select Id,Descripcion,Estado from Autor", oConexion);
+                    SqlCommand cmd = new SqlCommand("select Id,Nombre,Estado from Autor", oConexion);
                     cmd.CommandType = CommandType.Text;
 
                     oConexion.Open();
@@ -112,7 +112,7 @@ namespace ProyectoBiblioteca.Data
                             Lista.Add(new Autor()
                             {
                                 Id = Convert.ToInt32(dr["Id"]),
-                                Descripcion = dr["Descripcion"].ToString(),
+                                Nombre = dr["Nombre"].ToString(),
                                 Estado = Convert.ToBoolean(dr["Estado"])
                             });
                         }
@@ -127,6 +127,30 @@ namespace ProyectoBiblioteca.Data
             return Lista;
         }
 
+        public Autor Obtener(int Id)
+        {
+            Autor oAutor = new Autor();
+            string consultaSql = "SELECT Nombre " +
+                "FROM Autor " +
+                "WHERE Id = @autorId ";
+
+            using (SqlConnection connection = new SqlConnection(Conexion.CN))
+            {
+                SqlCommand command = new SqlCommand(consultaSql, connection);
+                command.Parameters.AddWithValue("@autorId", Id);
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    oAutor.Nombre = reader["Nombre"].ToString();
+                }
+                
+                connection.Close();
+                reader.Close();
+            }
+            return oAutor;
+        }
         public bool Eliminar(int id)
         {
             bool respuesta = true;

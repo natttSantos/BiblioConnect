@@ -12,7 +12,7 @@ using System.Web;
 using System.Threading.Tasks;
 using Firebase.Auth;
 
-namespace ProyectoBiblioteca.Logica
+namespace BiblioConnect.Data
 {
     public class LibroDAL
     {
@@ -124,7 +124,7 @@ namespace ProyectoBiblioteca.Logica
             {
                 try
                 {
-                    SqlCommand cmd = new SqlCommand("sp_registrarLibro", oConexion);
+                    SqlCommand cmd = new SqlCommand("sp_RegistrarLibro", oConexion);
                     cmd.Parameters.AddWithValue("Titulo", objeto.Titulo);
                     cmd.Parameters.AddWithValue("Foto", objeto.Foto);
                     cmd.Parameters.AddWithValue("Estado", objeto.Estado);

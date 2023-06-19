@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
-namespace ProyectoBiblioteca.Logica
+namespace BiblioConnect.Data
 {
     public class EditorialDAL
     {
@@ -40,7 +40,7 @@ namespace ProyectoBiblioteca.Logica
                 try
                 {
                     SqlCommand cmd = new SqlCommand("sp_RegistrarEditorial", oConexion);
-                    cmd.Parameters.AddWithValue("Descripcion", oEditorial.Descripcion);
+                    cmd.Parameters.AddWithValue("Nombre", oEditorial.Nombre);
                     cmd.Parameters.AddWithValue("Estado", oEditorial.Estado);
                     cmd.Parameters.Add("Resultado", SqlDbType.Bit).Direction = ParameterDirection.Output;
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -69,7 +69,7 @@ namespace ProyectoBiblioteca.Logica
                 {
                     SqlCommand cmd = new SqlCommand("sp_ModificarEditorial", oConexion);
                     cmd.Parameters.AddWithValue("Id", oEditorial.Id);
-                    cmd.Parameters.AddWithValue("Descripcion", oEditorial.Descripcion);
+                    cmd.Parameters.AddWithValue("Nombre", oEditorial.Nombre);
                     cmd.Parameters.AddWithValue("Estado", oEditorial.Estado);
                     cmd.Parameters.Add("Resultado", SqlDbType.Bit).Direction = ParameterDirection.Output;
 
@@ -101,7 +101,7 @@ namespace ProyectoBiblioteca.Logica
             {
                 try
                 {
-                    SqlCommand cmd = new SqlCommand("select Id,Descripcion,Estado from Editorial", oConexion);
+                    SqlCommand cmd = new SqlCommand("select Id,Nombre,Estado from Editorial", oConexion);
                     cmd.CommandType = CommandType.Text;
 
                     oConexion.Open();
@@ -112,7 +112,7 @@ namespace ProyectoBiblioteca.Logica
                             Lista.Add(new Editorial()
                             {
                                 Id = Convert.ToInt32(dr["Id"]),
-                                Descripcion = dr["Descripcion"].ToString(),
+                                Nombre = dr["Nombre"].ToString(),
                                 Estado = Convert.ToBoolean(dr["Estado"])
                             });
                         }
@@ -126,7 +126,30 @@ namespace ProyectoBiblioteca.Logica
             }
             return Lista;
         }
+        public Editorial Obtener(int Id)
+        {
+            Editorial oEditorial = new Editorial();
+            string consultaSql = "SELECT Nombre " +
+                "FROM Editorial " +
+                "WHERE Id = @EditorialId ";
 
+            using (SqlConnection connection = new SqlConnection(Conexion.CN))
+            {
+                SqlCommand command = new SqlCommand(consultaSql, connection);
+                command.Parameters.AddWithValue("@EditorialId", Id);
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    oEditorial.Nombre = reader["Nombre"].ToString();
+                }
+
+                connection.Close();
+                reader.Close();
+            }
+            return oEditorial;
+        }
         public bool Eliminar(int id)
         {
             bool respuesta = true;

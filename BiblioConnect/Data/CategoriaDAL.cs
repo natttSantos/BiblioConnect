@@ -39,7 +39,7 @@ namespace BiblioConnect.Data
                 try
                 {
                     SqlCommand cmd = new SqlCommand("sp_RegistrarCategoria", oConexion);
-                    cmd.Parameters.AddWithValue("Descripcion", oCategoria.Descripcion);
+                    cmd.Parameters.AddWithValue("Nombre", oCategoria.Nombre);
                     cmd.Parameters.AddWithValue("Estado", oCategoria.Estado);
                     cmd.Parameters.Add("Resultado", SqlDbType.Bit).Direction = ParameterDirection.Output;
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -68,7 +68,7 @@ namespace BiblioConnect.Data
                 {
                     SqlCommand cmd = new SqlCommand("sp_ModificarCategoria", oConexion);
                     cmd.Parameters.AddWithValue("Id", oCategoria.Id);
-                    cmd.Parameters.AddWithValue("Descripcion", oCategoria.Descripcion);
+                    cmd.Parameters.AddWithValue("Nombre", oCategoria.Nombre);
                     cmd.Parameters.AddWithValue("Estado", oCategoria.Estado);
                     cmd.Parameters.Add("Resultado", SqlDbType.Bit).Direction = ParameterDirection.Output;
 
@@ -100,7 +100,7 @@ namespace BiblioConnect.Data
             {
                 try
                 {
-                    SqlCommand cmd = new SqlCommand("Select Id,Descripcion,Estado from Categoria", oConexion);
+                    SqlCommand cmd = new SqlCommand("Select Id,Nombre,Estado from Categoria", oConexion);
                     cmd.CommandType = CommandType.Text;
 
                     oConexion.Open();
@@ -111,7 +111,7 @@ namespace BiblioConnect.Data
                             Lista.Add(new Categoria()
                             {
                                 Id = Convert.ToInt32(dr["Id"]),
-                                Descripcion = dr["Descripcion"].ToString(),
+                                Nombre = dr["Nombre"].ToString(),
                                 Estado = Convert.ToBoolean(dr["Estado"])
                             });
                         }
@@ -125,7 +125,30 @@ namespace BiblioConnect.Data
             }
             return Lista;
         }
+        public Categoria Obtener(int Id)
+        {
+            Categoria oCategoria = new Categoria();
+            string consultaSql = "SELECT Nombre " +
+                "FROM Categoria " +
+                "WHERE Id = @categoriaId ";
 
+            using (SqlConnection connection = new SqlConnection(Conexion.CN))
+            {
+                SqlCommand command = new SqlCommand(consultaSql, connection);
+                command.Parameters.AddWithValue("@categoriaId", Id);
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    oCategoria.Nombre = reader["Nombre"].ToString();
+                }
+
+                connection.Close();
+                reader.Close();
+            }
+            return oCategoria;
+        }
         public bool Eliminar(int id)
         {
             bool respuesta = true;

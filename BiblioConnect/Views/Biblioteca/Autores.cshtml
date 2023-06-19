@@ -31,7 +31,7 @@
                     <table class="table table-bordered" id="tabla" style="width:100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>Descricion</th>
+                                <th>Descripcion</th>
                                 <th>Estado</th>
                                 <th></th>
                             </tr>
@@ -110,7 +110,7 @@
                         "datatype": "json"
                     },
                     "columns": [
-                        { "data": "Descripcion" },
+                        { "data": "Nombre" },
                         {
                             "data": "Estado", "render": function (data) {
                                 if (data) {
@@ -197,7 +197,7 @@
             var request = {
                 objeto: {
                     Id: $("#txtid").val(),
-                    Descripcion: $("#txtdescripcion").val(),
+                    Nombre: $("#txtdescripcion").val(),
                     Estado: parseInt($("#cboEstado").val()) == 1 ? true : false
                 }
             }

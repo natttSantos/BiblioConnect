@@ -74,7 +74,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="txttitulo">Titulo</label>
-                                <input type="text" class="form-control required" id="txttitulo" name="descripcion" autocomplete="off">
+                                <input type="text" class="form-control required" id="txttitulo" name="Nombre" autocomplete="off">
                             </div>
                             <div class="form-group">
                                 <label for="cboautor">Autor</label>
@@ -97,7 +97,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="txtubicacion">Ubicacion</label>
-                                <input type="text" class="form-control required" id="txtubicacion" name="descripcion" autocomplete="off">
+                                <input type="text" class="form-control required" id="txtubicacion" name="Nombre" autocomplete="off">
                             </div>
                         </div>
                     </div>
@@ -106,7 +106,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="txtejemplares">Ejemplares</label>
-                                <input type="text" class="form-control required" id="txtejemplares" name="descripcion" autocomplete="off">
+                                <input type="text" class="form-control required" id="txtejemplares" name="Nombre" autocomplete="off">
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -168,7 +168,7 @@
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
                     $.each(data.data, function (index, value) {
-                        $("<option>").attr({ "value": value.Id }).text(value.Descripcion).appendTo("#cbocategoria");
+                        $("<option>").attr({ "value": value.Id }).text(value.Nombre).appendTo("#cbocategoria");
                     });
                 },
                 error: function (error) {
@@ -184,7 +184,7 @@
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
                     $.each(data.data, function (index, value) {
-                        $("<option>").attr({ "value": value.Id }).text(value.Descripcion).appendTo("#cboautor");
+                        $("<option>").attr({ "value": value.Id }).text(value.Nombre).appendTo("#cboautor");
                     });
                 },
                 error: function (error) {
@@ -200,7 +200,7 @@
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
                     $.each(data.data, function (index, value) {
-                        $("<option>").attr({ "value": value.Id }).text(value.Descripcion).appendTo("#cboeditorial");
+                        $("<option>").attr({ "value": value.Id }).text(value.Nombre).appendTo("#cboeditorial");
                     });
                 },
                 error: function (error) {
@@ -211,7 +211,11 @@
 
             //LISTADO DE LIBROS
             tabladata = $('#tabla').DataTable({
-                responsive:true,
+                responsive: true,
+                columnDefs: [{
+                    "defaultContent": "-",
+                    "targets": "_all"
+                }],
                 "ajax": {
                     "url": '@Url.Action("ListarLibro", "Biblioteca")',
                     "type": "GET",
@@ -224,21 +228,63 @@
                         }
                     },
                     { "data": "Titulo" },
-                    {
-                        "data": "oAutor", render: function (data) {
-                            return data.Descripcion
+                     {
+                        "data": "idAutor",
+                        "render": function(data, type, row) {
+                              $.ajax({
+                                url: '@Url.Action("ObtenerAutor", "Lector")',
+                                type: 'GET',
+                                data: { id: data },
+                                dataType: 'json',
+                                async: false,
+                                success: function(response) {
+                                  data = response.data.Nombre;
+                                },
+                                error: function(error) {
+                                  console.log(error);
+                                }
+                              });
+                          return data;
                         }
-                    },
+                      },
                     {
-                        "data": "oCategoria", render: function (data) {
-                            return data.Descripcion
+                        "data": "idCategoria",
+                        "render": function(data, type, row) {
+                              $.ajax({
+                                url: '@Url.Action("ObtenerCategoria", "Lector")',
+                                type: 'GET',
+                                data: { id: data },
+                                dataType: 'json',
+                                async: false,
+                                success: function(response) {
+                                  data = response.data.Nombre;
+                                },
+                                error: function(error) {
+                                  console.log(error);
+                                }
+                              });
+                          return data;
                         }
-                    },
+                    }, 
                     {
-                        "data": "oEditorial", render: function (data) {
-                            return data.Descripcion
+                        "data": "idEditorial",
+                        "render": function(data, type, row) {
+                              $.ajax({
+                                url: '@Url.Action("ObtenerEditorial", "Lector")',
+                                type: 'GET',
+                                data: { id: data },
+                                dataType: 'json',
+                                async: false,
+                                success: function(response) {
+                                  data = response.data.Nombre;
+                                },
+                                error: function(error) {
+                                  console.log(error);
+                                }
+                              });
+                          return data;
                         }
-                    },
+                      }, 
                     { "data": "Ubicacion" },
                     { "data": "numEjemplares" },
                     {
@@ -299,9 +345,9 @@
                 $("#txtid").val(json.IdLibro);
                 $("#imglibro").attr({ "src": "data:image/" + json.extension + ";base64," + json.base64 });
                 $("#txttitulo").val(json.Titulo);
-                $("#cboautor").val(json.oAutor.Id);
-                $("#cbocategoria").val(json.oCategoria.Id);
-                $("#cboeditorial").val(json.oEditorial.Id);
+                $("#cboautor").val(json.idAutor);
+                $("#cbocategoria").val(json.idCategoria);
+                $("#cboeditorial").val(json.idEditorial);
                 $("#txtubicacion").val(json.Ubicacion);
                 $("#txtejemplares").val(json.numEjemplares);
                 $("#cboEstado").val(json.Estado == true ? 1 : 0);
@@ -344,9 +390,9 @@
             var objeto = {
                 Id: $("#txtid").val(),
                 Titulo: $("#txttitulo").val(),
-                oAutor: { Id: $("#cboautor option:selected").val() },
-                oCategoria: { Id: $("#cbocategoria option:selected").val() },
-                oEditorial: { Id: $("#cboeditorial option:selected").val() },
+                idAutor: $("#cboautor option:selected").val(),
+                idCategoria: $("#cbocategoria option:selected").val(),
+                idEditorial: $("#cboeditorial option:selected").val(),
                 Ubicacion: $("#txtubicacion").val(),
                 numEjemplares: $("#txtejemplares").val(),
                 Estado: parseInt($("#cboEstado").val()) == 1 ? true : false,

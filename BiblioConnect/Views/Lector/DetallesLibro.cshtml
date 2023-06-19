@@ -22,6 +22,7 @@
         <img id="Foto" src="#" alt="Imagen" style="width: 200px; height: 300px; margin-right: 10px;">
         <div>
             <h3 id="Titulo"></h3>
+            <h3 id="Autor"></h3>
         </div>
     </div>
 
@@ -61,9 +62,7 @@
                     var libro = data.data;
                     $("#Foto").attr("src", libro.Foto);
                     $("#Titulo").text(libro.Titulo);
-
-                    // Mostrar Mapa
-                    // getLatLong(biblio.Calle, biblio.Ciudad, biblio.Estado, biblio.Pais, biblio.CodPostal);
+                    getAutor(libro.idAutor);
                 },
                 error: function (error) {
                     console.log("Error al obtener los datos del libro:", error);
@@ -71,6 +70,20 @@
             });
         });
 
+        function getAutor(idAutor) {
+            $.ajax({
+                url: "/Lector/ObtenerAutor",
+                type: "GET",
+                data: { id: idAutor },
+                success: function (data) {
+                    var autor = data.data;
+                    $("#Autor").text(autor.Nombre);
+                },
+                error: function (error) {
+                    console.log("Error al obtener los datos del autor:", error);
+                }
+            });
+        }
     </script>
 </body>
 

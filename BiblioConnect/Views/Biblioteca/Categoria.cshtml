@@ -111,7 +111,7 @@
                     },
                     //Resultado de la petición AJAX
                     "columns": [
-                        { "data": "Descripcion" },
+                        { "data": "Nombre" },
                         {
                             "data": "Estado", "render": function (data) {
                                 if (data) {
@@ -161,7 +161,7 @@
             if (json != null) {
 
                 $("#txtid").val(json.Id);
-                $("#txtdescripcion").val(json.Descripcion);
+                $("#txtdescripcion").val(json.Nombre);
                 $("#cboEstado").val(json.Estado == true ? 1 : 0);
             }
 
@@ -198,7 +198,7 @@
             var request = {
                 objeto: {
                     Id: $("#txtid").val(),
-                    Descripcion: $("#txtdescripcion").val(),
+                    Nombre: $("#txtdescripcion").val(),
                     Estado: parseInt($("#cboEstado").val()) == 1 ? true : false
                 }
             }

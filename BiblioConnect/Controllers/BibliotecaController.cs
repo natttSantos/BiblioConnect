@@ -8,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using ProyectoBiblioteca.Logica;
 using System.Threading.Tasks;
 using Firebase.Auth;
 using Firebase.Storage;
@@ -16,7 +15,6 @@ using System.Data.SqlClient;
 using System.Data;
 using System.Threading;
 using BiblioConnect.Permisos;
-using ProyectoBiblioteca.Data;
 
 namespace BiblioConnect.Controllers
 {

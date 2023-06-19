@@ -41,10 +41,8 @@
             url: '@Url.Action("ListarLibro", "Biblioteca")',
             dataType: "json",
             success: function (data) {
-                console.log("success")
                 $.each(data.data, function (index, libro) {
                     var listItem = $("<li></li>");
-                    // Crea el enlace alrededor de la imagen
                     console.log(libro)
                     var link = $("<a></a>").attr("href", '@Url.Action("DetallesLibro", "Lector")?id=' + libro.Id);
                     var image = $("<img>").attr("src", libro.Foto);

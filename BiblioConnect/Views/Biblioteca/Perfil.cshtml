@@ -3,7 +3,6 @@
     ViewBag.Title = "Perfil";
 }
 @using BiblioConnect.Modelo
-@model Biblioteca
 
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -43,12 +42,14 @@
     <script src="~/Scripts/jquery-3.7.0.min.js"></script>
     @* JS DE MAPAS *@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script src="~/Scripts/API_mapa.js"></script> 
+    <script src="~/Scripts/API_mapa.js"></script>
     <script>
         $(document).ready(function () {
+            var Id = @ViewBag.IdBiblioteca;
             $.ajax({
                 url: "/Biblioteca/ObtenerBiblio",
                 type: "GET",
+                data: { id: Id },
                 success: function (data) {
                     var biblio = data.data;
                     $("#txtimagen").attr("src", biblio.Foto);

@@ -23,30 +23,32 @@
                 @* BIBLIOTECA NAVRBAR *@
                 @{ Usuario oUsuario = Session["Usuario"] as Usuario;
                     String tipoUsuario = oUsuario.TipoUsuario;
+                    int Id = oUsuario.Id;
                     if (tipoUsuario.Equals("biblioteca"))
                     {
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="/Biblioteca/Dashboard">Dashboard</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Préstamos</a>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Recursos
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="/Biblioteca/Categoria">Categorías</a></li>
-                                    <li><a class="dropdown-item" href="/Biblioteca/Editorial">Editoriales</a></li>
-                                    <li><a class="dropdown-item" href="/Biblioteca/Autores">Autores</a></li>
-                                    <li><a class="dropdown-item" href="/Biblioteca/Libros">Libros</a></li>
+                                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" aria-current="page" href="/Biblioteca/Dashboard">Dashboard</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">Préstamos</a>
+                                    </li>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Recursos
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="/Biblioteca/Categoria">Categorías</a></li>
+                                            <li><a class="dropdown-item" href="/Biblioteca/Editorial">Editoriales</a></li>
+                                            <li><a class="dropdown-item" href="/Biblioteca/Autores">Autores</a></li>
+                                            <li><a class="dropdown-item" href="/Biblioteca/Libros">Libros</a></li>
+                                        </ul>
+                                    </li>
+                                    @* Se le pasa el ID de la Biblioteca para el Perfil *@
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/Biblioteca/Perfil?id=@Id">Perfil</a>
+                                    </li>
                                 </ul>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/Biblioteca/Perfil">Perfil</a>
-                            </li>
-                        </ul>
                     }
                     @* LECTOR NAVRBAR *@
                     else

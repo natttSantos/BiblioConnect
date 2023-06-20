@@ -3,7 +3,7 @@
     ViewBag.Title = "Detalles Libro";
 }
 @using BiblioConnect.Modelo
-@model int
+
 
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -15,23 +15,30 @@
     <link href="~/DataTables-1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
     @* CSS DE MAPAS *@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-    <link rel="stylesheet" type="text/css" href="~/CSS/Mapa.css" />
+    <link rel="stylesheet" type="text/css" href="~/CSS/DetallesLibro.css" />
 </head>
+
 <body>
     <div id="libroContainer">
-        <img id="Foto" src="#" alt="Imagen" style="width: 200px; height: 300px; margin-right: 10px;">
-        <div>
+        <img id="Foto" src="#" alt="Imagen">
+        <div id="TituloDescripcionContainer">
             <h3 id="Titulo"></h3>
-            <h3 id="Autor"></h3>
+            <div id="Descripcion"></div>
+        </div>
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h6 id="Biblioteca"></h6>
+                <p class="card-text">Disponible para préstamo. ¡Llévalo contigo!</p>
+                <a href="#" class="card-link" id="btnPrestamo">Préstamo</a>
+            </div>
         </div>
     </div>
-
-    @*<h5>Ubicación Libro:</h5>
-    <div id="map"></div>*@
-
-    <h5>Información de contacto:</h5>
-    @*<p id="txttelefono"></p>
-    <p id="txtemail"></p>*@
+    <div id="InformacionAdicional">
+        <h6 id="Autor">Autor</h6>
+        <h6 id="Categoria">Categoría</h6>
+        <h6 id="Editorial">Editorial</h6>
+    </div>
+    <button id="btnBiblioteca">Ir a la biblioteca</button>
 
     @* JQquery, Popper.js, Boostrap.js *@
     <script src="~/Scripts/jquery-3.7.0.min.js"></script>
@@ -43,17 +50,10 @@
     <script src="~/Scripts/jquery-3.7.0.min.js"></script>
     @* JS DE MAPAS *@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script src="~/Scripts/API_mapa.js"></script>
+    <script src="~/Scripts/Fechas.js"></script>
+    
     <script>
         $(document).ready(function () {
-            // Obtener la URL de la ventana actual
-            var currentURL = window.location.href;
-            var urlParams = new URLSearchParams(currentURL);
-            var idLibro = urlParams.get("id");
-
-            // Hacer algo con el ID obtenido
-            console.log("ID del libro: " + idLibro);
-
             $.ajax({
                 url: "/Lector/ObtenerLibro",
                 type: "GET",
@@ -62,11 +62,50 @@
                     var libro = data.data;
                     $("#Foto").attr("src", libro.Foto);
                     $("#Titulo").text(libro.Titulo);
+                    getBiblioteca(libro.idBiblioteca),
                     getAutor(libro.idAutor);
+                    getCategoria(libro.idCategoria);
+                    getEditorial(libro.idEditorial);
+                    getDescription(libro.Titulo);
+
                 },
                 error: function (error) {
                     console.log("Error al obtener los datos del libro:", error);
                 }
+            });
+
+            //Navigate to Perfil Biblioteca
+            $("#btnBiblioteca").on("click", function () {
+                var idBiblioteca = $(this).attr("data-idbiblioteca");
+                if (idBiblioteca) {
+                    window.location.href = "/Biblioteca/Perfil?id=" + idBiblioteca;
+                }
+            });
+            //Realizar Préstamo
+            $("#btnPrestamo").on("click", function () {
+                var duracion = 21;
+                var idLector = @(((Usuario)Session["Usuario"]).Id);
+                 var objeto = {
+                    Tipo: "prestamo",
+                    IdBiblioteca: $(this).attr("data-idbiblioteca"),
+                    IdLector: idLector,
+                    IdLibro: @Model,
+                    Descripcion: "Libro en perfectas condiciones",
+                    Duracion: duracion,
+                    Estado: 1,
+                  };
+
+                $.ajax({
+                    url: "/Lector/RegistrarPrestamo",
+                    type: "POST",
+                    data: objeto,
+                    success: function (data) {
+                        //ALERTA DE CONFIRMACIÓN
+                    },
+                    error: function (error) {
+                        console.log("Error al realizar el préstamo", error);
+                    }
+                });
             });
         });
 
@@ -77,13 +116,106 @@
                 data: { id: idAutor },
                 success: function (data) {
                     var autor = data.data;
-                    $("#Autor").text(autor.Nombre);
+                    $("#Autor").text("Autor: " + autor.Nombre);
                 },
                 error: function (error) {
                     console.log("Error al obtener los datos del autor:", error);
                 }
             });
         }
+        function getCategoria(idCategoria) {
+            $.ajax({
+                url: "/Lector/ObtenerCategoria",
+                type: "GET",
+                data: { id: idCategoria },
+                success: function (data) {
+                    var categoria = data.data;
+                    $("#Categoria").text("Categoría: "+categoria.Nombre);
+                },
+                error: function (error) {
+                    console.log("Error al obtener los datos de la Categoria:", error);
+                }
+            });
+        }
+        function getEditorial(idEditorial) {
+            $.ajax({
+                url: "/Lector/ObtenerEditorial",
+                type: "GET",
+                data: { id: idEditorial },
+                success: function (data) {
+                    var editorial = data.data;
+                    $("#Editorial").text("Editorial: " + editorial.Nombre);
+                },
+                error: function (error) {
+                    console.log("Error al obtener los datos de la Editorial:", error);
+                }
+            });
+        }
+        function getBiblioteca(idBiblioteca) {
+            $.ajax({
+                url: "/Lector/ObtenerBiblio",
+                type: "GET",
+                data: { id: idBiblioteca },
+                success: function (data) {
+                    var biblioteca = data.data;
+                    $("#Biblioteca").text(biblioteca.Nombre);
+                    $("#btnBiblioteca").attr("data-idbiblioteca", idBiblioteca);
+                    $("#btnPrestamo").attr("data-idbiblioteca", idBiblioteca);
+                },
+                error: function (error) {
+                    console.log("Error al obtener los datos de la Biblioteca:", error);
+                }
+            });
+        }
+
+        function getDescription(title) {
+        $.ajax({
+            url: "https://www.googleapis.com/books/v1/volumes",
+            data: { q: "intitle:" + title },
+            dataType: "json",
+            success: function (data) {
+                if (data.items && data.items.length > 0) {
+                    var book = data.items[0];
+                    var summary = book.searchInfo.textSnippet;
+                    $("#Descripcion").text(summary);
+                } else {
+                    $("#Descripcion").text("No se encontró ningún resumen para el libro.");
+                }
+            },
+            error: function () {
+                $("#description").text("Error al obtener la descripción del libro.");
+            }
+        });
+        }
+        //function showPreview() {
+        //    var title = "El principito"; // Título del libro en español
+
+        //    $.ajax({
+        //        url: "https://www.googleapis.com/books/v1/volumes",
+        //        data: { q: "intitle:" + title },
+        //        dataType: "json",
+        //        success: function (response) {
+        //            if (response.totalItems > 0) {
+        //                var book = response.items[0];
+        //                var accessInfo = book.accessInfo;
+        //                if (accessInfo.pdf && accessInfo.pdf.isAvailable) {
+        //                    var downloadLink = accessInfo.pdf.webReaderLink;
+        //                    // Realiza la descarga del PDF de la muestra
+        //                    window.open(downloadLink);
+        //                } else {
+        //                    console.log('No se encontró una muestra en PDF disponible para este libro.');
+        //                }
+        //            } else {
+        //                console.log('No se encontró ningún libro con el título especificado.');
+        //            }
+        //        },
+        //        error: function () {
+        //            alert("Error al obtener la información del libro.");
+        //        }
+        //    });
+        //}
+
+
     </script>
 </body>
 

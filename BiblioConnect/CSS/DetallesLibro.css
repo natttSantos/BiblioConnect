@@ -1,0 +1,30 @@
+﻿#libroContainer {
+    margin-top: 20px;
+    display: flex;
+    align-items: flex-start;
+}
+
+#Foto {
+    width: 200px;
+    height: 300px;
+    margin-right: 10px;
+}
+
+#TituloDescripcionContainer {
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px; 
+}
+
+#Titulo {
+    text-align: left;
+}
+
+#Descripcion {
+    text-align: justify;
+    max-width: 800px;
+}
+
+#InformacionAdicional {
+    margin-top: 20px;
+}

@@ -27,11 +27,19 @@ namespace BiblioConnect.Controllers
         {
             return View();
         }
-        // FIN NAVBAR
-
         public ActionResult DetallesLibro(int id)
         {
             return View(id);
+        }
+
+
+
+        [HttpPost]
+        public JsonResult RegistrarPrestamo(Prestamo objeto)
+        {
+            bool registrado = false;
+            registrado = PrestamoDAL.Instancia.Registrar(objeto);
+            return Json(new { resultado = registrado }, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
         public JsonResult ObtenerLibro(int id)
@@ -56,6 +64,12 @@ namespace BiblioConnect.Controllers
         {
             Editorial oEditorial = EditorialDAL.Instancia.Obtener(id);
             return Json(new { data = oEditorial }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult ObtenerBiblio(int id)
+        {
+            Biblioteca oBiblioteca = BibliotecaDAL.Instancia.ObtenerBiblio(id);
+            return Json(new { data = oBiblioteca }, JsonRequestBehavior.AllowGet);
         }
     }
 }

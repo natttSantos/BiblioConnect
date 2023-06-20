@@ -25,8 +25,10 @@ namespace BiblioConnect.Controllers
         {
             return View();
         }
-        public ActionResult Perfil() 
+        public ActionResult Perfil(int id)
         {
+            ViewBag.IdBiblioteca = id;
+
             return View();
         }
         public ActionResult CerrarSesion()
@@ -57,11 +59,9 @@ namespace BiblioConnect.Controllers
 
 
         [HttpGet]
-        public JsonResult ObtenerBiblio()
+        public JsonResult ObtenerBiblio(int id)
         {
-            Usuario userSession = Session["Usuario"] as Usuario;
-            int Id = userSession.Id;
-            Biblioteca oBiblioteca = BibliotecaDAL.Instancia.ObtenerBiblio(Id);
+            Biblioteca oBiblioteca = BibliotecaDAL.Instancia.ObtenerBiblio(id);
             return Json(new { data = oBiblioteca }, JsonRequestBehavior.AllowGet);
         }
 

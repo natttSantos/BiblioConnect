@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Date.Fns.Net.0.2.0\build\Date.Fns.Net.props" Condition="Exists('..\packages\Date.Fns.Net.0.2.0\build\Date.Fns.Net.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -296,6 +297,7 @@
     <Compile Include="Controllers\AccesoController.cs" />
     <Compile Include="Controllers\BibliotecaController.cs" />
     <Compile Include="Controllers\LectorController.cs" />
+    <Compile Include="Data\PrestamoDAL.cs" />
     <Compile Include="Data\LectorDAL.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -313,6 +315,9 @@
     <Compile Include="Modelo\Biblioteca.cs" />
     <Compile Include="Modelo\Libro.cs" />
     <Compile Include="Modelo\Lector.cs" />
+    <Compile Include="Modelo\Reserva.cs" />
+    <Compile Include="Modelo\Prestamo.cs" />
+    <Compile Include="Modelo\Transaccion.cs" />
     <Compile Include="Modelo\Usuario.cs" />
     <Compile Include="Permisos\ValidarSesionAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -341,6 +346,7 @@
     <Content Include="Content\jquery-ui.structure.css" />
     <Content Include="Content\jquery-ui.theme.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="CSS\DetallesLibro.css" />
     <Content Include="CSS\Mapa.css" />
     <Content Include="CSS\Catalogo.css" />
     <Content Include="CSS\Registro.css" />
@@ -410,6 +416,7 @@
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-reboot.min.css.map" />
+    <Content Include="Scripts\Fechas.js" />
     <Content Include="Scripts\API_paises.js" />
     <Content Include="Scripts\API_mapa.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
@@ -511,6 +518,7 @@
       <ErrorText>Este proyecto hace referencia a los paquetes NuGet que faltan en este equipo. Use la restauración de paquetes NuGet para descargarlos. Para obtener más información, consulte http://go.microsoft.com/fwlink/?LinkID=322105. El archivo que falta es {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\Date.Fns.Net.0.2.0\build\Date.Fns.Net.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Date.Fns.Net.0.2.0\build\Date.Fns.Net.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

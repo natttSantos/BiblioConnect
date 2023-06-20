@@ -51,7 +51,10 @@
     @* JS DE MAPAS *@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="~/Scripts/Fechas.js"></script>
-    
+    @* Libreria alert *@
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/Scripts/sweetAlert.js"></script>
+
     <script>
         $(document).ready(function () {
             $.ajax({
@@ -93,19 +96,24 @@
                     Descripcion: "Libro en perfectas condiciones",
                     Duracion: duracion,
                     Estado: 1,
-                  };
-
-                $.ajax({
-                    url: "/Lector/RegistrarPrestamo",
-                    type: "POST",
-                    data: objeto,
-                    success: function (data) {
-                        //ALERTA DE CONFIRMACIÓN
-                    },
-                    error: function (error) {
-                        console.log("Error al realizar el préstamo", error);
-                    }
-                });
+                };
+                alertConfirm('¿Estás seguro de realizar el préstamo?',
+                    'Si aceptas se te asignará como el próximo lector').then(() => {
+                    $.ajax({
+                        url: '/Lector/RegistrarPrestamo',
+                        type: 'POST',
+                        data: objeto,
+                        success: function (data) {
+                            alertSuccess('¡Enhorabuena!', 'Acabas de realizar un préstamo con éxito');
+                        },
+                        error: function (error) {
+                            console.log('Error al realizar el préstamo', error);
+                        },
+                    });
+                })
+                    .catch(() => {
+                        // Handle rejection or cancellation
+                    });
             });
         });
 
@@ -187,35 +195,6 @@
             }
         });
         }
-        //function showPreview() {
-        //    var title = "El principito"; // Título del libro en español
-
-        //    $.ajax({
-        //        url: "https://www.googleapis.com/books/v1/volumes",
-        //        data: { q: "intitle:" + title },
-        //        dataType: "json",
-        //        success: function (response) {
-        //            if (response.totalItems > 0) {
-        //                var book = response.items[0];
-        //                var accessInfo = book.accessInfo;
-        //                if (accessInfo.pdf && accessInfo.pdf.isAvailable) {
-        //                    var downloadLink = accessInfo.pdf.webReaderLink;
-        //                    // Realiza la descarga del PDF de la muestra
-        //                    window.open(downloadLink);
-        //                } else {
-        //                    console.log('No se encontró una muestra en PDF disponible para este libro.');
-        //                }
-        //            } else {
-        //                console.log('No se encontró ningún libro con el título especificado.');
-        //            }
-        //        },
-        //        error: function () {
-        //            alert("Error al obtener la información del libro.");
-        //        }
-        //    });
-        //}
-
-
     </script>
 </body>
 

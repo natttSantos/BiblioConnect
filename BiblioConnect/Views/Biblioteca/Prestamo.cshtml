@@ -50,12 +50,12 @@
                         <thead>
                             <tr>
                                 <th>Estado Prestamo</th>
-                                <th>Dni Lector</th>
-                                <th>Nombre Lector</th>
-                                <th>Apellido Lector</th>
-                                <th>Titulo Libro</th>
+                                <th>Dni</th>
+                                <th>Nombre</th>
+                                <th>Apellidos</th>
+                                <th>Titulo</th>
                                 <th>Fecha Devolucion</th>
-                                @*<th>Fecha Devolucion Confirmada</th>*@
+                                <th>Fecha Devolucion Confirmada</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -67,15 +67,12 @@
     </div>
 </div>
 
-<!-- Modal -->
+<!-- Modal Devolucion-->
 <div class="modal fade" id="devolvermodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title">Devolucion</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -88,7 +85,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Volver</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 <button type="button" class="btn btn-primary" id="btnGuardar">Guardar</button>
             </div>
         </div>
@@ -175,6 +172,10 @@
 
 
             tabladata = $('#tabla').DataTable({
+                columnDefs: [{
+                    "defaultContent": "-",
+                    "targets": "_all"
+                }], 
                 responsive:true,
                 "ajax": {
                     "url": '@Url.Action("ListarPrestamosBiblio", "Biblioteca")',
@@ -188,6 +189,7 @@
                 "columns": [
                     {
                         "data": "Estado", "render": function (data) {
+                            console.log(data)
                             if (data) {
                                 return '<span class="badge text-bg-danger p-2">Pendiente</span>'
                             } else {
@@ -203,26 +205,28 @@
                         "data": "FechaDevolucion", render: function (data) {
                             return getDate(data);
                         }
-                    }
-                  /*  { "data": "FechaDevolConfirmada" },*/
-                    //{
-                    //    "data": "IdPrestamo", "render": function (data, type, row, meta) {
-                    //        if (row.oEstadoPrestamo.IdEstadoPrestamo != 1) {
-                    //            return $("<button>").addClass("btn btn-info btn-detalle btn-sm").append(
-                    //                $("<i>").addClass("far fa-eye")
-                    //            ).attr({ "data-informacion": JSON.stringify(row) })[0].outerHTML
-                    //        } else {
-                    //            return $("<button>").addClass("btn btn-primary btn-devolver btn-sm").append(
-                    //                $("<i>").addClass("fas fa-undo-alt")
-                    //            ).attr({ "data-informacion": JSON.stringify(row) })[0].outerHTML
-                    //        }
+                    },
+                    {
+                        "data": "FechaDevolConfirmada", render: function (data) {
+                            if (data != null) {
+                                return getDate(data);
+                            }
+                        }
+                    },
 
-
-                    //    },
-                    //    "orderable": false,
-                    //    "searchable": false,
-                    //    "width": "90px"
-                    //}
+                    {
+                        "data": "Estado", "render": function (data, type, row, meta) {
+                            if (data) {
+                                return $("<button>").addClass("btn btn-primary btn-devolver btn-sm").append(
+                                    $("<i>").addClass("fas fa-undo-alt")
+                                ).attr({ "data-informacion": JSON.stringify(row) })[0].outerHTML
+                            } else {
+                                return $("<button>").addClass("btn btn-info btn-detalle btn-sm").append(
+                                    $("<i>").addClass("far fa-eye")
+                                ).attr({ "data-informacion": JSON.stringify(row) })[0].outerHTML
+                            }
+                        }
+                    },
 
                 ],
                 "language": {
@@ -237,10 +241,9 @@
 
 
         $(document).on('click', '.btn-devolver', function (event) {
-            var json = $(this).data("informacion")
-
-            $("#txtestadolibro").val(json.EstadoEntregado);
-            $("#btnGuardar").data("idprestamo", json.IdPrestamo);
+            var json = $(this).data("informacion")  //JSON DEL ROW SELECTED
+            $("#txtestadolibro").val(json.Descripcion);
+            $("#btnGuardar").data("idprestamo", json.Id); //jQuery para asignar un atributo de datos llamado "data-informacion" a un elemento.
 
             $("#devolvermodal").modal("show");
 
@@ -257,26 +260,29 @@
         });
 
         $("#btnGuardar").on("click", function () {
-            var _idprestamo = $(this).data("idprestamo");
+            var idprestamo = $(this).data("idprestamo")
+            var estadorecibido = $("#txtestadolibrorecibido").val()
+            console.log(idprestamo)
+            console.log(estadorecibido)
 
+            var prestamoDevuelto = {
+                Id: idprestamo,
+                Descripcion: estadorecibido
+            }
             jQuery.ajax({
-                url: '@Url.Action("Devolver", "Prestamo")',
+                url: "/Biblioteca/DevolverPrestamo",
                 type: "POST",
-                data: JSON.stringify({ estadorecibido: $("#txtestadolibrorecibido").val() , idprestamo : _idprestamo }),
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
+                data: prestamoDevuelto,
                 success: function (data) {
                     if (data.resultado) {
                         tabladata.ajax.reload();
-                        swal("Listo", "Se registro la devolución", "success");
+                        /*swal("Listo", "Se registro la devolución", "success");*/
                         $("#devolvermodal").modal("hide");
                     } else {
-                        swal("Lo sentimos", "No se pudo registro la devolución", "warning");
+                       /* swal("Lo sentimos", "No se pudo registro la devolución", "warning");*/
                     }
                 },
-                error: function (error) {
-                    console.log(error)
-                }
+                
             });
         })
 

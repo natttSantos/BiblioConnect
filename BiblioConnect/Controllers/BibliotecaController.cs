@@ -166,7 +166,13 @@ namespace BiblioConnect.Controllers
 
             return Json(oresponse, JsonRequestBehavior.AllowGet);
         }
-
+        [HttpPost]
+        public JsonResult DevolverPrestamo(Prestamo objeto)
+        {
+            bool respuesta = false;
+            respuesta = PrestamoDAL.Instancia.Devolver(objeto); 
+            return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
+        }
         [HttpPost]
         public JsonResult EliminarCategoria(int id)
         {

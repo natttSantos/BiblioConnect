@@ -8,7 +8,6 @@ function getDate(fechaUnix) {
     var day = String(fechaActual.getDate()).padStart(2, "0"); // Obtener el día y se agrega el relleno '0' si es necesario
 
     var fechaFormateada = `${day}/${mounth}/${year}`;
-    console.log(fechaFormateada); // Resultado: "11-07-2023"
     return fechaFormateada; 
 }
 function addDaysToDate(fechaUnix, numDias) {
@@ -23,6 +22,5 @@ function addDaysToDate(fechaUnix, numDias) {
     var day = String(fechaActual.getDate()).padStart(2, "0"); // Obtener el día y se agrega el relleno '0' si es necesario
 
     var fechaFormateada = `${day}/${month}/${year}`;
-    console.log(fechaFormateada); // Resultado: "11/07/2023"
     return fechaFormateada;
 }

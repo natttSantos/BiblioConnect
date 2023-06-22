@@ -34,7 +34,7 @@ namespace BiblioConnect.Data
         public bool Registrar(Prestamo oPrestamo)
         {
             DateTime fechaActual = DateTime.Now;
-            DateTime fechaDevolucion = fechaActual.AddDays(oPrestamo.Duracion); 
+            DateTime fechaDevolucion = fechaActual.AddDays(oPrestamo.Duracion);
 
             bool registrado = true;
             string mensaje;
@@ -150,7 +150,7 @@ namespace BiblioConnect.Data
         {
             using (SqlConnection connection = new SqlConnection(Conexion.CN))
             {
-                SqlCommand cmd = new SqlCommand("SELECT p.FechaDevolucion, p.FechaDevolConfirmada, p.Estado, p.Descripcion, " +
+                SqlCommand cmd = new SqlCommand("SELECT p.FechaDevolucion, p.FechaDevolConfirmada, p.Estado, p.Descripcion, t.Id, " +
                                                  "l.Titulo, lec.Dni, lec.Apellidos, u.Nombre " +
                                                  "FROM Prestamo p " +
                                                  "INNER JOIN Transaccion t ON t.Id = p.Id " +
@@ -173,18 +173,23 @@ namespace BiblioConnect.Data
 
                 foreach (DataRow row in dataTable.Rows)
                 {
+                    // Check for null value before converting to DateTime
+                    DateTime? fechaDevolConfirmada = row["FechaDevolConfirmada"] != DBNull.Value
+                        ? Convert.ToDateTime(row["FechaDevolConfirmada"])
+                        : (DateTime?)null;
                     // Crear un objeto anónimo con los datos de cada fila y agregarlo a la lista
                     var datos = new
                     {
                         FechaDevolucion = Convert.ToDateTime(row["FechaDevolucion"]),
-                        //FechaDevolConfirmada = Convert.ToDateTime(row["FechaDevolConfirmada"]),
-                        Estado = Convert.ToString(row["Estado"]),
+                        FechaDevolConfirmada = fechaDevolConfirmada,
+                        Estado = Convert.ToBoolean(row["Estado"]), 
                         Descripcion = Convert.ToString(row["Descripcion"]),
                         Titulo = Convert.ToString(row["Titulo"]),
                         Dni = Convert.ToString(row["Dni"]),
                         Apellidos = Convert.ToString(row["Apellidos"]),
-                        Nombre = Convert.ToString(row["Nombre"])
-                    };
+                        Nombre = Convert.ToString(row["Nombre"]), 
+                        Id = int.Parse(row["Id"].ToString())
+                };
 
                     listaDatos.Add(datos);
                 }
@@ -220,33 +225,65 @@ namespace BiblioConnect.Data
             }
             return oPrestamo;
         }
-        //public bool Eliminar(int id)
-        //{
-        //    bool respuesta = true;
-        //    using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
-        //    {
-        //        try
-        //        {
-        //            SqlCommand cmd = new SqlCommand("delete from Categoria where Id = @id", oConexion);
-        //            cmd.Parameters.AddWithValue("@id", id);
-        //            cmd.CommandType = CommandType.Text;
+        public bool Devolver(Prestamo oPrestamo)
+        {
+            {
+                bool respuesta = true;
+                using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
+                {
+                    try
+                    {
+                        SqlCommand cmd = new SqlCommand("sp_RegistrarRecepcionPrestamo", oConexion);
+                        cmd.Parameters.AddWithValue("Id", oPrestamo.Id); //idPrestamo
+                        cmd.Parameters.AddWithValue("Descripcion", oPrestamo.Descripcion);
+                        cmd.Parameters.AddWithValue("Estado", 0);
+                        cmd.Parameters.AddWithValue("FechaDevolConfirmada", DateTime.Now);
+                        cmd.Parameters.Add("Registrado", SqlDbType.Bit).Direction = ParameterDirection.Output;
 
-        //            oConexion.Open();
+                        cmd.CommandType = CommandType.StoredProcedure;
 
-        //            cmd.ExecuteNonQuery();
+                        oConexion.Open();
 
-        //            respuesta = true;
+                        cmd.ExecuteNonQuery();
 
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            respuesta = false;
-        //        }
+                        respuesta = Convert.ToBoolean(cmd.Parameters["Registrado"].Value);
 
-        //    }
+                    }
+                    catch (Exception ex)
+                    {
+                        respuesta = false;
+                    }
+                }
+                return respuesta;
+            }
+            //public bool Eliminar(int id)
+            //{
+            //    bool respuesta = true;
+            //    using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
+            //    {
+            //        try
+            //        {
+            //            SqlCommand cmd = new SqlCommand("delete from Categoria where Id = @id", oConexion);
+            //            cmd.Parameters.AddWithValue("@id", id);
+            //            cmd.CommandType = CommandType.Text;
 
-        //    return respuesta;
+            //            oConexion.Open();
 
-        //}
+            //            cmd.ExecuteNonQuery();
+
+            //            respuesta = true;
+
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            respuesta = false;
+            //        }
+
+            //    }
+
+            //    return respuesta;
+
+            //}
+        }
     }
 }

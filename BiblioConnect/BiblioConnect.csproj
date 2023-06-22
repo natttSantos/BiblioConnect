@@ -478,6 +478,7 @@
     <Content Include="Views\Lector\Catalogo.cshtml" />
     <Content Include="Views\Lector\Inicio.cshtml" />
     <Content Include="Views\Lector\DetallesLibro.cshtml" />
+    <Content Include="Views\Biblioteca\Prestamo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

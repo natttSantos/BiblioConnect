@@ -56,6 +56,9 @@ namespace BiblioConnect.Controllers
         {
             return View();
         }
+        public ActionResult Prestamo() {
+            return View();
+        }
 
 
         [HttpGet]
@@ -66,10 +69,39 @@ namespace BiblioConnect.Controllers
         }
 
         [HttpGet]
+        public JsonResult ListarPrestamosBiblio(int id)
+        {
+            List<Object> oLista = new List<Object>();
+            oLista = PrestamoDAL.Instancia.Listar(id);
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
         public JsonResult ListarCategoria()
         {
             List<Categoria> oLista = new List<Categoria>();
             oLista = CategoriaDAL.Instancia.Listar();
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult ListarEditorial()
+        {
+            List<Editorial> oLista = new List<Editorial>();
+            oLista = EditorialDAL.Instancia.Listar();
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult ListarAutor()
+        {
+            List<Autor> oLista = new List<Autor>();
+            oLista = AutorDAL.Instancia.Listar();
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult ListarLibro()
+        {
+            List<Libro> oLista = new List<Libro>();
+            oLista = LibroDAL.Instancia.Listar();
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
@@ -80,46 +112,13 @@ namespace BiblioConnect.Controllers
             return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
-        public JsonResult EliminarCategoria(int id)
-        {
-            bool respuesta = false;
-            respuesta = CategoriaDAL.Instancia.Eliminar(id);
-            return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
-        }
-
-
-
-        [HttpGet]
-        public JsonResult ListarEditorial()
-        {
-            List<Editorial> oLista = new List<Editorial>();
-            oLista = EditorialDAL.Instancia.Listar();
-            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
-        }
-        [HttpPost]
         public JsonResult GuardarEditorial(Editorial objeto)
         {
             bool respuesta = false;
             respuesta = (objeto.Id == 0) ? EditorialDAL.Instancia.Registrar(objeto) : EditorialDAL.Instancia.Modificar(objeto);
             return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
         }
-        [HttpPost]
-        public JsonResult EliminarEditorial(int id)
-        {
-            bool respuesta = false;
-            respuesta = EditorialDAL.Instancia.Eliminar(id);
-            return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
-        }
 
-
-
-        [HttpGet]
-        public JsonResult ListarAutor()
-        {
-            List<Autor> oLista = new List<Autor>();
-            oLista = AutorDAL.Instancia.Listar();
-            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
-        }
         [HttpPost]
         public JsonResult GuardarAutor(Autor objeto)
         {
@@ -128,54 +127,7 @@ namespace BiblioConnect.Controllers
             return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
-        public JsonResult EliminarAutor(int id)
-        {
-            bool respuesta = false;
-            respuesta = AutorDAL.Instancia.Eliminar(id);
-            return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
-        }
-
-
-
-        [HttpGet]
-        public JsonResult ListarLibro()
-        {
-            List<Libro> oLista = new List<Libro>();
-            oLista = LibroDAL.Instancia.Listar();
-            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
-        }
-
-        //Subir los archivos a Firebase 
-        public async Task<string> SubirStorage(Stream archivo, string nombre)
-        {
-            //INGRESA AQUÍ TUS PROPIAS CREDENCIALES
-            string email = "codigo@gmail.com";
-            string clave = "codigo111";
-            string ruta = "tfgportalreservas.appspot.com";
-            string api_key = "AIzaSyA_4kSyoW9gwGiCX3xCXnTFCmtlIkwItoA";
-
-            var auth = new FirebaseAuthProvider(new FirebaseConfig(api_key));
-            var a = await auth.SignInWithEmailAndPasswordAsync(email, clave);
-
-            var cancellation = new CancellationTokenSource();
-
-            var task = new FirebaseStorage(
-                ruta,
-                new FirebaseStorageOptions
-                {
-                    AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
-                    ThrowOnCancel = true
-                })
-                .Child("Fotos_Perfil")
-                .Child(nombre)
-                .PutAsync(archivo, cancellation.Token);
-
-
-            var downloadURL = await task;
-            return downloadURL;
-        }
-        [HttpPost]
-        public async Task <JsonResult> GuardarLibro(string objeto, HttpPostedFileBase imagenArchivo)
+        public async Task<JsonResult> GuardarLibro(string objeto, HttpPostedFileBase imagenArchivo)
         {
             Response oresponse = new Response() { resultado = true, mensaje = "" };
 
@@ -216,11 +168,62 @@ namespace BiblioConnect.Controllers
         }
 
         [HttpPost]
+        public JsonResult EliminarCategoria(int id)
+        {
+            bool respuesta = false;
+            respuesta = CategoriaDAL.Instancia.Eliminar(id);
+            return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult EliminarEditorial(int id)
+        {
+            bool respuesta = false;
+            respuesta = EditorialDAL.Instancia.Eliminar(id);
+            return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult EliminarAutor(int id)
+        {
+            bool respuesta = false;
+            respuesta = AutorDAL.Instancia.Eliminar(id);
+            return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
         public JsonResult EliminarLibro(int id)
         {
             bool respuesta = false;
             respuesta = LibroDAL.Instancia.Eliminar(id);
             return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
+        }
+
+        //Subir los archivos a Firebase 
+        public async Task<string> SubirStorage(Stream archivo, string nombre)
+        {
+            //INGRESA AQUÍ TUS PROPIAS CREDENCIALES
+            string email = "codigo@gmail.com";
+            string clave = "codigo111";
+            string ruta = "tfgportalreservas.appspot.com";
+            string api_key = "AIzaSyA_4kSyoW9gwGiCX3xCXnTFCmtlIkwItoA";
+
+            var auth = new FirebaseAuthProvider(new FirebaseConfig(api_key));
+            var a = await auth.SignInWithEmailAndPasswordAsync(email, clave);
+
+            var cancellation = new CancellationTokenSource();
+
+            var task = new FirebaseStorage(
+                ruta,
+                new FirebaseStorageOptions
+                {
+                    AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
+                    ThrowOnCancel = true
+                })
+                .Child("Fotos_Perfil")
+                .Child(nombre)
+                .PutAsync(archivo, cancellation.Token);
+
+
+            var downloadURL = await task;
+            return downloadURL;
         }
     }
     public class Response

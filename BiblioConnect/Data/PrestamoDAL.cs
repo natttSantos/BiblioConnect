@@ -146,38 +146,53 @@ namespace BiblioConnect.Data
         //}
 
 
-        //public List<Categoria> Listar()
-        //{
-        //    List<Categoria> Lista = new List<Categoria>();
-        //    using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
-        //    {
-        //        try
-        //        {
-        //            SqlCommand cmd = new SqlCommand("Select Id,Nombre,Estado from Categoria", oConexion);
-        //            cmd.CommandType = CommandType.Text;
+        public List<object> Listar(int idBiblioteca)
+        {
+            using (SqlConnection connection = new SqlConnection(Conexion.CN))
+            {
+                SqlCommand cmd = new SqlCommand("SELECT p.FechaDevolucion, p.FechaDevolConfirmada, p.Estado, p.Descripcion, " +
+                                                 "l.Titulo, lec.Dni, lec.Apellidos, u.Nombre " +
+                                                 "FROM Prestamo p " +
+                                                 "INNER JOIN Transaccion t ON t.Id = p.Id " +
+                                                 "INNER JOIN Biblioteca b ON b.Id = @idBiblioteca " +
+                                                 "INNER JOIN Lector lec ON lec.Id = t.idLector " +
+                                                 "INNER JOIN Libro l ON l.Id = t.idLibro " +
+                                                 "INNER JOIN Usuario u ON u.Id = lec.Id where b.Id = t.idBiblioteca", connection);
 
-        //            oConexion.Open();
-        //            using (SqlDataReader dr = cmd.ExecuteReader())
-        //            {
-        //                while (dr.Read())
-        //                {
-        //                    Lista.Add(new Categoria()
-        //                    {
-        //                        Id = Convert.ToInt32(dr["Id"]),
-        //                        Nombre = dr["Nombre"].ToString(),
-        //                        Estado = Convert.ToBoolean(dr["Estado"])
-        //                    });
-        //                }
-        //            }
+                cmd.Parameters.AddWithValue("@idBiblioteca", idBiblioteca);
 
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            Lista = new List<Categoria>();
-        //        }
-        //    }
-        //    return Lista;
-        //}
+                DataTable dataTable = new DataTable();
+                connection.Open();
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                {
+                    adapter.Fill(dataTable);
+                }
+
+                List<object> listaDatos = new List<object>();
+
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    // Crear un objeto anónimo con los datos de cada fila y agregarlo a la lista
+                    var datos = new
+                    {
+                        FechaDevolucion = Convert.ToDateTime(row["FechaDevolucion"]),
+                        //FechaDevolConfirmada = Convert.ToDateTime(row["FechaDevolConfirmada"]),
+                        Estado = Convert.ToString(row["Estado"]),
+                        Descripcion = Convert.ToString(row["Descripcion"]),
+                        Titulo = Convert.ToString(row["Titulo"]),
+                        Dni = Convert.ToString(row["Dni"]),
+                        Apellidos = Convert.ToString(row["Apellidos"]),
+                        Nombre = Convert.ToString(row["Nombre"])
+                    };
+
+                    listaDatos.Add(datos);
+                }
+
+                return listaDatos;
+            }
+        }
+
         public Prestamo Obtener(int Id)
         {
             Prestamo oPrestamo = new Prestamo();

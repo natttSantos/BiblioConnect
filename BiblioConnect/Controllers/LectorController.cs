@@ -33,14 +33,35 @@ namespace BiblioConnect.Controllers
         }
 
 
-
+        [HttpGet]
+        public JsonResult ValidarPrestamo(int id)
+        {
+            bool disponible;
+            disponible = PrestamoDAL.Instancia.Validar(id);
+            return Json(new { resultado = disponible }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult ValidarUsuarioRepetido(Reserva oReserva)
+        {
+            bool usuarioRepetido;
+            usuarioRepetido = ReservaDAL.Instancia.Validar(oReserva);
+            return Json(new { resultado = usuarioRepetido }, JsonRequestBehavior.AllowGet);
+        }
         [HttpPost]
         public JsonResult RegistrarPrestamo(Prestamo objeto)
         {
-            bool registrado = false;
+            bool registrado;
             registrado = PrestamoDAL.Instancia.Registrar(objeto);
             return Json(new { resultado = registrado }, JsonRequestBehavior.AllowGet);
         }
+        [HttpPost]
+        public JsonResult RegistrarReserva(Reserva objeto)
+        {
+            bool registrado;
+            registrado = ReservaDAL.Instancia.Registrar(objeto);
+            return Json(new { resultado = registrado }, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpGet]
         public JsonResult ObtenerLibro(int id)
         {
@@ -70,6 +91,19 @@ namespace BiblioConnect.Controllers
         {
             Biblioteca oBiblioteca = BibliotecaDAL.Instancia.ObtenerBiblio(id);
             return Json(new { data = oBiblioteca }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult ObtenerPrestamo(int id)
+        {
+            Prestamo oPrestamo = PrestamoDAL.Instancia.Obtener(id);
+            return Json(new { data = oPrestamo }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult ObtenerFechaReservaAntigua(int id)
+        {
+            DateTime fechaReserva;
+            fechaReserva = ReservaDAL.Instancia.ObtenerFechaAntigua(id);
+            return Json(new { data = fechaReserva }, JsonRequestBehavior.AllowGet);
         }
     }
 }

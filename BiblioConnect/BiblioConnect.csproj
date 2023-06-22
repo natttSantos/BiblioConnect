@@ -297,6 +297,7 @@
     <Compile Include="Controllers\AccesoController.cs" />
     <Compile Include="Controllers\BibliotecaController.cs" />
     <Compile Include="Controllers\LectorController.cs" />
+    <Compile Include="Data\ReservaDAL.cs" />
     <Compile Include="Data\PrestamoDAL.cs" />
     <Compile Include="Data\LectorDAL.cs" />
     <Compile Include="Global.asax.cs">
@@ -416,6 +417,7 @@
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-reboot.min.css.map" />
+    <Content Include="Scripts\Fechas.js" />
     <Content Include="Scripts\sweetAlert.js" />
     <Content Include="Scripts\API_paises.js" />
     <Content Include="Scripts\API_mapa.js" />

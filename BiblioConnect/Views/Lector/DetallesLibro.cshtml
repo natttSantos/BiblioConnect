@@ -28,8 +28,8 @@
         <div class="card" style="width: 18rem;">
             <div class="card-body">
                 <h6 id="Biblioteca"></h6>
-                <p class="card-text">Disponible para préstamo. ¡Llévalo contigo!</p>
-                <a href="#" class="card-link" id="btnPrestamo">Préstamo</a>
+                <p class="card-text" id="txtCard"></p>
+                <button class="btn btn-primary" id="btnTransaccion"></button>
             </div>
         </div>
     </div>
@@ -50,13 +50,19 @@
     <script src="~/Scripts/jquery-3.7.0.min.js"></script>
     @* JS DE MAPAS *@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script src="~/Scripts/Fechas.js"></script>
     @* Libreria alert *@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="~/Scripts/sweetAlert.js"></script>
+    @* FECHAS *@
+    <script src="~/Scripts/Fechas.js"></script>
 
     <script>
         $(document).ready(function () {
+            var oReserva;
+            var duracion = 21;
+            var IdLector = @(((Usuario)Session["Usuario"]).Id);
+            var IdBiblioteca;
+
             $.ajax({
                 url: "/Lector/ObtenerLibro",
                 type: "GET",
@@ -65,7 +71,18 @@
                     var libro = data.data;
                     $("#Foto").attr("src", libro.Foto);
                     $("#Titulo").text(libro.Titulo);
-                    getBiblioteca(libro.idBiblioteca),
+                    IdBiblioteca = libro.idBiblioteca;
+
+                     oReserva = {
+                        idBiblioteca: IdBiblioteca,
+                        idLector: IdLector,
+                        idLibro: @Model,
+                     };
+
+                
+
+                    getBiblioteca(IdBiblioteca),
+                    tipoTransaccion(oReserva)
                     getAutor(libro.idAutor);
                     getCategoria(libro.idCategoria);
                     getEditorial(libro.idEditorial);
@@ -79,44 +96,150 @@
 
             //Navigate to Perfil Biblioteca
             $("#btnBiblioteca").on("click", function () {
-                var idBiblioteca = $(this).attr("data-idbiblioteca");
                 if (idBiblioteca) {
                     window.location.href = "/Biblioteca/Perfil?id=" + idBiblioteca;
                 }
             });
-            //Realizar Préstamo
-            $("#btnPrestamo").on("click", function () {
-                var duracion = 21;
-                var idLector = @(((Usuario)Session["Usuario"]).Id);
-                 var objeto = {
-                    Tipo: "prestamo",
-                    IdBiblioteca: $(this).attr("data-idbiblioteca"),
+            // TRANSACCION
+            $("#btnTransaccion").on("click", function () {
+                 var oPrestamo = {
+                    Estado: true,
+                    IdBiblioteca: idBiblioteca,
                     IdLector: idLector,
                     IdLibro: @Model,
                     Descripcion: "Libro en perfectas condiciones",
                     Duracion: duracion,
-                    Estado: 1,
                 };
-                alertConfirm('¿Estás seguro de realizar el préstamo?',
-                    'Si aceptas se te asignará como el próximo lector').then(() => {
-                    $.ajax({
-                        url: '/Lector/RegistrarPrestamo',
-                        type: 'POST',
-                        data: objeto,
-                        success: function (data) {
-                            alertSuccess('¡Enhorabuena!', 'Acabas de realizar un préstamo con éxito');
-                        },
-                        error: function (error) {
-                            console.log('Error al realizar el préstamo', error);
-                        },
-                    });
-                })
-                    .catch(() => {
-                        // Handle rejection or cancellation
-                    });
+                var btnTransaccion = $("#btnTransaccion");
+
+                //REALIZAR PRÉSTAMO
+                if (btnTransaccion.text() == "Préstamo") {
+                    alertConfirm('¿Estás seguro de realizar el préstamo?',
+                        'Si aceptas se te asignará como el próximo lector').then(() => {
+                            $.ajax({
+                                url: '/Lector/RegistrarPrestamo',
+                                type: 'POST',
+                                data: oPrestamo,
+                                success: function (data) {
+                                    alertSuccess('¡Enhorabuena!', 'Acabas de realizar un préstamo con éxito').then(() => {
+                                        location.reload(); //Recarga la página actual cuando se pulsa OK
+                                    })
+                                },
+                                error: function (error) {
+                                    console.log('Error al realizar el préstamo', error);
+                                },
+                            });
+                        })
+                //REALIZAR RESERVA
+                } else {
+                    alertConfirm('¿Estás seguro de realizar una reserva?',
+                        'Si aceptas se te añadirá a la lista de espera del ejemplar').then(() => {
+                            registroReserva(oReserva);
+                        })
+                }
+
             });
         });
 
+        function getPrestamo() {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    url: "/Lector/ObtenerPrestamo",
+                    type: "GET",
+                    data: { id: @Model },
+                    success: function (data) {
+                        var prestamo = data.data;
+                        resolve(prestamo);
+                    },
+                    error: function (error) {
+                        console.log("Error al obtener los datos del prestamo:", error);
+                        reject(error);
+                    }
+                });
+            });
+        }
+        function tipoTransaccion(oReserva) {
+            $.ajax({
+                url: "/Lector/ValidarPrestamo",
+                type: "GET",
+                data: { id: @Model },
+                success: function (resultado) {
+                    var disponible = resultado.resultado;
+                    var btnTransaccion = $("#btnTransaccion");
+                    var txtCard = $('#txtCard');
+
+                    if (disponible) {
+                        txtCard.text("Disponible para préstamo. ¡Llévalo contigo!");
+                        btnTransaccion.text("Préstamo");
+                    } else {
+                        getPrestamo().then(function (prestamo) {
+                            txtCard.text("Próximo ejemplar disponible el " + getDate(prestamo.FechaDevolucion));
+                        })
+                        ValidarUsuarioRepetido(oReserva)
+                        btnTransaccion.text("Reserva");
+                    }
+                },
+                error: function (error) {
+                    console.log("Error al obtener los datos del autor:", error);
+                }
+            });
+        }
+
+        function registroReserva(oReserva) {
+            $.ajax({
+                url: "/Lector/ObtenerFechaReservaAntigua",
+                type: "GET",
+                data: { id: @Model },
+                success: function (data) {
+                    var fechaAntigua = data.data;
+                    getPrestamo().then(function (prestamo) {
+                        //Primera reserva para el libro
+                        if (fechaAntigua === "/Date(-62135596800000)/") {
+                            console.log("No hay reservas antiguas")
+                            oReserva.FechaReserva = getDate(prestamo.FechaDevolucion);
+                        //Hay reservas antiguas
+                        } else {
+                            console.log("Hay reservas antiguas")
+                            oReserva.FechaReserva = addDaysToDate(fechaAntigua, prestamo.Duracion);
+                        }
+                        $.ajax({
+                            url: '/Lector/RegistrarReserva',
+                            type: 'POST',
+                            data: oReserva,
+                            success: function (data) {
+                                alertSuccess('¡Enhorabuena!', 'Acabas de realizar una reserva con éxito').then(() => {
+                                })
+                            },
+                            error: function (error) {
+                                console.log('Error al realizar el préstamo', error);
+                            },
+                        });
+                    })
+                },
+                error: function (error) {
+                    console.log("Error al obtener los datos del autor:", error);
+                }
+            });
+        }
+        function ValidarUsuarioRepetido(oReserva) {
+            $.ajax({
+                url: "/Lector/ValidarUsuarioRepetido",
+                type: "GET",
+                data: oReserva,
+                success: function (resultado) {
+                    var usuarioRepetido = resultado.resultado;
+                    console.log(usuarioRepetido)
+                    if (usuarioRepetido) {
+                        console.log("entra en result")
+                        var btnTransaccion = $("#btnTransaccion");
+                        btnTransaccion.prop("disabled", true);
+                    }
+                },
+                error: function (error) {
+                    console.log("Error al validar usuario repetido:", error);
+                }
+            });
+        }
         function getAutor(idAutor) {
             $.ajax({
                 url: "/Lector/ObtenerAutor",
@@ -168,7 +291,7 @@
                     var biblioteca = data.data;
                     $("#Biblioteca").text(biblioteca.Nombre);
                     $("#btnBiblioteca").attr("data-idbiblioteca", idBiblioteca);
-                    $("#btnPrestamo").attr("data-idbiblioteca", idBiblioteca);
+                    $("#btnTransaccion").attr("data-idbiblioteca", idBiblioteca);
                 },
                 error: function (error) {
                     console.log("Error al obtener los datos de la Biblioteca:", error);

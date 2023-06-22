@@ -1,9 +1,23 @@
 
+//USO DE PROMESAS
 function alertSuccess(titulo, subtitulo) {
-    Swal.fire(titulo, subtitulo,'success')
+    return new Promise((resolve, reject) => {
+    Swal.fire({
+        title: titulo,
+        text: subtitulo,
+        icon: 'success',
+        confirmButtonText: 'OK'
+    })
+        .then((result) => {
+            if (result.isConfirmed) {
+                resolve();
+            } else {
+                reject();
+            }
+        });
+    });
 }
 
-//función que encapsula código y devuelva una promesa.
 function alertConfirm(titulo, subtitulo) {
     return new Promise((resolve, reject) => {
         Swal.fire({

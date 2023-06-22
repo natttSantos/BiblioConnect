@@ -10,31 +10,31 @@ using System.Web;
 
 namespace BiblioConnect.Data
 {
-    public class PrestamoDAL
+    public class ReservaDAL
     {
-        private static PrestamoDAL instancia = null;
+        private static ReservaDAL instancia = null;
 
-        public PrestamoDAL()
+        public ReservaDAL()
         {
 
         }
 
-        public static PrestamoDAL Instancia
+        public static ReservaDAL Instancia
         {
             get
             {
                 if (instancia == null)
                 {
-                    instancia = new PrestamoDAL();
+                    instancia = new ReservaDAL();
                 }
 
                 return instancia;
             }
         }
-        public bool Registrar(Prestamo oPrestamo)
+        public bool Registrar(Reserva oReserva)
         {
-            DateTime fechaActual = DateTime.Now;
-            DateTime fechaDevolucion = fechaActual.AddDays(oPrestamo.Duracion); 
+            //DateTime fechaActual = DateTime.Now;
+            //DateTime fechaDevolucion = fechaActual.AddDays(oReserva.Duracion); 
 
             bool registrado = true;
             string mensaje;
@@ -42,16 +42,12 @@ namespace BiblioConnect.Data
             {
                 try
                 {
-                    SqlCommand cmd = new SqlCommand("sp_RegistrarPrestamo", oConexion);
-                    cmd.Parameters.AddWithValue("Tipo", "prestamo");
-                    cmd.Parameters.AddWithValue("IdBiblioteca", oPrestamo.idBiblioteca);
-                    cmd.Parameters.AddWithValue("IdLibro", oPrestamo.idLibro);
-                    cmd.Parameters.AddWithValue("IdLector", oPrestamo.idLector);
-                    cmd.Parameters.AddWithValue("Descripcion", oPrestamo.Descripcion);
-                    cmd.Parameters.AddWithValue("Duracion", oPrestamo.Duracion);
-                    cmd.Parameters.AddWithValue("FechaEntrega", Convert.ToDateTime(fechaActual, new CultureInfo("es-PE")));
-                    cmd.Parameters.AddWithValue("FechaDevolucion", Convert.ToDateTime(fechaDevolucion, new CultureInfo("es-PE")));
-                    cmd.Parameters.AddWithValue("Estado", oPrestamo.Estado);
+                    SqlCommand cmd = new SqlCommand("sp_RegistrarReserva", oConexion);
+                    cmd.Parameters.AddWithValue("Tipo", "reserva");
+                    cmd.Parameters.AddWithValue("IdBiblioteca", oReserva.idBiblioteca);
+                    cmd.Parameters.AddWithValue("IdLibro", oReserva.idLibro);
+                    cmd.Parameters.AddWithValue("IdLector", oReserva.idLector);
+                    cmd.Parameters.AddWithValue("FechaReserva", Convert.ToDateTime(oReserva.FechaReserva, new CultureInfo("es-PE")));
                     cmd.Parameters.Add("Registrado", SqlDbType.Bit).Direction = ParameterDirection.Output;
                     cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 100).Direction = ParameterDirection.Output;
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -71,47 +67,68 @@ namespace BiblioConnect.Data
             }
             return registrado;
         }
-        public bool Validar(int id)
+        public DateTime ObtenerFechaAntigua(int id)
         {
-            bool disponible = true;
+            DateTime fechaReserva = DateTime.MinValue; // Inicializar variable
             using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
             {
                 try
                 {
-                    SqlCommand cmd = new SqlCommand(
-                        "SELECT 1 FROM Prestamo P INNER JOIN Transaccion T ON P.Id = T.Id" +
-                        " WHERE T.idLibro = @idLibro AND P.Estado = 1", oConexion);
+                    SqlCommand cmd = new SqlCommand("SELECT MIN(R.FechaReserva) AS FechaReservaMasAntigua " +
+                    "FROM Transaccion T INNER JOIN Reserva R ON T.Id = R.Id " +
+                    "WHERE T.idLibro = @idLibro", oConexion);
 
                     cmd.Parameters.AddWithValue("@idLibro", id);
                     cmd.CommandType = CommandType.Text;
 
                     oConexion.Open();
 
-                    cmd.ExecuteNonQuery();
-
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    object result = cmd.ExecuteScalar();
+                    if (result != null && result != DBNull.Value)
                     {
-                        if (!reader.HasRows)
-                        {
-                            disponible = true;
-                        }
-                        else
-                        {
-                            disponible = false;
-                        }
+                        fechaReserva = Convert.ToDateTime(result);
                     }
-
                 }
                 catch (Exception ex)
                 {
-                    disponible = true;
+                    // Manejar la excepción
                 }
-
             }
 
-            return disponible;
-
+            return fechaReserva;
         }
+        public bool Validar(Reserva oReserva)
+        {
+            bool usuarioRepetido = false; 
+            using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand("SELECT COUNT(*) AS CantidadRegistros " + 
+                    "FROM Reserva r INNER JOIN Transaccion t ON r.Id = t.Id " +
+                    "WHERE t.idLector = @idLector AND t.idLibro = @idLibro", oConexion);
+
+                    cmd.Parameters.AddWithValue("@idLibro", oReserva.idLibro);
+                    cmd.Parameters.AddWithValue("@idLector", oReserva.idLector);
+                    cmd.CommandType = CommandType.Text;
+
+                    oConexion.Open();
+
+                    int cantidadRegistros = Convert.ToInt32(cmd.ExecuteScalar());
+                    if (cantidadRegistros != 0)
+                    {
+                        usuarioRepetido = true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Manejar la excepción
+                }
+            }
+
+            return usuarioRepetido;
+        }
+
         //public bool Modificar(Categoria oCategoria)
         //{
         //    bool respuesta = true;
@@ -178,33 +195,33 @@ namespace BiblioConnect.Data
         //    }
         //    return Lista;
         //}
-        public Prestamo Obtener(int Id)
-        {
-            Prestamo oPrestamo = new Prestamo();
-            string consultaSql = "SELECT  P.FechaEntrega,  P.FechaDevolConfirmada,  P.FechaDevolucion,  P.Descripcion,  P.Duracion " +
-                "FROM Prestamo P INNER JOIN Transaccion T ON P.Id = T.Id " +
-                "WHERE T.idLibro = @libroId";
+        //public Prestamo Obtener(int Id)
+        //{
+        //    Prestamo oPrestamo = new Prestamo();
+        //    string consultaSql = "SELECT  P.FechaEntrega,  P.FechaDevolConfirmada,  P.FechaDevolucion,  P.Descripcion,  P.Duracion " +
+        //        "FROM Prestamo P INNER JOIN Transaccion T ON P.Id = T.Id " +
+        //        "WHERE T.idLibro = @libroId";
 
-            using (SqlConnection connection = new SqlConnection(Conexion.CN))
-            {
-                SqlCommand command = new SqlCommand(consultaSql, connection);
-                command.Parameters.AddWithValue("@libroId", Id);
-                connection.Open();
+        //    using (SqlConnection connection = new SqlConnection(Conexion.CN))
+        //    {
+        //        SqlCommand command = new SqlCommand(consultaSql, connection);
+        //        command.Parameters.AddWithValue("@libroId", Id);
+        //        connection.Open();
 
-                SqlDataReader reader = command.ExecuteReader();
-                while (reader.Read())
-                {
-                    oPrestamo.Descripcion = reader["Descripcion"].ToString();
-                    oPrestamo.FechaEntrega = Convert.ToDateTime(reader["FechaEntrega"].ToString(), new CultureInfo("es-PE"));
-                    oPrestamo.FechaDevolucion = Convert.ToDateTime(reader["FechaDevolucion"].ToString(), new CultureInfo("es-PE"));
-                    oPrestamo.Duracion = reader.GetInt32(reader.GetOrdinal("Duracion"));
-                }
+        //        SqlDataReader reader = command.ExecuteReader();
+        //        while (reader.Read())
+        //        {
+        //            oPrestamo.Descripcion = reader["Descripcion"].ToString();
+        //            oPrestamo.FechaEntrega = Convert.ToDateTime(reader["FechaEntrega"].ToString(), new CultureInfo("es-PE"));
+        //            oPrestamo.FechaDevolucion = Convert.ToDateTime(reader["FechaDevolucion"].ToString(), new CultureInfo("es-PE"));
+        //            oPrestamo.Duracion = reader.GetInt32(reader.GetOrdinal("Duracion"));
+        //        }
 
-                connection.Close();
-                reader.Close();
-            }
-            return oPrestamo;
-        }
+        //        connection.Close();
+        //        reader.Close();
+        //    }
+        //    return oPrestamo;
+        //}
         //public bool Eliminar(int id)
         //{
         //    bool respuesta = true;

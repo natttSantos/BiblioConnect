@@ -220,6 +220,10 @@
                 "ajax": {
                     "url": '@Url.Action("ListarLibro", "Biblioteca")',
                     "type": "GET",
+                    "data": function (data) {
+                             var IdBiblioteca = @(((Usuario)Session["Usuario"]).Id);
+                             data.id = IdBiblioteca;
+                        },
                     "datatype": "json"
                 },
                 "columns": [

@@ -108,9 +108,9 @@
                         "url": '@Url.Action("ListarEditorial", "Biblioteca")',
                         "type": "GET",
                         "data": function (data) {
-                         var IdBiblioteca = @(((Usuario)Session["Usuario"]).Id);
-                        data.id = IdBiblioteca;
-                    },
+                             var IdBiblioteca = @(((Usuario)Session["Usuario"]).Id);
+                             data.id = IdBiblioteca;
+                        },
                         "datatype": "json"
                     },
                     "columns": [

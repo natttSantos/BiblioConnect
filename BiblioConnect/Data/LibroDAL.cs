@@ -65,7 +65,7 @@ namespace BiblioConnect.Data
             }
             return oLibro;
         }
-        public List<Libro> Listar()
+        public List<Libro> Listar(int id)
         {
 
             List<Libro> listaLibros = new List<Libro>();
@@ -79,8 +79,10 @@ namespace BiblioConnect.Data
                 sb.AppendLine("inner join biblioteca b on b.Id = l.idBiblioteca");
                 sb.AppendLine("inner join CATEGORIA c on c.Id = l.idCategoria");
                 sb.AppendLine("inner join EDITORIAL e on e.Id = l.idEditorial");
+                sb.AppendLine("where l.idBiblioteca = @idBiblioteca");
 
                 SqlCommand cmd = new SqlCommand(sb.ToString(), oConexion);
+                cmd.Parameters.AddWithValue("@idBiblioteca", id);
                 cmd.CommandType = CommandType.Text;
 
                 try

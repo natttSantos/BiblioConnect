@@ -40,8 +40,9 @@ namespace BiblioConnect.Data
                 try
                 {
                     SqlCommand cmd = new SqlCommand("sp_RegistrarAutor", oConexion);
-                    cmd.Parameters.AddWithValue("Estado", oAutor.Estado);
                     cmd.Parameters.AddWithValue("Nombre", oAutor.Nombre);
+                    cmd.Parameters.AddWithValue("idBiblioteca", oAutor.idBiblioteca);
+                    cmd.Parameters.AddWithValue("Estado", oAutor.Estado);
                     cmd.Parameters.Add("Resultado", SqlDbType.Bit).Direction = ParameterDirection.Output;
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -94,14 +95,15 @@ namespace BiblioConnect.Data
         }
 
 
-        public List<Autor> Listar()
+        public List<Autor> Listar(int id)
         {
             List<Autor> Lista = new List<Autor>();
             using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
             {
                 try
                 {
-                    SqlCommand cmd = new SqlCommand("select Id,Nombre,Estado from Autor", oConexion);
+                    SqlCommand cmd = new SqlCommand("select Id,Nombre,Estado from Autor where idBiblioteca = @idBiblioteca", oConexion);
+                    cmd.Parameters.AddWithValue("@idBiblioteca", id);
                     cmd.CommandType = CommandType.Text;
 
                     oConexion.Open();

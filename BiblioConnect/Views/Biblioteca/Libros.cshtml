@@ -2,6 +2,7 @@
 @{ ViewBag.Title = "Libros";
     Layout = "~/Views/Shared/_Layout.cshtml"; }
 
+@using BiblioConnect.Modelo
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     @* Boostrap CSS *@
@@ -179,7 +180,7 @@
             jQuery.ajax({
                 url: '@Url.Action("ListarAutor", "Biblioteca")',
                 type: "GET",
-                data: null,
+                    data: { id: @(((Usuario)Session["Usuario"]).Id) },
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
@@ -195,7 +196,7 @@
             jQuery.ajax({
                 url: '@Url.Action("ListarEditorial", "Biblioteca")',
                 type: "GET",
-                data: null,
+                    data: { id: @(((Usuario)Session["Usuario"]).Id) },
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
@@ -265,7 +266,7 @@
                               });
                           return data;
                         }
-                    }, 
+                    },
                     {
                         "data": "idEditorial",
                         "render": function(data, type, row) {
@@ -284,7 +285,7 @@
                               });
                           return data;
                         }
-                      }, 
+                      },
                     { "data": "Ubicacion" },
                     { "data": "numEjemplares" },
                     {

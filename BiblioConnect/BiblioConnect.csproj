@@ -473,7 +473,6 @@
     <Content Include="Views\Biblioteca\Libros.cshtml" />
     <Content Include="Views\Biblioteca\Autores.cshtml" />
     <Content Include="Views\Biblioteca\Editorial.cshtml" />
-    <Content Include="Views\Biblioteca\Categoria.cshtml" />
     <Content Include="Views\Acceso\RegistrarLector.cshtml" />
     <Content Include="Views\Lector\Catalogo.cshtml" />
     <Content Include="Views\Lector\Inicio.cshtml" />

@@ -31,68 +31,6 @@ namespace BiblioConnect.Data
             }
         }
 
-        public bool Registrar(Categoria oCategoria)
-        {
-            bool respuesta = true;
-            using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
-            {
-                try
-                {
-                    SqlCommand cmd = new SqlCommand("sp_RegistrarCategoria", oConexion);
-                    cmd.Parameters.AddWithValue("Nombre", oCategoria.Nombre);
-                    cmd.Parameters.AddWithValue("Estado", oCategoria.Estado);
-                    cmd.Parameters.Add("Resultado", SqlDbType.Bit).Direction = ParameterDirection.Output;
-                    cmd.CommandType = CommandType.StoredProcedure;
-
-                    oConexion.Open();
-
-                    cmd.ExecuteNonQuery();
-
-                    respuesta = Convert.ToBoolean(cmd.Parameters["Resultado"].Value);
-
-                }
-                catch (Exception ex)
-                {
-                    respuesta = false;
-                }
-            }
-            return respuesta;
-        }
-
-        public bool Modificar(Categoria oCategoria)
-        {
-            bool respuesta = true;
-            using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
-            {
-                try
-                {
-                    SqlCommand cmd = new SqlCommand("sp_ModificarCategoria", oConexion);
-                    cmd.Parameters.AddWithValue("Id", oCategoria.Id);
-                    cmd.Parameters.AddWithValue("Nombre", oCategoria.Nombre);
-                    cmd.Parameters.AddWithValue("Estado", oCategoria.Estado);
-                    cmd.Parameters.Add("Resultado", SqlDbType.Bit).Direction = ParameterDirection.Output;
-
-                    cmd.CommandType = CommandType.StoredProcedure;
-
-                    oConexion.Open();
-
-                    cmd.ExecuteNonQuery();
-
-                    respuesta = Convert.ToBoolean(cmd.Parameters["Resultado"].Value);
-
-                }
-                catch (Exception ex)
-                {
-                    respuesta = false;
-                }
-
-            }
-
-            return respuesta;
-
-        }
-
-
         public List<Categoria> Listar()
         {
             List<Categoria> Lista = new List<Categoria>();
@@ -100,7 +38,7 @@ namespace BiblioConnect.Data
             {
                 try
                 {
-                    SqlCommand cmd = new SqlCommand("Select Id,Nombre,Estado from Categoria", oConexion);
+                    SqlCommand cmd = new SqlCommand("Select Id,Nombre from Categoria", oConexion);
                     cmd.CommandType = CommandType.Text;
 
                     oConexion.Open();
@@ -112,7 +50,6 @@ namespace BiblioConnect.Data
                             {
                                 Id = Convert.ToInt32(dr["Id"]),
                                 Nombre = dr["Nombre"].ToString(),
-                                Estado = Convert.ToBoolean(dr["Estado"])
                             });
                         }
                     }
@@ -148,34 +85,6 @@ namespace BiblioConnect.Data
                 reader.Close();
             }
             return oCategoria;
-        }
-        public bool Eliminar(int id)
-        {
-            bool respuesta = true;
-            using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
-            {
-                try
-                {
-                    SqlCommand cmd = new SqlCommand("delete from Categoria where Id = @id", oConexion);
-                    cmd.Parameters.AddWithValue("@id", id);
-                    cmd.CommandType = CommandType.Text;
-
-                    oConexion.Open();
-
-                    cmd.ExecuteNonQuery();
-
-                    respuesta = true;
-
-                }
-                catch (Exception ex)
-                {
-                    respuesta = false;
-                }
-
-            }
-
-            return respuesta;
-
         }
     }
 }

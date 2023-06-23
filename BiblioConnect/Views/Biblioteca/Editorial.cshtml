@@ -1,7 +1,7 @@
 ﻿
 @{ ViewBag.Title = "Editorial";
     Layout = "~/Views/Shared/_Layout.cshtml"; }
-
+@using BiblioConnect.Modelo
 
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -107,6 +107,10 @@
                     "ajax": {
                         "url": '@Url.Action("ListarEditorial", "Biblioteca")',
                         "type": "GET",
+                        "data": function (data) {
+                         var IdBiblioteca = @(((Usuario)Session["Usuario"]).Id);
+                        data.id = IdBiblioteca;
+                    },
                         "datatype": "json"
                     },
                     "columns": [
@@ -194,10 +198,12 @@
         });
 
         function Guardar() {
+            var IdBiblioteca = @(((Usuario)Session["Usuario"]).Id);
             var request = {
                 objeto: {
                     Id: $("#txtid").val(),
                     Nombre: $("#txtdescripcion").val(),
+                    idBiblioteca: IdBiblioteca,
                     Estado: parseInt($("#cboEstado").val()) == 1 ? true : false
                 }
             }

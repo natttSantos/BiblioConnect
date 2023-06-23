@@ -51,11 +51,6 @@ namespace BiblioConnect.Controllers
         {
             return View();
         }
-
-        public ActionResult Categoria()
-        {
-            return View();
-        }
         public ActionResult Prestamo() {
             return View();
         }
@@ -84,17 +79,17 @@ namespace BiblioConnect.Controllers
         }
 
         [HttpGet]
-        public JsonResult ListarEditorial()
+        public JsonResult ListarEditorial(int id)
         {
             List<Editorial> oLista = new List<Editorial>();
-            oLista = EditorialDAL.Instancia.Listar();
+            oLista = EditorialDAL.Instancia.Listar(id);
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
-        public JsonResult ListarAutor()
+        public JsonResult ListarAutor(int id)
         {
             List<Autor> oLista = new List<Autor>();
-            oLista = AutorDAL.Instancia.Listar();
+            oLista = AutorDAL.Instancia.Listar(id);
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
@@ -104,13 +99,7 @@ namespace BiblioConnect.Controllers
             oLista = LibroDAL.Instancia.Listar();
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
         }
-        [HttpPost]
-        public JsonResult GuardarCategoria(Categoria objeto)
-        {
-            bool respuesta = false;
-            respuesta = (objeto.Id == 0) ? CategoriaDAL.Instancia.Registrar(objeto) : CategoriaDAL.Instancia.Modificar(objeto);
-            return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
-        }
+
         [HttpPost]
         public JsonResult GuardarEditorial(Editorial objeto)
         {
@@ -171,13 +160,6 @@ namespace BiblioConnect.Controllers
         {
             bool respuesta = false;
             respuesta = PrestamoDAL.Instancia.Devolver(objeto); 
-            return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
-        }
-        [HttpPost]
-        public JsonResult EliminarCategoria(int id)
-        {
-            bool respuesta = false;
-            respuesta = CategoriaDAL.Instancia.Eliminar(id);
             return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]

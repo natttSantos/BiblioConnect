@@ -41,6 +41,7 @@ namespace BiblioConnect.Data
                 {
                     SqlCommand cmd = new SqlCommand("sp_RegistrarEditorial", oConexion);
                     cmd.Parameters.AddWithValue("Nombre", oEditorial.Nombre);
+                    cmd.Parameters.AddWithValue("idBiblioteca", oEditorial.idBiblioteca);
                     cmd.Parameters.AddWithValue("Estado", oEditorial.Estado);
                     cmd.Parameters.Add("Resultado", SqlDbType.Bit).Direction = ParameterDirection.Output;
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -94,14 +95,15 @@ namespace BiblioConnect.Data
         }
 
 
-        public List<Editorial> Listar()
+        public List<Editorial> Listar(int id)
         {
             List<Editorial> Lista = new List<Editorial>();
             using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
             {
                 try
                 {
-                    SqlCommand cmd = new SqlCommand("select Id,Nombre,Estado from Editorial", oConexion);
+                    SqlCommand cmd = new SqlCommand("select Id,Nombre,Estado from Editorial where idBiblioteca = @idBiblioteca", oConexion);
+                    cmd.Parameters.AddWithValue("@idBiblioteca", id);
                     cmd.CommandType = CommandType.Text;
 
                     oConexion.Open();

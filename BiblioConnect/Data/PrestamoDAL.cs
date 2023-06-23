@@ -47,7 +47,7 @@ namespace BiblioConnect.Data
                     cmd.Parameters.AddWithValue("IdBiblioteca", oPrestamo.idBiblioteca);
                     cmd.Parameters.AddWithValue("IdLibro", oPrestamo.idLibro);
                     cmd.Parameters.AddWithValue("IdLector", oPrestamo.idLector);
-                    cmd.Parameters.AddWithValue("Descripcion", oPrestamo.Descripcion);
+                    cmd.Parameters.AddWithValue("EstadoEntregado", oPrestamo.EstadoEntregado);
                     cmd.Parameters.AddWithValue("Duracion", oPrestamo.Duracion);
                     cmd.Parameters.AddWithValue("FechaEntrega", Convert.ToDateTime(fechaActual, new CultureInfo("es-PE")));
                     cmd.Parameters.AddWithValue("FechaDevolucion", Convert.ToDateTime(fechaDevolucion, new CultureInfo("es-PE")));
@@ -108,49 +108,43 @@ namespace BiblioConnect.Data
                 }
 
             }
-
             return disponible;
-
         }
-        //public bool Modificar(Categoria oCategoria)
-        //{
-        //    bool respuesta = true;
-        //    using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
-        //    {
-        //        try
-        //        {
-        //            SqlCommand cmd = new SqlCommand("sp_ModificarCategoria", oConexion);
-        //            cmd.Parameters.AddWithValue("Id", oCategoria.Id);
-        //            cmd.Parameters.AddWithValue("Nombre", oCategoria.Nombre);
-        //            cmd.Parameters.AddWithValue("Estado", oCategoria.Estado);
-        //            cmd.Parameters.Add("Resultado", SqlDbType.Bit).Direction = ParameterDirection.Output;
+        public bool ValidarPrimerPrestamo(int id)
+        {
+            bool primerPrestamo = true; 
+            using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand("SELECT COUNT(*) AS CantidadRegistros " +
+                        "FROM Transaccion T INNER JOIN Prestamo R ON T.Id = R.Id" +
+                        "WHERE T.idLibro = @idLibro", oConexion);
 
-        //            cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@idLibro", id);
+                    cmd.CommandType = CommandType.Text;
 
-        //            oConexion.Open();
+                    oConexion.Open();
 
-        //            cmd.ExecuteNonQuery();
+                    object result = cmd.ExecuteScalar();
+                    if (result != null && result != DBNull.Value)
+                    {
+                        primerPrestamo = false; 
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Manejar la excepción
+                }
+            }
 
-        //            respuesta = Convert.ToBoolean(cmd.Parameters["Resultado"].Value);
-
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            respuesta = false;
-        //        }
-
-        //    }
-
-        //    return respuesta;
-
-        //}
-
-
+            return primerPrestamo;
+        }
         public List<object> Listar(int idBiblioteca)
         {
             using (SqlConnection connection = new SqlConnection(Conexion.CN))
             {
-                SqlCommand cmd = new SqlCommand("SELECT p.FechaDevolucion, p.FechaDevolConfirmada, p.Estado, p.Descripcion, t.Id, " +
+                SqlCommand cmd = new SqlCommand("SELECT p.FechaDevolucion, p.FechaDevolConfirmada, p.Estado, p.EstadoEntregado, p.EstadoRecibido, t.Id, " +
                                                  "l.Titulo, lec.Dni, lec.Apellidos, u.Nombre " +
                                                  "FROM Prestamo p " +
                                                  "INNER JOIN Transaccion t ON t.Id = p.Id " +
@@ -182,8 +176,9 @@ namespace BiblioConnect.Data
                     {
                         FechaDevolucion = Convert.ToDateTime(row["FechaDevolucion"]),
                         FechaDevolConfirmada = fechaDevolConfirmada,
-                        Estado = Convert.ToBoolean(row["Estado"]), 
-                        Descripcion = Convert.ToString(row["Descripcion"]),
+                        Estado = Convert.ToBoolean(row["Estado"]),
+                        EstadoEntregado = Convert.ToString(row["EstadoEntregado"]),
+                        EstadoRecibido = Convert.ToString(row["EstadoRecibido"]),
                         Titulo = Convert.ToString(row["Titulo"]),
                         Dni = Convert.ToString(row["Dni"]),
                         Apellidos = Convert.ToString(row["Apellidos"]),
@@ -201,7 +196,7 @@ namespace BiblioConnect.Data
         public Prestamo Obtener(int Id)
         {
             Prestamo oPrestamo = new Prestamo();
-            string consultaSql = "SELECT  P.FechaEntrega,  P.FechaDevolConfirmada,  P.FechaDevolucion,  P.Descripcion,  P.Duracion " +
+            string consultaSql = "SELECT  P.FechaEntrega,  P.FechaDevolConfirmada,  P.FechaDevolucion,  P.EstadoEntregado,  P.Duracion " +
                 "FROM Prestamo P INNER JOIN Transaccion T ON P.Id = T.Id " +
                 "WHERE T.idLibro = @libroId";
 
@@ -214,7 +209,7 @@ namespace BiblioConnect.Data
                 SqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    oPrestamo.Descripcion = reader["Descripcion"].ToString();
+                    oPrestamo.EstadoEntregado = reader["EstadoEntregado"].ToString();
                     oPrestamo.FechaEntrega = Convert.ToDateTime(reader["FechaEntrega"].ToString(), new CultureInfo("es-PE"));
                     oPrestamo.FechaDevolucion = Convert.ToDateTime(reader["FechaDevolucion"].ToString(), new CultureInfo("es-PE"));
                     oPrestamo.Duracion = reader.GetInt32(reader.GetOrdinal("Duracion"));
@@ -225,6 +220,31 @@ namespace BiblioConnect.Data
             }
             return oPrestamo;
         }
+        public Prestamo ObtenerUltimo(int Id)
+        {
+            Prestamo oPrestamo = new Prestamo();
+            string consultaSql = "SELECT MIN(p.FechaDevolConfirmada) AS UltimoPrestamo, p.EstadoEntregado " +
+                "FROM Prestamo p INNER JOIN Transaccion t ON t.Id = p.Id " +
+                "WHERE t.idLibro = @idLibro GROUP BY p.EstadoEntregado";
+
+            using (SqlConnection connection = new SqlConnection(Conexion.CN))
+            {
+                SqlCommand command = new SqlCommand(consultaSql, connection);
+                command.Parameters.AddWithValue("@idLibro", Id);
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    oPrestamo.EstadoEntregado = reader["EstadoEntregado"].ToString();
+                    oPrestamo.FechaDevolConfirmada = Convert.ToDateTime(reader["UltimoPrestamo"].ToString(), new CultureInfo("es-PE"));
+                }
+                connection.Close();
+                reader.Close();
+            }
+            return oPrestamo;
+        }
+
         public bool Devolver(Prestamo oPrestamo)
         {
             {
@@ -234,8 +254,8 @@ namespace BiblioConnect.Data
                     try
                     {
                         SqlCommand cmd = new SqlCommand("sp_RegistrarRecepcionPrestamo", oConexion);
-                        cmd.Parameters.AddWithValue("Id", oPrestamo.Id); //idPrestamo
-                        cmd.Parameters.AddWithValue("Descripcion", oPrestamo.Descripcion);
+                        cmd.Parameters.AddWithValue("Id", oPrestamo.Id); 
+                        cmd.Parameters.AddWithValue("EstadoRecibido", oPrestamo.EstadoRecibido);
                         cmd.Parameters.AddWithValue("Estado", 0);
                         cmd.Parameters.AddWithValue("FechaDevolConfirmada", DateTime.Now);
                         cmd.Parameters.Add("Registrado", SqlDbType.Bit).Direction = ParameterDirection.Output;

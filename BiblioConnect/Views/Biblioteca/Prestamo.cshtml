@@ -72,7 +72,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title">Devolucion</h5>
+                <h5 class="modal-title">Devolución</h5>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -97,10 +97,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title">Detalle Devolucion</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <h5 class="modal-title">Detalle Devolución</h5>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -111,6 +108,9 @@
                     <label for="message-text" class="col-form-label">Estado del libro recibido:</label>
                     <textarea class="form-control" id="txtviewestadolibrorecibido" disabled></textarea>
                 </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
@@ -242,7 +242,7 @@
 
         $(document).on('click', '.btn-devolver', function (event) {
             var json = $(this).data("informacion")  //JSON DEL ROW SELECTED
-            $("#txtestadolibro").val(json.Descripcion);
+            $("#txtestadolibro").val(json.EstadoEntregado);
             $("#btnGuardar").data("idprestamo", json.Id); //jQuery para asignar un atributo de datos llamado "data-informacion" a un elemento.
 
             $("#devolvermodal").modal("show");
@@ -267,7 +267,7 @@
 
             var prestamoDevuelto = {
                 Id: idprestamo,
-                Descripcion: estadorecibido
+                EstadoRecibido: estadorecibido
             }
             jQuery.ajax({
                 url: "/Biblioteca/DevolverPrestamo",

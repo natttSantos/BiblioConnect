@@ -33,9 +33,6 @@ namespace BiblioConnect.Data
         }
         public bool Registrar(Reserva oReserva)
         {
-            //DateTime fechaActual = DateTime.Now;
-            //DateTime fechaDevolucion = fechaActual.AddDays(oReserva.Duracion); 
-
             bool registrado = true;
             string mensaje;
             using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
@@ -67,7 +64,7 @@ namespace BiblioConnect.Data
             }
             return registrado;
         }
-        public DateTime ObtenerFechaAntigua(int id)
+        public DateTime ObtenerUltimaFecha(int id)
         {
             DateTime fechaReserva = DateTime.MinValue; // Inicializar variable
             using (SqlConnection oConexion = new SqlConnection(Conexion.CN))

@@ -34,11 +34,18 @@ namespace BiblioConnect.Controllers
 
 
         [HttpGet]
-        public JsonResult ValidarPrestamo(int id)
+        public JsonResult ValidarTipoTransaccion(int id)
         {
             bool disponible;
             disponible = PrestamoDAL.Instancia.Validar(id);
             return Json(new { resultado = disponible }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult ValidarPrimerPrestamo(int id)
+        {
+            bool primerPrestamo;
+            primerPrestamo = PrestamoDAL.Instancia.ValidarPrimerPrestamo(id);
+            return Json(new { resultado = primerPrestamo }, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
         public JsonResult ValidarUsuarioRepetido(Reserva oReserva)
@@ -99,11 +106,17 @@ namespace BiblioConnect.Controllers
             return Json(new { data = oPrestamo }, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
-        public JsonResult ObtenerFechaReservaAntigua(int id)
+        public JsonResult ObtenerUltimaFechaReserva(int id)
         {
             DateTime fechaReserva;
-            fechaReserva = ReservaDAL.Instancia.ObtenerFechaAntigua(id);
+            fechaReserva = ReservaDAL.Instancia.ObtenerUltimaFecha(id);
             return Json(new { data = fechaReserva }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult ObtenerUltimoPrestamo(int id)
+        {
+            Prestamo oPrestamo = PrestamoDAL.Instancia.ObtenerUltimo(id);
+            return Json(new { data = oPrestamo }, JsonRequestBehavior.AllowGet);
         }
     }
 }

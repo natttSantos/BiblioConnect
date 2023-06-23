@@ -79,8 +79,6 @@
                         idLibro: @Model,
                      };
 
-                
-
                     getBiblioteca(IdBiblioteca),
                     tipoTransaccion(oReserva)
                     getAutor(libro.idAutor);
@@ -102,12 +100,13 @@
             });
             // TRANSACCION
             $("#btnTransaccion").on("click", function () {
+                //NUEVO CODIGO!!!
+
                  var oPrestamo = {
                     Estado: true,
                     IdBiblioteca: IdBiblioteca,
                     IdLector: IdLector,
                     IdLibro: @Model,
-                    Descripcion: "Libro en perfectas condiciones",
                     Duracion: duracion,
                 };
                 var btnTransaccion = $("#btnTransaccion");
@@ -116,19 +115,7 @@
                 if (btnTransaccion.text() == "Préstamo") {
                     alertConfirm('¿Estás seguro de realizar el préstamo?',
                         'Si aceptas se te asignará como el próximo lector').then(() => {
-                            $.ajax({
-                                url: '/Lector/RegistrarPrestamo',
-                                type: 'POST',
-                                data: oPrestamo,
-                                success: function (data) {
-                                    alertSuccess('¡Enhorabuena!', 'Acabas de realizar un préstamo con éxito').then(() => {
-                                        location.reload(); //Recarga la página actual cuando se pulsa OK
-                                    })
-                                },
-                                error: function (error) {
-                                    console.log('Error al realizar el préstamo', error);
-                                },
-                            });
+                            registroPrestamo(oPrestamo);
                         })
                 //REALIZAR RESERVA
                 } else {
@@ -137,7 +124,6 @@
                             registroReserva(oReserva);
                         })
                 }
-
             });
         });
 
@@ -158,9 +144,10 @@
                 });
             });
         }
+
         function tipoTransaccion(oReserva) {
             $.ajax({
-                url: "/Lector/ValidarPrestamo",
+                url: "/Lector/ValidarTipoTransaccion",
                 type: "GET",
                 data: { id: @Model },
                 success: function (resultado) {
@@ -185,9 +172,46 @@
             });
         }
 
+        function registroPrestamo(oPrestamo) {
+            $.ajax({
+                url: "/Lector/ObtenerUltimoPrestamo",
+                type: "GET",
+                data: { id: @Model },
+                success: function (data) {
+                    var prestamoAntiguo = data.data;
+                    console.log(data); 
+                    console.log(prestamoAntiguo)
+                    //Primer préstamo para el libro
+                    if (prestamoAntiguo.EstadoEntregado == null) {
+                        console.log("No hay préstamos antiguos")
+                        oPrestamo.EstadoEntregado = "Libro en perfectas condiciones";
+                        //Hay préstamos antiguos
+                    } else {
+                        console.log("hay préstamos antiguos")
+                        oPrestamo.EstadoEntregado = prestamoAntiguo.EstadoEntregado;
+                    }
+                    $.ajax({
+                        url: '/Lector/RegistrarPrestamo',
+                        type: 'POST',
+                        data: oPrestamo,
+                        success: function (data) {
+                            alertSuccess('¡Enhorabuena!', 'Acabas de realizar un préstamo con éxito').then(() => {
+                                location.reload(); //Recarga la página actual cuando se pulsa OK
+                            })
+                        },
+                        error: function (error) {
+                            console.log('Error al realizar el préstamo', error);
+                        },
+                    });
+                },
+                error: function (error) {
+                    console.log("Error al obtener los datos del autor:", error);
+                }
+            });
+        }
         function registroReserva(oReserva) {
             $.ajax({
-                url: "/Lector/ObtenerFechaReservaAntigua",
+                url: "/Lector/ObtenerUltimaFechaReserva",
                 type: "GET",
                 data: { id: @Model },
                 success: function (data) {
@@ -237,6 +261,20 @@
                 },
                 error: function (error) {
                     console.log("Error al validar usuario repetido:", error);
+                }
+            });
+        }
+        function ValidarPrimerPrestamo(idLibro) {
+            $.ajax({
+                url: "/Lector/ValidarPrimerPrestamo",
+                type: "GET",
+                data: { id: idLibro },
+                success: function (data) {
+                    var resultado = resultado.resultado;
+                    return resultado;
+                },
+                error: function (error) {
+                    console.log("Error al validar si es el primer prestamo:", error);
                 }
             });
         }

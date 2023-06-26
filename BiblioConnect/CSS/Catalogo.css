@@ -19,3 +19,17 @@ img {
 .title {
     margin-top: 5px;
 }
+ul.category-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+ul.category-list li {
+    display: block;
+    margin: 10px;
+}
+.custom-input {
+    flex-grow: 1;
+    width: auto;
+}

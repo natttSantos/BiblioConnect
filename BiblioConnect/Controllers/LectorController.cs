@@ -118,5 +118,19 @@ namespace BiblioConnect.Controllers
             Prestamo oPrestamo = PrestamoDAL.Instancia.ObtenerUltimo(id);
             return Json(new { data = oPrestamo }, JsonRequestBehavior.AllowGet);
         }
+        [HttpGet]
+        public JsonResult ListarLibroPorCategoria(string nombre)
+        {
+            List<Libro> oLista = new List<Libro>();
+            oLista = LibroDAL.Instancia.ListarPorCategoria(nombre);
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult ListarLibroPorFiltrado(string nombre)
+        {
+            List<int> oLista = new List<int>();
+            oLista = LibroDAL.Instancia.ListarId(nombre);
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+        }
     }
 }

@@ -18,13 +18,26 @@
     </head>
 
     <body>
-        <form class="d-flex" role="search">
-            <input class="form-control me-2" type="search" placeholder="Título, Descripción, Autor, ISBN, Editorial" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
-        <section>
-            <ul id="image-list"></ul>
-        </section>
+        <div class="row">
+            <div class="col-md-3">
+                <section>
+                    <div class="filters">
+                        <h4>Filtrar por categoría:</h4>
+                        <ul id="categorias-list" class="category-list"></ul>
+                    </div>
+                </section>
+            </div>
+            <div class="col-md-9">
+                <form class="d-flex" role="search">
+                    <input id="searchInput" class="form-control me-2 custom-input" type="search" placeholder="Título, Autor, ISBN, Editorial" aria-label="Search">
+                    <button id="searchButton" class="btn btn-outline-success" type="button" onClick="Search()">Search</button>
+                </form>
+
+                <section>
+                    <ul id="libros-list"></ul>
+                </section>
+            </div>
+        </div>
     </body>
 
 
@@ -42,23 +55,98 @@
             dataType: "json",
             success: function (data) {
                 $.each(data.data, function (index, libro) {
-                    var listItem = $("<li></li>");
-                    console.log(libro)
-                    var link = $("<a></a>").attr("href", '@Url.Action("DetallesLibro", "Lector")?id=' + libro.Id);
-                    var image = $("<img>").attr("src", libro.Foto);
-                    var title = $("<div></div>").addClass("title").text(libro.Titulo);
-
-                    link.append(image);
-                    listItem.append(link);
-                    listItem.append(title);
-
-                    $("#image-list").append(listItem);
+                    mostrarInfoLibros(libro);
                 });
             },
             error: function () {
-                console.log("Error al obtener los datos mediante AJAX.");
+                console.log("Error al obtener los libros.");
+            }
+        });
+        $.ajax({
+            url: '@Url.Action("ListarCategoria", "Biblioteca")',
+            dataType: "json",
+            success: function (data) {
+                $.each(data.data, function (index, categoria) {
+                    var listItem = $("<li ></li>");
+                    var nombre = $("<div></div>").addClass("Nombre").text(categoria.Nombre);
+
+                    listItem.append(nombre);
+
+                    listItem.click(function () {
+                        var categoriaSeleccionada = $(this).find('.Nombre').text();
+                        ListarLibroPorCategoria(categoriaSeleccionada)
+                    });
+
+                    $("#categorias-list").append(listItem);
+                });
+            },
+            error: function () {
+                console.log("Error al obtener las categorias");
             }
         });
     });
+
+       function ListarLibroPorCategoria(nombreCategoria) {
+           $.ajax({
+               url: "/Lector/ListarLibroPorCategoria",
+               type: "GET",
+               data: { nombre: nombreCategoria },
+               success: function (data) {
+                   $("#libros-list").empty(); // Eliminar contenido previo
+                   $.each(data.data, function (index, libro) {
+                       mostrarInfoLibros(libro);
+                    });
+                },
+                error: function (error) {
+                    console.log("Error al obtener los libros:", error);
+                }
+            });
+        }
+
+        //Listado Libros por Filtrado
+        function Search() {
+            var searchInput = document.getElementById('searchInput').value;
+            console.log(searchInput)
+            $.ajax({
+                url: "/Lector/ListarLibroPorFiltrado",
+                type: "GET",
+                data: { nombre: searchInput },
+                success: function (data) {
+                    $("#libros-list").empty(); // Eliminar contenido previo
+                    $.each(data.data, function (index, idLibro) {
+                        $.ajax({
+                            url: "/Lector/ObtenerLibro",
+                            type: "GET",
+                            data: { id: idLibro },
+                            success: function (data) {
+                                var libro = data.data;
+                                libro.Id = idLibro; 
+                                mostrarInfoLibros(libro);
+                            },
+                            error: function (error) {
+                                console.log("Error al realizar el filtrado", error);
+                            }
+                        });
+                    });
+                },
+                error: function (error) {
+                    console.log("Error al realizar el filtrado", error);
+                }
+            });
+        }
+        //Refactorización
+        function mostrarInfoLibros(libro) {
+            console.log(libro)
+            var listItem = $("<li></li>");
+            var link = $("<a></a>").attr("href", '@Url.Action("DetallesLibro", "Lector")?id=' + libro.Id);
+            var image = $("<img>").attr("src", libro.Foto);
+            var title = $("<div></div>").addClass("title").text(libro.Titulo);
+
+            link.append(image);
+            listItem.append(link);
+            listItem.append(title);
+
+            $("#libros-list").append(listItem);
+        }
     </script>
 

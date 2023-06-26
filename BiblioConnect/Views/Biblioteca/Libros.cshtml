@@ -218,7 +218,7 @@
                     "targets": "_all"
                 }],
                 "ajax": {
-                    "url": '@Url.Action("ListarLibro", "Biblioteca")',
+                    "url": '@Url.Action("ListarLibroPorBiblio", "Biblioteca")',
                     "type": "GET",
                     "data": function (data) {
                              var IdBiblioteca = @(((Usuario)Session["Usuario"]).Id);

@@ -93,10 +93,17 @@ namespace BiblioConnect.Controllers
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
-        public JsonResult ListarLibro(int id)
+        public JsonResult ListarLibroPorBiblio(int id)
         {
             List<Libro> oLista = new List<Libro>();
-            oLista = LibroDAL.Instancia.Listar(id);
+            oLista = LibroDAL.Instancia.ListarPorBiblioteca(id);
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult ListarLibro()
+        {
+            List<Libro> oLista = new List<Libro>();
+            oLista = LibroDAL.Instancia.Listar();
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
         }
 

@@ -58,8 +58,14 @@
                     $("#txtemail").text(biblio.Email);
                     $("#txttelefono").text(biblio.Telefono);
 
-                    //Mostrar Mapa
-                    getLatLong(biblio.Calle, biblio.Ciudad, biblio.Estado, biblio.Pais, biblio.CodPostal);
+                    //Mostrar mapa
+                    getLatLong(biblio.Calle, biblio.Ciudad, biblio.Estado, biblio.Pais, biblio.CodPostal)
+                        .then(function (coordinatesLibro) {
+                            const lat = coordinatesLibro[0];
+                            const lon = coordinatesLibro[1];
+                            mostrarMapa(lat, lon); 
+                        })
+                    
                 },
                 error: function (error) {
                     console.log("Error al obtener los datos de la biblioteca:", error);

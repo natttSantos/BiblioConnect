@@ -47,6 +47,9 @@
     <script src="~/Scripts/bootstrap.js"></script>
     @* DataTable JS *@
     <script src="~/Scripts//datatables.min.js"></script>
+    @* MAPAS *@
+    <script src="~/Scripts/API_mapa.js"></script>
+
 
     <script>
     $(document).ready(function () {
@@ -120,7 +123,7 @@
                             data: { id: idLibro },
                             success: function (data) {
                                 var libro = data.data;
-                                libro.Id = idLibro; 
+                                libro.Id = idLibro;
                                 mostrarInfoLibros(libro);
                             },
                             error: function (error) {
@@ -141,12 +144,57 @@
             var link = $("<a></a>").attr("href", '@Url.Action("DetallesLibro", "Lector")?id=' + libro.Id);
             var image = $("<img>").attr("src", libro.Foto);
             var title = $("<div></div>").addClass("title").text(libro.Titulo);
+            var distanceElement = $("<div></div>").addClass("distancia");
+
+            getDistance(libro.idBiblioteca)
+                .then(function (distance) {
+                    var distance = distance.toFixed(2); //Redondear el resultado de la distancia a 2 decimales
+                    distanceElement.text(distance + " kilómetros");
+                })
+                .catch(function (error) {
+                    console.log("Error al obtener la distancia:", error);
+                    distanceElement.text("Error al obtener la distancia");
+                });
 
             link.append(image);
             listItem.append(link);
             listItem.append(title);
+            listItem.append(distanceElement);
 
             $("#libros-list").append(listItem);
+        }
+        function getDistance(idBiblioteca) {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: "/Lector/ObtenerBiblio",
+                    type: "GET",
+                    data: { id: idBiblioteca },
+                    success: function (data) {
+                        var biblio = data.data;
+                        //Coordinates Biblioteca
+                        getLatLong(biblio.Calle, biblio.Ciudad, biblio.Estado, biblio.Pais, biblio.CodPostal)
+                            .then(function (coordinatesLibro) {
+                                const lat1 = coordinatesLibro[0];
+                                const lon1 = coordinatesLibro[1];
+                                //Coordinates User
+                                return getUserCurrentPosition()
+                                    .then(function (coordinatesUser) {
+                                        const lat2 = coordinatesUser[0];
+                                        const lon2 = coordinatesUser[1];
+                                        const distance = calculateDistance(lat1, lon1, lat2, lon2);
+                                        resolve(distance);
+                                    });
+                            })
+                            .catch(function (error) {
+                                reject(error);
+                            });
+                    },
+                    error: function (error) {
+                        console.log("Error al obtener los datos de la Biblioteca:", error);
+                        reject(error);
+                    }
+                });
+            });
         }
     </script>
 

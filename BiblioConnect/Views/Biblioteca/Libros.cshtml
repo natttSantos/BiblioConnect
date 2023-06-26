@@ -85,6 +85,15 @@
                                 <label for="cbocategoria">Categoria</label>
                                 <select id="cbocategoria" class="form-control"></select>
                             </div>
+                            <div class="form-group">
+                                <label for="cboidioma">Idioma</label>
+                                <select id="cboidioma" class="form-control">
+                                    <option selected>Open this select menu</option>
+                                    <option value="1">Castellano</option>
+                                    <option value="2">Inglés</option>
+                                    <option value="3">Catalán</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
 
@@ -400,6 +409,7 @@
                 idEditorial: $("#cboeditorial option:selected").val(),
                 Ubicacion: $("#txtubicacion").val(),
                 numEjemplares: $("#txtejemplares").val(),
+                Idioma: $("#cboidioma option:selected").text(),
                 Estado: parseInt($("#cboEstado").val()) == 1 ? true : false,
             }
 

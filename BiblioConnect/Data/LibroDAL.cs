@@ -39,7 +39,7 @@ namespace BiblioConnect.Data
         public Libro Obtener(int Id)
         {
             Libro oLibro = new Libro();
-            string consultaSql = "SELECT Titulo, Foto, idBiblioteca, idAutor, idCategoria, idEditorial, numEjemplares " +
+            string consultaSql = "SELECT Titulo, Foto, idBiblioteca, idAutor, idCategoria, idEditorial, numEjemplares, Idioma " +
                 "FROM Libro " +
                 "WHERE Id = @libroId ";
 
@@ -53,6 +53,7 @@ namespace BiblioConnect.Data
                 while (reader.Read())
                 {
                     oLibro.Titulo = reader["Titulo"].ToString();
+                    oLibro.Idioma = reader["Idioma"].ToString();
                     oLibro.Foto = reader["Foto"].ToString();
                     oLibro.numEjemplares = reader.GetInt32(reader.GetOrdinal("numEjemplares")); 
                     oLibro.idBiblioteca = reader.GetInt32(reader.GetOrdinal("idBiblioteca"));
@@ -235,6 +236,52 @@ namespace BiblioConnect.Data
                 }
             }
         }
+        public List<Libro> ListarPorIdioma(string idioma)
+        {
+
+            List<Libro> listaLibros = new List<Libro>();
+            using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = oConexion;
+                cmd.CommandText = "SELECT l.Id, l.Titulo, l.Foto, l.idBiblioteca, l.idAutor, l.idCategoria, l.idEditorial, l.numEjemplares, l.Estado, l.Idioma " +
+                    "from Libro l where l.Idioma = @idioma";
+
+                cmd.Parameters.AddWithValue("@idioma", idioma);
+                cmd.CommandType = CommandType.Text;
+
+                try
+                {
+                    oConexion.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        listaLibros.Add(new Libro()
+                        {
+                            Id = Convert.ToInt32(dr["Id"].ToString()),
+                            Titulo = dr["Titulo"].ToString(),
+                            Idioma = dr["Idioma"].ToString(),
+                            Foto = dr["Foto"].ToString(),
+                            idBiblioteca = Convert.ToInt32(dr["idBiblioteca"].ToString()),
+                            idAutor = Convert.ToInt32(dr["idAutor"].ToString()),
+                            idCategoria = Convert.ToInt32(dr["idCategoria"].ToString()),
+                            idEditorial = Convert.ToInt32(dr["idEditorial"].ToString()),
+                            numEjemplares = Convert.ToInt32(dr["numEjemplares"].ToString()),
+                        });
+                    }
+                    dr.Close();
+
+                    return listaLibros;
+
+                }
+                catch (Exception ex)
+                {
+                    listaLibros = null;
+                    return listaLibros;
+                }
+            }
+        }
 
         public int Registrar(Libro objeto)
         {
@@ -246,6 +293,7 @@ namespace BiblioConnect.Data
                     SqlCommand cmd = new SqlCommand("sp_RegistrarLibro", oConexion);
                     cmd.Parameters.AddWithValue("Titulo", objeto.Titulo);
                     cmd.Parameters.AddWithValue("Foto", objeto.Foto);
+                    cmd.Parameters.AddWithValue("Idioma", objeto.Idioma);
                     cmd.Parameters.AddWithValue("Estado", objeto.Estado);
                     cmd.Parameters.AddWithValue("idAutor", objeto.idAutor);
                     cmd.Parameters.AddWithValue("idCategoria", objeto.idCategoria);

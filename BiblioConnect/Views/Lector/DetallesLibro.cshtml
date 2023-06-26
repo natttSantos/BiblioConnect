@@ -34,9 +34,10 @@
         </div>
     </div>
     <div id="InformacionAdicional">
-        <h6 id="Autor">Autor</h6>
-        <h6 id="Categoria">Categoría</h6>
-        <h6 id="Editorial">Editorial</h6>
+        <h6 id="Autor"></h6>
+        <h6 id="Categoria"></h6>
+        <h6 id="Editorial"></h6>
+        <h6 id="Idioma"></h6>
     </div>
     <button id="btnBiblioteca">Ir a la biblioteca</button>
 
@@ -69,8 +70,10 @@
                 data: { id: @Model },
                 success: function (data) {
                     var libro = data.data;
+                    console.log(libro)
                     $("#Foto").attr("src", libro.Foto);
                     $("#Titulo").text(libro.Titulo);
+                    $("#Idioma").text("Idioma: " +libro.Idioma);
                     IdBiblioteca = libro.idBiblioteca;
 
                      oReserva = {

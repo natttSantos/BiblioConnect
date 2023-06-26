@@ -21,9 +21,18 @@
         <div class="row">
             <div class="col-md-3">
                 <section>
-                    <div class="filters">
-                        <h4>Filtrar por categoría:</h4>
+                    <div>
+                        <h4>Filtros:</h4>
+                        <h6>Categoría:</h6>
                         <ul id="categorias-list" class="category-list"></ul>
+                    </div>
+                    <div>
+                        <h6>Idioma:</h6>
+                        <ul id="idiomas-list" class="idiomas-list">
+                            <li class="listIdiomas">Castellano</li>
+                            <li class="listIdiomas">Inglés</li>
+                            <li class="listIdiomas">Catalán</li>
+                        </ul>
                     </div>
                 </section>
             </div>
@@ -87,6 +96,13 @@
                 console.log("Error al obtener las categorias");
             }
         });
+
+        //Seleccionar un Idioma 
+        $(".listIdiomas").on("click", function () {
+            var idiomaSeleccionado = $(this).text();
+            ListarLibroPorIdioma(idiomaSeleccionado); 
+        });
+
     });
 
        function ListarLibroPorCategoria(nombreCategoria) {
@@ -105,6 +121,23 @@
                 }
             });
         }
+        function ListarLibroPorIdioma(idiomaSeleccionado) {
+            $.ajax({
+                url: "/Lector/ListarLibroPorIdioma",
+                type: "GET",
+                data: { idioma: idiomaSeleccionado },
+                success: function (data) {
+                    $("#libros-list").empty();
+                    $.each(data.data, function (index, libro) {
+                        mostrarInfoLibros(libro);
+                    });
+                },
+                error: function (error) {
+                    console.log("Error al obtener los libros según el idioma:", error);
+                }
+            });
+        }
+
 
         //Listado Libros por Filtrado
         function Search() {

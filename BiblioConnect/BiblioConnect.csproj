@@ -297,6 +297,7 @@
     <Compile Include="Controllers\AccesoController.cs" />
     <Compile Include="Controllers\BibliotecaController.cs" />
     <Compile Include="Controllers\LectorController.cs" />
+    <Compile Include="Data\EventoDAL.cs" />
     <Compile Include="Data\ReservaDAL.cs" />
     <Compile Include="Data\PrestamoDAL.cs" />
     <Compile Include="Data\LectorDAL.cs" />
@@ -310,6 +311,7 @@
     <Compile Include="Data\EditorialDAL.cs" />
     <Compile Include="Data\CategoriaDAL.cs" />
     <Compile Include="Data\Conexion.cs" />
+    <Compile Include="Modelo\Evento.cs" />
     <Compile Include="Modelo\Autor.cs" />
     <Compile Include="Modelo\Categoria.cs" />
     <Compile Include="Modelo\Editorial.cs" />
@@ -478,6 +480,7 @@
     <Content Include="Views\Lector\Inicio.cshtml" />
     <Content Include="Views\Lector\DetallesLibro.cshtml" />
     <Content Include="Views\Biblioteca\Prestamo.cshtml" />
+    <Content Include="Views\Biblioteca\Evento.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

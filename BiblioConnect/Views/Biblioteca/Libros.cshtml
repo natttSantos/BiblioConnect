@@ -129,6 +129,23 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="txtejemplares">ISBN</label>
+                                <input type="text" class="form-control required" id="txtISBN" autocomplete="off" maxlength="13">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <ul>
+                                <asp:ListView runat="server" ID="lvChips" OnItemDataBound="lvChips_ItemDataBound">
+                                    <ItemTemplate>
+                                        <li><span class="badge badge-primary"><%# Eval("TagText") %></span></li>
+                                    </ItemTemplate>
+                                </asp:ListView>
+                            </ul>
+                        </div>
+                    </div>
 
                 </form>
 
@@ -457,6 +474,7 @@
             });
         };
 
+        //Permitir solo valores enteros
         $("#txtejemplares").inputFilter(function (value) {
             return /^-?\d*$/.test(value);
         });

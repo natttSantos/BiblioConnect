@@ -54,6 +54,9 @@ namespace BiblioConnect.Controllers
         public ActionResult Prestamo() {
             return View();
         }
+        public ActionResult Evento() {
+            return View(); 
+        }
 
 
         [HttpGet]
@@ -106,6 +109,28 @@ namespace BiblioConnect.Controllers
             oLista = LibroDAL.Instancia.Listar();
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
         }
+        [HttpGet]
+        public JsonResult ListarEventoPorBiblio(int id)
+        {
+            List<Evento> oLista = new List<Evento>();
+            oLista = EventoDAL.Instancia.ListarPorBiblioteca(id);
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public async Task<JsonResult> GuardarEvento(string objeto, HttpPostedFileBase imagenArchivo)
+        {
+            Stream image = imagenArchivo.InputStream;
+            string fileName = Path.GetFileName(imagenArchivo.FileName);
+            string urlImagen = await new Helpers().SetImageToFirebase(image, fileName, "Fotos_Eventos");
+
+            Evento oEvento = new Evento();
+            oEvento = JsonConvert.DeserializeObject<Evento>(objeto);
+            oEvento.Foto = urlImagen;
+
+            bool respuesta = false;
+            respuesta = EventoDAL.Instancia.Registrar(oEvento);
+            return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
+        }
 
         [HttpPost]
         public JsonResult GuardarEditorial(Editorial objeto)
@@ -131,12 +156,12 @@ namespace BiblioConnect.Controllers
             {
                 Stream image = imagenArchivo.InputStream;
                 string fileName = Path.GetFileName(imagenArchivo.FileName);
-                string urlimagen = await SubirStorage(image, fileName);
+                string urlimagen = await new Helpers().SetImageToFirebase(image, fileName, "Fotos_Libros");
 
                 Libro oLibro = new Libro();
                 oLibro = JsonConvert.DeserializeObject<Libro>(objeto);
-
                 oLibro.Foto = urlimagen;
+
                 Usuario oUsuario = Session["Usuario"] as Usuario;
                 oLibro.idBiblioteca = oUsuario.Id;
 
@@ -189,36 +214,6 @@ namespace BiblioConnect.Controllers
             bool respuesta = false;
             respuesta = LibroDAL.Instancia.Eliminar(id);
             return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
-        }
-
-        //Subir los archivos a Firebase 
-        public async Task<string> SubirStorage(Stream archivo, string nombre)
-        {
-            //INGRESA AQUÍ TUS PROPIAS CREDENCIALES
-            string email = "codigo@gmail.com";
-            string clave = "codigo111";
-            string ruta = "tfgportalreservas.appspot.com";
-            string api_key = "AIzaSyA_4kSyoW9gwGiCX3xCXnTFCmtlIkwItoA";
-
-            var auth = new FirebaseAuthProvider(new FirebaseConfig(api_key));
-            var a = await auth.SignInWithEmailAndPasswordAsync(email, clave);
-
-            var cancellation = new CancellationTokenSource();
-
-            var task = new FirebaseStorage(
-                ruta,
-                new FirebaseStorageOptions
-                {
-                    AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
-                    ThrowOnCancel = true
-                })
-                .Child("Fotos_Perfil")
-                .Child(nombre)
-                .PutAsync(archivo, cancellation.Token);
-
-
-            var downloadURL = await task;
-            return downloadURL;
         }
     }
     public class Response

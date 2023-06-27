@@ -349,6 +349,7 @@
     <Content Include="Content\jquery-ui.structure.css" />
     <Content Include="Content\jquery-ui.theme.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="CSS\CatalogoEventos.css" />
     <Content Include="CSS\DetallesLibro.css" />
     <Content Include="CSS\Mapa.css" />
     <Content Include="CSS\Catalogo.css" />
@@ -481,6 +482,8 @@
     <Content Include="Views\Lector\DetallesLibro.cshtml" />
     <Content Include="Views\Biblioteca\Prestamo.cshtml" />
     <Content Include="Views\Biblioteca\Evento.cshtml" />
+    <Content Include="Views\Lector\CatalogoEventos.cshtml" />
+    <Content Include="Views\Lector\DetallesEvento.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

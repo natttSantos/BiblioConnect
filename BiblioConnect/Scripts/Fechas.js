@@ -24,3 +24,21 @@ function addDaysToDate(fechaUnix, numDias) {
     var fechaFormateada = `${day}/${month}/${year}`;
     return fechaFormateada;
 }
+
+function formatDateToReadable(fechaUnix) {
+    const daysOfWeek = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+    const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+    // Crear un objeto de fecha a partir del timestamp Unix
+    var fechaMilisegundos = parseInt(fechaUnix.substr(6)); // Extraer los milisegundos
+    var date = new Date(fechaMilisegundos);
+
+    // Obtener el día de la semana, día del mes y mes
+    const dayOfWeek = daysOfWeek[date.getDay()];
+    const dayOfMonth = date.getDate();
+    const month = months[date.getMonth()];
+
+    // Construir la cadena de fecha en el formato deseado
+    const formattedDate = `${dayOfWeek}, ${dayOfMonth} de ${month} de ${date.getFullYear()}`;
+    return formattedDate;
+}

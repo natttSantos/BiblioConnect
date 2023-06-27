@@ -106,6 +106,47 @@ namespace BiblioConnect.Data
                 return lista;
             }
         }
+        public List<Evento> Listar()
+        {
+            List<Evento> lista = new List<Evento>();
+            using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = oConexion;
+                cmd.CommandText = "SELECT e.Id, e.idBiblioteca, e.NombreAutor, e.Foto, e.DescripcionAutor, e.DescripcionEvento, e.FechaRealizacion, e.Hora, e.Tipo " +
+                    "FROM Evento e INNER JOIN biblioteca b ON b.Id = e.idBiblioteca "; 
+
+                cmd.CommandType = CommandType.Text;
+
+                try
+                {
+                    oConexion.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        lista.Add(new Evento()
+                        {
+                            Id = Convert.ToInt32(dr["Id"].ToString()),
+                            idBiblioteca = Convert.ToInt32(dr["idBiblioteca"].ToString()),
+                            NombreAutor = dr["NombreAutor"].ToString(),
+                            Foto = dr["Foto"].ToString(),
+                            DescripcionAutor = dr["DescripcionAutor"].ToString(),
+                            DescripcionEvento = dr["DescripcionEvento"].ToString(),
+                            Tipo = dr["Tipo"].ToString(),
+                            Hora = dr["Hora"].ToString(),
+                            FechaRealizacion = Convert.ToDateTime(dr["FechaRealizacion"]),
+                        });
+                    }
+                    dr.Close();
+                }
+                catch (Exception ex)
+                {
+                    lista = null;
+                }
+                return lista;
+            }
+        }
         //public bool Modificar(Autor oAutor)
         //{
         //    bool respuesta = true;

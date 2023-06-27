@@ -19,7 +19,7 @@ namespace BiblioConnect.Controllers
         {
             return View();
         }
-        public ActionResult Eventos()
+        public ActionResult CatalogoEventos()
         {
             return View();
         }
@@ -28,6 +28,10 @@ namespace BiblioConnect.Controllers
             return View();
         }
         public ActionResult DetallesLibro(int id)
+        {
+            return View(id);
+        }
+        public ActionResult DetallesEvento(int id)
         {
             return View(id);
         }
@@ -137,6 +141,13 @@ namespace BiblioConnect.Controllers
         {
             List<int> oLista = new List<int>();
             oLista = LibroDAL.Instancia.ListarId(nombre);
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult ListarEvento()
+        {
+            List<Evento> oLista = new List<Evento>();
+            oLista = EventoDAL.Instancia.Listar();
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
         }
     }

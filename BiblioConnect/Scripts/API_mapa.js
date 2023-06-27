@@ -14,7 +14,6 @@ function getLatLong(Calle, Ciudad, Estado, Pais, CodPostal) {
             },
             type: "GET",
             success: function (data) {
-                console.log(data);
                 var latitud = data[0].lat;
                 var longitud = data[0].lon;
                 resolve([latitud, longitud]);
@@ -68,7 +67,6 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
 
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const distance = earthRadiusKm * c;
-    console.log(distance)
     return distance;
 }
 

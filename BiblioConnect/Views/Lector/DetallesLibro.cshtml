@@ -23,7 +23,7 @@
         <img id="Foto" src="#" alt="Imagen">
         <div id="TituloDescripcionContainer">
             <h3 id="Titulo"></h3>
-            <div id="Descripcion"></div>
+            @*<div id="Descripcion"></div>*@
         </div>
         <div class="card" style="width: 18rem;">
             <div class="card-body">
@@ -34,35 +34,57 @@
         </div>
     </div>
     <div id="InformacionAdicional">
+        <button id="btnBiblioteca">Ir a la biblioteca</button>
         <h6 id="Autor"></h6>
         <h6 id="Categoria"></h6>
         <h6 id="Editorial"></h6>
         <h6 id="Idioma"></h6>
     </div>
-    <button id="btnBiblioteca">Ir a la biblioteca</button>
 
-    @* JQquery, Popper.js, Boostrap.js *@
-    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
-    <script src="~/Scripts/bootstrap.js"></script>
-    @* DataTable JS *@
-    <script src="~/Scripts//datatables.min.js"></script>
-    @* Jquery *@
-    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
-    @* JS DE MAPAS *@
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    @* Libreria alert *@
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="~/Scripts/sweetAlert.js"></script>
-    @* FECHAS *@
-    <script src="~/Scripts/Fechas.js"></script>
+    <div id="tabDetalles">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="#descripcionLibro">Descripción general</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#descripcionAutor">Sobre el autor</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#infoAdicional">Información adicional</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#reserva">Reserva</a>
+            </li>
+        </ul>
+        <div id="descripcionLibro" class="descripcion"></div>
+        <div id="descripcionAutor" class="descripcion"></div>
+    </div>
+</body>
 
-    <script>
-        $(document).ready(function () {
+
+@* JQquery, Popper.js, Boostrap.js *@
+<script src="~/Scripts/jquery-3.7.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+<script src="~/Scripts/bootstrap.js"></script>
+@* DataTable JS *@
+<script src="~/Scripts//datatables.min.js"></script>
+@* Jquery *@
+<script src="~/Scripts/jquery-3.7.0.min.js"></script>
+@* JS DE MAPAS *@
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+@* Libreria alert *@
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="~/Scripts/sweetAlert.js"></script>
+@* FECHAS *@
+<script src="~/Scripts/Fechas.js"></script>
+
+<script>
+    $(document).ready(function () {
             var oReserva;
             var duracion = 21;
             var IdLector = @(((Usuario)Session["Usuario"]).Id);
             var IdBiblioteca;
+            var Titulo;
 
             $.ajax({
                 url: "/Lector/ObtenerLibro",
@@ -70,11 +92,11 @@
                 data: { id: @Model },
                 success: function (data) {
                     var libro = data.data;
-                    console.log(libro)
                     $("#Foto").attr("src", libro.Foto);
                     $("#Titulo").text(libro.Titulo);
                     $("#Idioma").text("Idioma: " +libro.Idioma);
                     IdBiblioteca = libro.idBiblioteca;
+                    Titulo = libro.Titulo; 
 
                      oReserva = {
                         idBiblioteca: IdBiblioteca,
@@ -87,13 +109,26 @@
                     getAutor(libro.idAutor);
                     getCategoria(libro.idCategoria);
                     getEditorial(libro.idEditorial);
-                    getDescription(libro.Titulo);
+
+                    // Asignar el título como atributo de datos al enlace del tab
+                    $("a.nav-link").data("titulo", Titulo);
 
                 },
                 error: function (error) {
                     console.log("Error al obtener los datos del libro:", error);
                 }
             });
+
+           //TABS
+            var primerElemento = $("a.nav-link").first();
+            var identificadorDiv = primerElemento.attr("href");
+            mostrarContenido(identificadorDiv);
+
+            $("a.nav-link").on("click", function () {
+                var identificadorDiv = $(this).attr("href"); // Obtener el identificador del div de descripción asociado al tab
+                mostrarContenido(identificadorDiv);
+            });
+
 
             //Navigate to Perfil Biblioteca
             $("#btnBiblioteca").on("click", function () {
@@ -103,9 +138,7 @@
             });
             // TRANSACCION
             $("#btnTransaccion").on("click", function () {
-                //NUEVO CODIGO!!!
-
-                 var oPrestamo = {
+                var oPrestamo = {
                     Estado: true,
                     IdBiblioteca: IdBiblioteca,
                     IdLector: IdLector,
@@ -130,6 +163,20 @@
             });
         });
 
+    // Función para mostrar el contenido correspondiente al elemento
+    function mostrarContenido(identificadorDiv) {
+        $("a.nav-link").removeClass("active"); // Remover la clase "active" de todos los elementos de la lista de pestañas
+        $(`a[href="${identificadorDiv}"]`).addClass("active"); // Agregar la clase "active" al elemento de la lista de pestañas seleccionado
+        $(".descripcion").empty(); // Vaciar el contenido de todas las descripciones para que no haya sobreescrituras
+
+        if (identificadorDiv === "#descripcionLibro") {
+            var tituloLibro = $("a.nav-link.active").data("titulo");
+            getDescripcionLibro(tituloLibro);
+        } else if (identificadorDiv === "#descripcionAutor") {
+            var nombreAutor = $("a.nav-link.active").data("autor");
+            getDescripcionAutor(nombreAutor);
+        }
+    }
         function getPrestamo() {
             return new Promise((resolve, reject) => {
                 $.ajax({
@@ -182,7 +229,7 @@
                 data: { id: @Model },
                 success: function (data) {
                     var prestamoAntiguo = data.data;
-                    console.log(data); 
+                    console.log(data);
                     console.log(prestamoAntiguo)
                     //Primer préstamo para el libro
                     if (prestamoAntiguo.EstadoEntregado == null) {
@@ -289,6 +336,8 @@
                 success: function (data) {
                     var autor = data.data;
                     $("#Autor").text("Autor: " + autor.Nombre);
+                    // Atributo de datos al enlace del tab
+                    $("a.nav-link").data("autor", autor.Nombre);
                 },
                 error: function (error) {
                     console.log("Error al obtener los datos del autor:", error);
@@ -340,25 +389,66 @@
             });
         }
 
-        function getDescription(title) {
+    function getDescripcionLibro(title) {
+        console.log(title)
+            $.ajax({
+                url: "https://es.wikipedia.org/w/api.php",
+                dataType: "jsonp",
+                data: {
+                    action: "query",
+                    format: "json",
+                    prop: "extracts",
+                    exintro: true,
+                    explaintext: true,
+                    titles: title
+                },
+                success: function (response) {
+                    var pages = response.query.pages;
+                    var pageId = Object.keys(pages)[0];
+                    var extract = pages[pageId].extract;
+
+                    if (extract) {
+                        var cleanExtract = extract.replace(/[\[\(].*?[\]\)]/g, ""); //Expresión regular evitar los paréntesis y corchetes
+                        $("#descripcionLibro").text(cleanExtract);
+                    } else {
+                        $("#descripcionLibro").text("No se encontró ninguna sinopsis para el libro.");
+                    }
+                },
+                error: function () {
+                    $("#descripcionLibro").text("Error al obtener la sinopsis del libro.");
+                }
+            });
+    }
+    function getDescripcionAutor(autor) {
         $.ajax({
-            url: "https://www.googleapis.com/books/v1/volumes",
-            data: { q: "intitle:" + title },
-            dataType: "json",
-            success: function (data) {
-                if (data.items && data.items.length > 0) {
-                    var book = data.items[0];
-                    var summary = book.searchInfo.textSnippet;
-                    $("#Descripcion").text(summary);
+            url: "https://es.wikipedia.org/w/api.php",
+            dataType: "jsonp",
+            data: {
+                action: "query",
+                format: "json",
+                prop: "extracts",
+                exintro: true,
+                explaintext: true,
+                titles: autor
+            },
+            success: function (response) {
+                var pages = response.query.pages;
+                var pageId = Object.keys(pages)[0];
+                var extract = pages[pageId].extract;
+
+                if (extract) {
+                    var cleanExtract = extract.replace(/[\[\(].*?[\]\)]/g, ""); // Regular expression to remove parentheses and brackets
+                    $("#descripcionAutor").text(cleanExtract);
                 } else {
-                    $("#Descripcion").text("No se encontró ningún resumen para el libro.");
+                    $("#descripcionAutor").text("No se encontró ninguna información sobre el autor del libro.");
                 }
             },
             error: function () {
-                $("#description").text("Error al obtener la descripción del libro.");
+                $("#descripcionAutor").text("Error al obtener la información sobre el autor del libro.");
             }
         });
-        }
-    </script>
-</body>
+    }
 
+
+
+</script>

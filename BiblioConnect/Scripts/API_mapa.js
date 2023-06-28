@@ -42,6 +42,8 @@ function getUserCurrentPosition() {
 
 //LEAFLET
 function mostrarMapa(latitud, longitud) {
+    console.log(latitud); 
+    console.log(longitud); 
     var map = L.map('map').setView([latitud, longitud], 17);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,

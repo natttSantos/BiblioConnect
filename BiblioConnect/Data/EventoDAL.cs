@@ -147,6 +147,38 @@ namespace BiblioConnect.Data
                 return lista;
             }
         }
+        public Evento Obtener(int Id)
+        {
+            Evento oEvento = new Evento();
+            string consultaSql = "SELECT e.Id, e.idBiblioteca, e.NombreAutor, e.Foto, e.DescripcionAutor, e.DescripcionEvento, e.FechaRealizacion, e.Hora, e.Tipo " +
+                "FROM Evento e " +
+                "WHERE e.Id = @eventoId ";
+
+            using (SqlConnection connection = new SqlConnection(Conexion.CN))
+            {
+                SqlCommand command = new SqlCommand(consultaSql, connection);
+                command.Parameters.AddWithValue("@eventoId", Id);
+                connection.Open();
+
+                SqlDataReader dr = command.ExecuteReader();
+                while (dr.Read())
+                {
+                    oEvento.Id = Convert.ToInt32(dr["Id"].ToString());
+                    oEvento.idBiblioteca = Convert.ToInt32(dr["idBiblioteca"].ToString());
+                    oEvento.NombreAutor = dr["NombreAutor"].ToString();
+                    oEvento.Foto = dr["Foto"].ToString();
+                    oEvento.DescripcionAutor = dr["DescripcionAutor"].ToString();
+                    oEvento.DescripcionEvento = dr["DescripcionEvento"].ToString();
+                    oEvento.Tipo = dr["Tipo"].ToString();
+                    oEvento.Hora = dr["Hora"].ToString();
+                    oEvento.FechaRealizacion = Convert.ToDateTime(dr["FechaRealizacion"]); 
+                }
+
+                connection.Close();
+                dr.Close();
+            }
+            return oEvento;
+        }
         //public bool Modificar(Autor oAutor)
         //{
         //    bool respuesta = true;
@@ -215,30 +247,7 @@ namespace BiblioConnect.Data
         //    return Lista;
         //}
 
-        //public Autor Obtener(int Id)
-        //{
-        //    Autor oAutor = new Autor();
-        //    string consultaSql = "SELECT Nombre " +
-        //        "FROM Autor " +
-        //        "WHERE Id = @autorId ";
 
-        //    using (SqlConnection connection = new SqlConnection(Conexion.CN))
-        //    {
-        //        SqlCommand command = new SqlCommand(consultaSql, connection);
-        //        command.Parameters.AddWithValue("@autorId", Id);
-        //        connection.Open();
-
-        //        SqlDataReader reader = command.ExecuteReader();
-        //        while (reader.Read())
-        //        {
-        //            oAutor.Nombre = reader["Nombre"].ToString();
-        //        }
-
-        //        connection.Close();
-        //        reader.Close();
-        //    }
-        //    return oAutor;
-        //}
         //public bool Eliminar(int id)
         //{
         //    bool respuesta = true;

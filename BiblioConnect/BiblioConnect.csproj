@@ -349,8 +349,9 @@
     <Content Include="Content\jquery-ui.structure.css" />
     <Content Include="Content\jquery-ui.theme.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="CSS\Layout.css" />
     <Content Include="CSS\CatalogoEventos.css" />
-    <Content Include="CSS\DetallesLibro.css" />
+    <Content Include="CSS\Detalles.css" />
     <Content Include="CSS\Mapa.css" />
     <Content Include="CSS\Catalogo.css" />
     <Content Include="CSS\Registro.css" />

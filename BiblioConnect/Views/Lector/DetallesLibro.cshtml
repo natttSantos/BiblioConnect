@@ -15,12 +15,12 @@
     <link href="~/DataTables-1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
     @* CSS DE MAPAS *@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-    <link rel="stylesheet" type="text/css" href="~/CSS/DetallesLibro.css" />
+    <link rel="stylesheet" type="text/css" href="~/CSS/Detalles.css" />
 </head>
 
 <body>
     <div id="libroContainer">
-        <img id="Foto" src="#" alt="Imagen">
+        <img id="#FotoLibro" src="#" alt="Imagen">
         <div id="TituloDescripcionContainer">
             <h3 id="Titulo"></h3>
             @*<div id="Descripcion"></div>*@
@@ -92,7 +92,7 @@
                 data: { id: @Model },
                 success: function (data) {
                     var libro = data.data;
-                    $("#Foto").attr("src", libro.Foto);
+                    $("#FotoLibro").attr("src", libro.Foto);
                     $("#Titulo").text(libro.Titulo);
                     $("#Idioma").text("Idioma: " +libro.Idioma);
                     IdBiblioteca = libro.idBiblioteca;

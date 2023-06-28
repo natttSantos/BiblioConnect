@@ -98,6 +98,12 @@ namespace BiblioConnect.Controllers
             return Json(new { data = oEditorial }, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
+        public JsonResult ObtenerEvento(int id)
+        {
+            Evento oEvento = EventoDAL.Instancia.Obtener(id);
+            return Json(new { data = oEvento }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
         public JsonResult ObtenerBiblio(int id)
         {
             Biblioteca oBiblioteca = BibliotecaDAL.Instancia.ObtenerBiblio(id);

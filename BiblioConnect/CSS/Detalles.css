@@ -4,8 +4,13 @@
     align-items: flex-start;
 }
 
-#Foto {
+#FotoLibro {
     width: 200px;
+    height: 300px;
+    margin-right: 10px;
+}
+#FotoAutor{
+    width: 300px;
     height: 300px;
     margin-right: 10px;
 }

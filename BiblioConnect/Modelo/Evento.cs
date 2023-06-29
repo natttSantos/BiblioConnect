@@ -15,6 +15,7 @@ namespace BiblioConnect.Modelo
         public string DescripcionEvento { get; set; }
         public int idBiblioteca { get; set; }
         public DateTime FechaRealizacion { get; set; }
-        public String Hora { get; set; }
+        public String HoraInicio { get; set; }
+        public String HoraFin { get; set; }
     }
 }

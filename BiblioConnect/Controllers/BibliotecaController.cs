@@ -57,6 +57,10 @@ namespace BiblioConnect.Controllers
         public ActionResult Evento() {
             return View(); 
         }
+        public ActionResult Calendario()
+        {
+            return View();
+        }
 
 
         [HttpGet]

@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+@using BiblioConnect.Modelo
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario a Full</title>
+    <link rel="stylesheet" href="~/FullCalendar/main.css">
+    <link rel="stylesheet" href="~/CSS/Calendario.css">
+</head>
+<body>
+    <!-- contenedor para renderizar el calendario: -->
+    <div id="calendar"></div>
+
+
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    <script src="~/FullCalendar/main.js"></script>
+
+    <script src="~/FullCalendar/es.js"></script>
+    <script src="~/Scripts/Fechas.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var calendarDiv = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarDiv, {
+                locales: 'es', //iDioma (español)
+                initialView: 'dayGridMonth',
+                headerToolbar: { 
+                    left: 'today,prev,next',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth', 
+
+                }, buttonText: { //Cambiamos los nombres de los botonews
+                    today: 'Hoy',
+                    month: 'Mes',
+                    week: 'Semana',
+                    day: 'Dia',
+                    list: 'Listado'
+                }, events: recuperarEventos()
+            });
+            calendar.render();
+        })
+        function recuperarEventos() {
+            var listaEventos = [];
+            $.ajax({
+                url: "/Biblioteca/ListarEventoPorBiblio",
+                dataType: "json",
+                data: { id: @(((Usuario)Session["Usuario"]).Id) },
+                async: false,
+                success: function (data) {
+                    $.each(data.data, function (index, evento) {
+                        var nuevoEvento = {
+                            title: evento.Tipo + " con " + evento.NombreAutor,
+                            start: getDateFormatCalendar(evento.FechaRealizacion) + " " + evento.HoraInicio,
+                            end: getDateFormatCalendar(evento.FechaRealizacion) + " " + evento.HoraFin,
+                            descripcion: 'Este es otro evento de un solo día',
+                            color: 'yellow',
+                            textColor: 'red'
+                        };
+                        listaEventos.push(nuevoEvento);
+                    });
+                },
+                error: function () {
+                    console.log("Error al obtener los eventos.");
+                }
+            });
+            console.log(listaEventos);
+            return listaEventos;
+        }
+    </script>
+</body>
+</html>

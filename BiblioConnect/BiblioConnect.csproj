@@ -349,6 +349,7 @@
     <Content Include="Content\jquery-ui.structure.css" />
     <Content Include="Content\jquery-ui.theme.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="CSS\Calendario.css" />
     <Content Include="CSS\Layout.css" />
     <Content Include="CSS\CatalogoEventos.css" />
     <Content Include="CSS\Detalles.css" />
@@ -397,6 +398,13 @@
     <Content Include="DataTables-1.13.4\js\jquery.dataTables.js" />
     <Content Include="DataTables-1.13.4\js\jquery.dataTables.min.js" />
     <Content Include="favicon.ico" />
+    <Content Include="FullCalendar\es.js" />
+    <Content Include="FullCalendar\locales-all.js" />
+    <Content Include="FullCalendar\locales-all.min.js" />
+    <Content Include="FullCalendar\main.css" />
+    <Content Include="FullCalendar\main.js" />
+    <Content Include="FullCalendar\main.min.css" />
+    <Content Include="FullCalendar\main.min.js" />
     <Content Include="Global.asax" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
     <Content Include="Areas\HelpPage\Views\Shared\_Layout.cshtml" />
@@ -485,6 +493,7 @@
     <Content Include="Views\Biblioteca\Evento.cshtml" />
     <Content Include="Views\Lector\CatalogoEventos.cshtml" />
     <Content Include="Views\Lector\DetallesEvento.cshtml" />
+    <Content Include="Views\Biblioteca\Calendario.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

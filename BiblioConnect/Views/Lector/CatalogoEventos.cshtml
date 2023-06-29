@@ -91,9 +91,10 @@
                     '</div>' +
                     '<div class="col-md-8">' +
                     '<div class="card-body">' +
-                    '<h5 class="card-title">' + evento.Tipo + ' en la ' + biblioteca.Nombre + '</h5>' +
-                    '<h6 class="card-title">' + evento.NombreAutor + '</h6>' +
-                    '<h6 class="card-title">' + formatDateToReadable(evento.FechaRealizacion) + ' a las ' + evento.Hora + '</h6>' +
+                    '<h4 class="card-title">' + evento.Tipo + ' en la ' + biblioteca.Nombre + '</h4>' +
+                    '<h5 class="card-title">' + evento.NombreAutor + '</h5>' +
+                    '<h6 class="card-title">' + formatDateToReadable(evento.FechaRealizacion) + '</h6>' +
+                    '<h6 class="card-title">' + evento.HoraInicio+ '-'+evento.HoraFin+ '</h6>' +
                     '<p class="card-text">' + evento.DescripcionEvento + '</p>' +
                     '<p class="card-text"><small class="text-body-secondary">' + distance.toFixed(2) + ' kilómetros</small></p>' +
                     '</div>' +

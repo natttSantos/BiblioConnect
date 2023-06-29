@@ -44,7 +44,8 @@ namespace BiblioConnect.Data
                     cmd.Parameters.AddWithValue("Foto", oEvento.Foto);
                     cmd.Parameters.AddWithValue("DescripcionAutor", oEvento.DescripcionAutor);
                     cmd.Parameters.AddWithValue("FechaRealizacion", oEvento.FechaRealizacion);
-                    cmd.Parameters.AddWithValue("Hora", oEvento.Hora);
+                    cmd.Parameters.AddWithValue("HoraInicio", oEvento.HoraInicio);
+                    cmd.Parameters.AddWithValue("HoraFin", oEvento.HoraFin);
                     cmd.Parameters.AddWithValue("Tipo", oEvento.Tipo);
                     cmd.Parameters.AddWithValue("idBiblioteca", oEvento.idBiblioteca);
                     cmd.Parameters.AddWithValue("DescripcionEvento", oEvento.DescripcionEvento);
@@ -72,7 +73,7 @@ namespace BiblioConnect.Data
             {
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = oConexion;
-                cmd.CommandText = "SELECT e.NombreAutor, e.Foto, e.DescripcionAutor, e.DescripcionEvento, e.FechaRealizacion, e.Hora, e.Tipo " +
+                cmd.CommandText = "SELECT e.NombreAutor, e.Foto, e.DescripcionAutor, e.DescripcionEvento, e.FechaRealizacion, e.HoraInicio, e.HoraFin, e.Tipo " +
                     "FROM Evento e INNER JOIN biblioteca b ON b.Id = e.idBiblioteca " +
                     "WHERE e.idBiblioteca = @idBiblioteca";
 
@@ -93,7 +94,8 @@ namespace BiblioConnect.Data
                             DescripcionAutor = dr["DescripcionAutor"].ToString(),
                             DescripcionEvento = dr["DescripcionEvento"].ToString(),
                             Tipo = dr["Tipo"].ToString(),
-                            Hora = dr["Hora"].ToString(), 
+                            HoraInicio = dr["HoraInicio"].ToString(),
+                            HoraFin = dr["HoraFin"].ToString(),
                             FechaRealizacion = Convert.ToDateTime(dr["FechaRealizacion"]),
                         });
                     }
@@ -113,7 +115,7 @@ namespace BiblioConnect.Data
             {
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = oConexion;
-                cmd.CommandText = "SELECT e.Id, e.idBiblioteca, e.NombreAutor, e.Foto, e.DescripcionAutor, e.DescripcionEvento, e.FechaRealizacion, e.Hora, e.Tipo " +
+                cmd.CommandText = "SELECT e.Id, e.idBiblioteca, e.NombreAutor, e.Foto, e.DescripcionAutor, e.DescripcionEvento, e.FechaRealizacion, e.HoraInicio, e.HoraFin, e.Tipo " +
                     "FROM Evento e INNER JOIN biblioteca b ON b.Id = e.idBiblioteca "; 
 
                 cmd.CommandType = CommandType.Text;
@@ -134,7 +136,8 @@ namespace BiblioConnect.Data
                             DescripcionAutor = dr["DescripcionAutor"].ToString(),
                             DescripcionEvento = dr["DescripcionEvento"].ToString(),
                             Tipo = dr["Tipo"].ToString(),
-                            Hora = dr["Hora"].ToString(),
+                            HoraInicio = dr["HoraInicio"].ToString(),
+                            HoraFin = dr["HoraFin"].ToString(),
                             FechaRealizacion = Convert.ToDateTime(dr["FechaRealizacion"]),
                         });
                     }
@@ -150,7 +153,7 @@ namespace BiblioConnect.Data
         public Evento Obtener(int Id)
         {
             Evento oEvento = new Evento();
-            string consultaSql = "SELECT e.Id, e.idBiblioteca, e.NombreAutor, e.Foto, e.DescripcionAutor, e.DescripcionEvento, e.FechaRealizacion, e.Hora, e.Tipo " +
+            string consultaSql = "SELECT e.Id, e.idBiblioteca, e.NombreAutor, e.Foto, e.DescripcionAutor, e.DescripcionEvento, e.FechaRealizacion, e.HoraInicio, e.HoraFin, e.Tipo " +
                 "FROM Evento e " +
                 "WHERE e.Id = @eventoId ";
 
@@ -170,7 +173,8 @@ namespace BiblioConnect.Data
                     oEvento.DescripcionAutor = dr["DescripcionAutor"].ToString();
                     oEvento.DescripcionEvento = dr["DescripcionEvento"].ToString();
                     oEvento.Tipo = dr["Tipo"].ToString();
-                    oEvento.Hora = dr["Hora"].ToString();
+                    oEvento.HoraInicio = dr["HoraInicio"].ToString();
+                    oEvento.HoraFin = dr["HoraFin"].ToString(); 
                     oEvento.FechaRealizacion = Convert.ToDateTime(dr["FechaRealizacion"]); 
                 }
 

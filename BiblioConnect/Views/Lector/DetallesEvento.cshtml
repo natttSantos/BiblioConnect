@@ -82,7 +82,7 @@
                     $("#FotoAutor").attr("src", evento.Foto);
                     $("#NombreAutor").text(evento.NombreAutor);
                     $("#Tipo").text(evento.Tipo);
-                    $("#Hora").text(evento.Hora);
+                    $("#Hora").text(evento.HoraInicio + "-" + evento.HoraFin);
                     $("#FechaRealizacion").text(formatDateToReadable(evento.FechaRealizacion));
                     $("#DescripcionAutor").text(evento.DescripcionAutor);
                     $("#DescripcionEvento").text(evento.DescripcionEvento);

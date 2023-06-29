@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendario a Full</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    @* Boostrap CSS *@
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet">
+
     <link rel="stylesheet" href="~/FullCalendar/main.css">
     <link rel="stylesheet" href="~/CSS/Calendario.css">
 </head>
@@ -12,10 +16,77 @@
     <!-- contenedor para renderizar el calendario: -->
     <div id="calendar"></div>
 
+    <!-- Modal -->
+    <div class="modal" id="modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="exampleModalLabel">Análisis evento</h5>
+                </div>
+                <div class="modal-body">
+                    <input id="txtid" type="hidden" value="0" />
+                    <form id="formNivel">
+                        <div class="row">
+                            <div class="col-md-12">
+                                @*<h2 id="tituloEntrada">Análisis evento</h2>*@
+                                <input type="text" id="titulo" readonly>
+                            </div>
+                        </div>
 
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Fecha Inicio:</label>
+                                <input type="text" id="fechaInicio" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Hora Inicio:</label>
+                                <input type="text" id="horaInicio" readonly>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Fecha Fin:</label>
+                                <input type="text" id="fechaFin" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Hora Fin:</label>
+                                <input type="text" id="horaFin" readonly>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-12">
+                                <textarea id="descripcion" placeholder="Descripción del evento"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="color">Color de la tarjeta:</label>
+                                <input type="color" id="color" name="color" value="#00C217">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="color">Color de la tarjeta:</label>
+                                <input type="color" id="textColor" name="textColor" value="#0018CC">
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cerrar">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="guardar">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* JQquery, Popper.js, Boostrap.js *@
     <script src="~/Scripts/jquery-3.7.0.min.js"></script>
-    <script src="~/FullCalendar/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
 
+    @* CALENDARIO *@
+    <script src="~/FullCalendar/main.js"></script>
     <script src="~/FullCalendar/es.js"></script>
     <script src="~/Scripts/Fechas.js"></script>
 
@@ -26,10 +97,10 @@
             var calendar = new FullCalendar.Calendar(calendarDiv, {
                 locales: 'es', //iDioma (español)
                 initialView: 'dayGridMonth',
-                headerToolbar: { 
+                headerToolbar: {
                     left: 'today,prev,next',
                     center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth', 
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth',
 
                 }, buttonText: { //Cambiamos los nombres de los botonews
                     today: 'Hoy',
@@ -37,10 +108,40 @@
                     week: 'Semana',
                     day: 'Dia',
                     list: 'Listado'
-                }, events: recuperarEventos()
+                }, events: recuperarEventos(),
+                dateClick: function (info) {
+
+                }, eventClick: (info) => {
+                    console.log(info.event._def.title);
+                    var tituloSelected = info.event._def.title;
+
+                    getEvento(tituloSelected).then(function (evento) {
+                        console.log(evento)
+                        document.getElementById('titulo').value = evento.Tipo + " con " + evento.NombreAutor,
+                        document.getElementById('fechaInicio').value = getDateFormatCalendar(evento.FechaRealizacion);
+                        document.getElementById('horaInicio').value = evento.HoraInicio;
+                        document.getElementById('fechaFin').value = getDateFormatCalendar(evento.FechaRealizacion);
+                        document.getElementById('horaFin').value = evento.HoraFin;
+                        document.getElementById('descripcion').value = evento.DescripcionEvento;
+                        abrirModal();
+                    })
+                },
             });
             calendar.render();
         })
+        var botonCerrar = document.getElementById('cerrar');
+        botonCerrar.addEventListener('click', () => {
+            cerrarModal();
+            // añadimos aquí vaciarCampos ya que sino al ver un evento y añadir otro se verá:
+            vaciarCampos();
+        });
+
+        function cerrarModal() {
+            modal.style.cssText += 'opacity: 0; transition: 0.5s';
+            window.setTimeout(() => {
+                modal.style.cssText = 'display: none';
+            }, 500);
+        }
         function recuperarEventos() {
             var listaEventos = [];
             $.ajax({
@@ -65,9 +166,58 @@
                     console.log("Error al obtener los eventos.");
                 }
             });
-            console.log(listaEventos);
             return listaEventos;
         }
+
+        function getEvento(titulo) {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                url: "/Biblioteca/ListarEventoPorBiblio",
+                dataType: "json",
+                data: { id: @(((Usuario)Session["Usuario"]).Id) },
+                async: false,
+                success: function (data) {
+                    $.each(data.data, function (index, evento) {
+                        tituloCalendar = evento.Tipo + " con " + evento.NombreAutor;
+                        console.log("Array: "+tituloCalendar)
+                        if (titulo == tituloCalendar) {
+                            console.log("COINCIDEN")
+                            resolve(evento);
+                        }
+                    });
+                },
+                error: function () {
+                    console.log("Error al obtener los eventos.");
+                }
+            });
+          })
+        }
+        function mostrarModal(date) {
+            var eventosDelDia = calendar.getEvents(function (evento) {
+                return evento.start.toISOString().slice(0, 10) === date.toISOString().slice(0, 10);
+            });
+
+            if (eventosDelDia.length > 0) {
+                var modal = $('#modalEventos');
+                var modalBody = modal.find('.modal-body');
+                modalBody.empty();
+
+                $.each(eventosDelDia, function (index, evento) {
+                    var eventoInfo = $('<p>').text(evento.title);
+                    modalBody.append(eventoInfo);
+                });
+
+                modal.modal('show');
+            }
+        }
+        function abrirModal() {
+            modal.style.cssText = "display: flex;";
+            window.setTimeout(() => {
+                modal.style.cssText += "opacity: 1; transition: 0.5s";
+            }, 10);
+        }
+
+
     </script>
 </body>
 </html>

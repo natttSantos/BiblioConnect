@@ -21,11 +21,6 @@
         <div class="row">
             <div class="col-md-3">
                 <section>
-                    @*<div>
-                            <h4>Filtros:</h4>
-                            <h6>Categoría:</h6>
-                            <ul id="categorias-list" class="category-list"></ul>
-                        </div>*@
                     <div>
                         <h6>Tipo de evento:</h6>
                         <ul id="evento-list" class="evento-list">
@@ -77,9 +72,30 @@
                 console.log("Error al obtener los libros.");
             }
         });
+        //Seleccionar un Idioma 
+        $(".listTipoEvento").on("click", function () {
+            var eventoSeleccionado = $(this).text();
+            ListarEventoPorTipo(eventoSeleccionado);
+        });
 
     });
+        function ListarEventoPorTipo(tipoEvento) {
+            $.ajax({
+                url: "/Lector/ListarEventoPorTipo",
+                type: "GET",
+                data: { tipo: tipoEvento },
+                success: function (data) {
+                    $("#eventos-list").empty(); // Eliminar contenido previo
+                    $.each(data.data, function (index, evento) {
+                        mostrarInfoEventos(evento);
+                    });
+                },
+                error: function (error) {
+                    console.log("Error al obtener los libros:", error);
+                }
+            });
 
+        }
        function mostrarInfoEventos(evento) {
            getBiblioteca(evento.idBiblioteca).then(function (biblioteca) {
                return getDistance(biblioteca).then(function (distance) {

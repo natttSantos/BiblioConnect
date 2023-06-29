@@ -486,7 +486,7 @@
     <Content Include="Views\Biblioteca\Autores.cshtml" />
     <Content Include="Views\Biblioteca\Editorial.cshtml" />
     <Content Include="Views\Acceso\RegistrarLector.cshtml" />
-    <Content Include="Views\Lector\Catalogo.cshtml" />
+    <Content Include="Views\Lector\CatalogoLibros.cshtml" />
     <Content Include="Views\Lector\Inicio.cshtml" />
     <Content Include="Views\Lector\DetallesLibro.cshtml" />
     <Content Include="Views\Biblioteca\Prestamo.cshtml" />

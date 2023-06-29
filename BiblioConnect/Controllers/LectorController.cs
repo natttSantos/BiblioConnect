@@ -11,7 +11,7 @@ namespace BiblioConnect.Controllers
     public class LectorController : Controller
     {
         // NAVBAR
-        public ActionResult Catalogo()
+        public ActionResult CatalogoLibros()
         {
             return View();
         }
@@ -154,6 +154,13 @@ namespace BiblioConnect.Controllers
         {
             List<Evento> oLista = new List<Evento>();
             oLista = EventoDAL.Instancia.Listar();
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult ListarEventoPorTipo(string tipo)
+        {
+            List<Evento> oLista = new List<Evento>();
+            oLista = EventoDAL.Instancia.ListarPorTipo(tipo);
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
         }
     }

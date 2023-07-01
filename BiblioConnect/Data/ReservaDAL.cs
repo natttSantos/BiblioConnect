@@ -33,20 +33,19 @@ namespace BiblioConnect.Data
         }
         public bool Registrar(Reserva oReserva)
         {
+            DateTime fechaActual = DateTime.Now;
+
             bool registrado = true;
-            string mensaje;
             using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
             {
                 try
                 {
                     SqlCommand cmd = new SqlCommand("sp_RegistrarReserva", oConexion);
-                    cmd.Parameters.AddWithValue("Tipo", "reserva");
                     cmd.Parameters.AddWithValue("IdBiblioteca", oReserva.idBiblioteca);
                     cmd.Parameters.AddWithValue("IdLibro", oReserva.idLibro);
                     cmd.Parameters.AddWithValue("IdLector", oReserva.idLector);
-                    cmd.Parameters.AddWithValue("FechaReserva", Convert.ToDateTime(oReserva.FechaReserva, new CultureInfo("es-PE")));
-                    cmd.Parameters.Add("Registrado", SqlDbType.Bit).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 100).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("FechaReserva", Convert.ToDateTime(fechaActual, new CultureInfo("es-PE")));
+                    cmd.Parameters.Add("Registrado", SqlDbType.Bit).Direction = ParameterDirection.Output;            
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     oConexion.Open();
@@ -54,7 +53,6 @@ namespace BiblioConnect.Data
                     cmd.ExecuteNonQuery();
 
                     registrado = Convert.ToBoolean(cmd.Parameters["Registrado"].Value);
-                    mensaje = cmd.Parameters["Mensaje"].Value.ToString();
 
                 }
                 catch (Exception ex)
@@ -125,7 +123,54 @@ namespace BiblioConnect.Data
 
             return usuarioRepetido;
         }
+        public List<object> Listar(int idBiblioteca, string estado)
+        {
+            using (SqlConnection connection = new SqlConnection(Conexion.CN))
+            {
+                SqlCommand cmd = new SqlCommand("select t.Id, t.Estado, r.FechaReserva, l.Titulo, lec.Dni, lec.Apellidos, u.Nombre " +
+                    "from Reserva r inner join Transaccion t on t.Id = r.Id " +
+                    "inner join Biblioteca b on b.Id = t.idBiblioteca " +
+                    "inner join Lector lec on lec.Id = t.idLector " +
+                    "inner join Libro l on l.Id = t.idLibro " +
+                    "inner join Usuario u on u.Id = lec.Id " +
+                    "where b.Id = @idBiblioteca AND T.Estado = @estado", connection);
 
+                cmd.Parameters.AddWithValue("@idBiblioteca", idBiblioteca);
+                cmd.Parameters.AddWithValue("@estado", estado);
+
+                DataTable dataTable = new DataTable();
+                connection.Open();
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                {
+                    adapter.Fill(dataTable);
+                }
+
+                List<object> listaDatos = new List<object>();
+
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    // Check for null value before converting to DateTime
+                    DateTime? fechaReserva = row["FechaReserva"] != DBNull.Value ? Convert.ToDateTime(row["FechaReserva"]) : (DateTime?)null;
+
+                    // Crear un objeto anónimo con los datos de cada fila y agregarlo a la lista
+                    var datos = new
+                    {
+                        FechaReserva = fechaReserva,
+                        Titulo = Convert.ToString(row["Titulo"]),
+                        Estado = Convert.ToString(row["Estado"]),
+                        Dni = Convert.ToString(row["Dni"]),
+                        Apellidos = Convert.ToString(row["Apellidos"]),
+                        Nombre = Convert.ToString(row["Nombre"]),
+                        Id = int.Parse(row["Id"].ToString())
+                    };
+
+                    listaDatos.Add(datos);
+                }
+
+                return listaDatos;
+            }
+        }
         //public bool Modificar(Categoria oCategoria)
         //{
         //    bool respuesta = true;

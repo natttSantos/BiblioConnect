@@ -12,5 +12,6 @@ namespace BiblioConnect.Modelo
         public int idLector { get; set; }
         public int idLibro { get; set; }
         public string Tipo { get; set; }
+        public string Estado { get; set; }
     }
 }

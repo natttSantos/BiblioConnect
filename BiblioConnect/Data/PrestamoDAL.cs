@@ -37,23 +37,17 @@ namespace BiblioConnect.Data
             DateTime fechaDevolucion = fechaActual.AddDays(oPrestamo.Duracion);
 
             bool registrado = true;
-            string mensaje;
             using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
             {
                 try
                 {
                     SqlCommand cmd = new SqlCommand("sp_RegistrarPrestamo", oConexion);
-                    cmd.Parameters.AddWithValue("Tipo", "prestamo");
-                    cmd.Parameters.AddWithValue("IdBiblioteca", oPrestamo.idBiblioteca);
-                    cmd.Parameters.AddWithValue("IdLibro", oPrestamo.idLibro);
-                    cmd.Parameters.AddWithValue("IdLector", oPrestamo.idLector);
                     cmd.Parameters.AddWithValue("EstadoEntregado", oPrestamo.EstadoEntregado);
+                    cmd.Parameters.AddWithValue("Id", oPrestamo.Id);
                     cmd.Parameters.AddWithValue("Duracion", oPrestamo.Duracion);
                     cmd.Parameters.AddWithValue("FechaEntrega", Convert.ToDateTime(fechaActual, new CultureInfo("es-PE")));
                     cmd.Parameters.AddWithValue("FechaDevolucion", Convert.ToDateTime(fechaDevolucion, new CultureInfo("es-PE")));
-                    cmd.Parameters.AddWithValue("Estado", oPrestamo.Estado);
                     cmd.Parameters.Add("Registrado", SqlDbType.Bit).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 100).Direction = ParameterDirection.Output;
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     oConexion.Open();
@@ -61,7 +55,34 @@ namespace BiblioConnect.Data
                     cmd.ExecuteNonQuery();
 
                     registrado = Convert.ToBoolean(cmd.Parameters["Registrado"].Value);
-                    mensaje = cmd.Parameters["Mensaje"].Value.ToString();
+
+                }
+                catch (Exception ex)
+                {
+                    registrado = false;
+                }
+            }
+            return registrado;
+        }
+        public bool RegistrarPendiente(Prestamo oPrestamo)
+        {
+            bool registrado = true;
+            using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand("sp_RegistrarPendienteRecogida", oConexion);
+                    cmd.Parameters.AddWithValue("IdBiblioteca", oPrestamo.idBiblioteca);
+                    cmd.Parameters.AddWithValue("IdLibro", oPrestamo.idLibro);
+                    cmd.Parameters.AddWithValue("IdLector", oPrestamo.idLector);
+                    cmd.Parameters.Add("Registrado", SqlDbType.Bit).Direction = ParameterDirection.Output;
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    oConexion.Open();
+
+                    cmd.ExecuteNonQuery();
+
+                    registrado = Convert.ToBoolean(cmd.Parameters["Registrado"].Value);
 
                 }
                 catch (Exception ex)
@@ -80,7 +101,7 @@ namespace BiblioConnect.Data
                 {
                     SqlCommand cmd = new SqlCommand(
                         "SELECT 1 FROM Prestamo P INNER JOIN Transaccion T ON P.Id = T.Id" +
-                        " WHERE T.idLibro = @idLibro AND P.Estado = 1", oConexion);
+                        " WHERE T.idLibro = @idLibro AND T.Estado != 'Devuelto'", oConexion);
 
                     cmd.Parameters.AddWithValue("@idLibro", id);
                     cmd.CommandType = CommandType.Text;
@@ -140,20 +161,22 @@ namespace BiblioConnect.Data
 
             return primerPrestamo;
         }
-        public List<object> Listar(int idBiblioteca)
+
+        //Recoge parametros de diferentes tablas por eso se crea un Object
+        public List<object> Listar(int idBiblioteca, string estado)
         {
             using (SqlConnection connection = new SqlConnection(Conexion.CN))
             {
-                SqlCommand cmd = new SqlCommand("SELECT p.FechaDevolucion, p.FechaDevolConfirmada, p.Estado, p.EstadoEntregado, p.EstadoRecibido, t.Id, " +
-                                                 "l.Titulo, lec.Dni, lec.Apellidos, u.Nombre " +
-                                                 "FROM Prestamo p " +
-                                                 "INNER JOIN Transaccion t ON t.Id = p.Id " +
-                                                 "INNER JOIN Biblioteca b ON b.Id = @idBiblioteca " +
-                                                 "INNER JOIN Lector lec ON lec.Id = t.idLector " +
-                                                 "INNER JOIN Libro l ON l.Id = t.idLibro " +
-                                                 "INNER JOIN Usuario u ON u.Id = lec.Id where b.Id = t.idBiblioteca", connection);
+                SqlCommand cmd = new SqlCommand("select t.Id, p.FechaDevolucion, p.FechaDevolConfirmada, t.Estado, p.EstadoEntregado, p.EstadoRecibido, l.Titulo, lec.Dni, lec.Apellidos, u.Nombre " +
+                    "from Prestamo p inner join Transaccion t on t.Id = p.Id " +
+                    "inner join Biblioteca b on b.Id = t.idBiblioteca " +
+                    "inner join Lector lec on lec.Id = t.idLector " +
+                    "inner join Libro l on l.Id = t.idLibro " +
+                    "inner join Usuario u on u.Id = lec.Id " +
+                    "where b.Id = @idBiblioteca AND T.Estado = @estado", connection);
 
                 cmd.Parameters.AddWithValue("@idBiblioteca", idBiblioteca);
+                cmd.Parameters.AddWithValue("@estado", estado);
 
                 DataTable dataTable = new DataTable();
                 connection.Open();
@@ -168,18 +191,21 @@ namespace BiblioConnect.Data
                 foreach (DataRow row in dataTable.Rows)
                 {
                     // Check for null value before converting to DateTime
-                    DateTime? fechaDevolConfirmada = row["FechaDevolConfirmada"] != DBNull.Value
-                        ? Convert.ToDateTime(row["FechaDevolConfirmada"])
-                        : (DateTime?)null;
+                    DateTime? fechaDevolConfirmada = row["FechaDevolConfirmada"] != DBNull.Value ? Convert.ToDateTime(row["FechaDevolConfirmada"]) : (DateTime?)null;
+                    DateTime? fechaDevol = row["FechaDevolucion"] != DBNull.Value ? Convert.ToDateTime(row["FechaDevolucion"]) : (DateTime?)null;
+                    string estadoEntregado = row["EstadoEntregado"] != DBNull.Value ? Convert.ToString(row["EstadoEntregado"]) : null;
+                    string estadoRecibido = row["EstadoRecibido"] != DBNull.Value ? Convert.ToString(row["EstadoRecibido"]) : null;
+
+
                     // Crear un objeto anónimo con los datos de cada fila y agregarlo a la lista
                     var datos = new
                     {
-                        FechaDevolucion = Convert.ToDateTime(row["FechaDevolucion"]),
+                        FechaDevolucion = fechaDevol, 
                         FechaDevolConfirmada = fechaDevolConfirmada,
-                        Estado = Convert.ToBoolean(row["Estado"]),
-                        EstadoEntregado = Convert.ToString(row["EstadoEntregado"]),
-                        EstadoRecibido = Convert.ToString(row["EstadoRecibido"]),
+                        EstadoEntregado = estadoEntregado, 
+                        EstadoRecibido = estadoRecibido, 
                         Titulo = Convert.ToString(row["Titulo"]),
+                        Estado = Convert.ToString(row["Estado"]),
                         Dni = Convert.ToString(row["Dni"]),
                         Apellidos = Convert.ToString(row["Apellidos"]),
                         Nombre = Convert.ToString(row["Nombre"]), 
@@ -225,7 +251,7 @@ namespace BiblioConnect.Data
             Prestamo oPrestamo = new Prestamo();
             string consultaSql = "SELECT MIN(p.FechaDevolConfirmada) AS UltimoPrestamo, p.EstadoEntregado " +
                 "FROM Prestamo p INNER JOIN Transaccion t ON t.Id = p.Id " +
-                "WHERE t.idLibro = @idLibro GROUP BY p.EstadoEntregado";
+                "WHERE t.idLibro = @idLibro AND T.Estado = 'Devuelto' GROUP BY p.EstadoEntregado";
 
             using (SqlConnection connection = new SqlConnection(Conexion.CN))
             {
@@ -256,7 +282,6 @@ namespace BiblioConnect.Data
                         SqlCommand cmd = new SqlCommand("sp_RegistrarRecepcionPrestamo", oConexion);
                         cmd.Parameters.AddWithValue("Id", oPrestamo.Id); 
                         cmd.Parameters.AddWithValue("EstadoRecibido", oPrestamo.EstadoRecibido);
-                        cmd.Parameters.AddWithValue("Estado", 0);
                         cmd.Parameters.AddWithValue("FechaDevolConfirmada", DateTime.Now);
                         cmd.Parameters.Add("Registrado", SqlDbType.Bit).Direction = ParameterDirection.Output;
 

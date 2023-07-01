@@ -71,10 +71,14 @@ namespace BiblioConnect.Controllers
         }
 
         [HttpGet]
-        public JsonResult ListarPrestamosBiblio(int id)
+        public JsonResult ListarPrestamosBiblio(int id, string estado)
         {
             List<Object> oLista = new List<Object>();
-            oLista = PrestamoDAL.Instancia.Listar(id);
+            if (estado.Equals("En espera"))
+            {
+                oLista = ReservaDAL.Instancia.Listar(id, estado);
+            }
+            else { oLista = PrestamoDAL.Instancia.Listar(id, estado); }
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]

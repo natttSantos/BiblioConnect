@@ -96,12 +96,13 @@
                     $("#Titulo").text(libro.Titulo);
                     $("#Idioma").text("Idioma: " +libro.Idioma);
                     IdBiblioteca = libro.idBiblioteca;
-                    Titulo = libro.Titulo; 
+                    Titulo = libro.Titulo;
 
                      oReserva = {
                         idBiblioteca: IdBiblioteca,
                         idLector: IdLector,
                         idLibro: @Model,
+                        Estado: "En espera",
                      };
 
                     getBiblioteca(IdBiblioteca),
@@ -151,7 +152,7 @@
                 if (btnTransaccion.text() == "Préstamo") {
                     alertConfirm('¿Estás seguro de realizar el préstamo?',
                         'Si aceptas se te asignará como el próximo lector').then(() => {
-                            registroPrestamo(oPrestamo);
+                            registroPendienteRecogida(oPrestamo);
                         })
                 //REALIZAR RESERVA
                 } else {
@@ -209,9 +210,11 @@
                         txtCard.text("Disponible para préstamo. ¡Llévalo contigo!");
                         btnTransaccion.text("Préstamo");
                     } else {
-                        getPrestamo().then(function (prestamo) {
-                            txtCard.text("Próximo ejemplar disponible el " + getDate(prestamo.FechaDevolucion));
-                        })
+                        txtCard.text("El ejemplar no está disponible, resérvalo y te avisaremos cuando lo esté.");
+                        //getPrestamo().then(function (prestamo) {
+                        //    txtCard.text("El ejemplar no está disponible, resérvalo y te avisaremos cuando lo esté.");
+                        //    //txtCard.text("Próximo ejemplar disponible el " + getDate(prestamo.FechaDevolucion));
+                        //})
                         ValidarUsuarioRepetido(oReserva)
                         btnTransaccion.text("Reserva");
                     }
@@ -222,77 +225,33 @@
             });
         }
 
-        function registroPrestamo(oPrestamo) {
+        function registroPendienteRecogida(oPrestamo) {
             $.ajax({
-                url: "/Lector/ObtenerUltimoPrestamo",
-                type: "GET",
-                data: { id: @Model },
+                url: '/Lector/RegistrarPendienteRecogida',
+                type: 'POST',
+                data: oPrestamo,
                 success: function (data) {
-                    var prestamoAntiguo = data.data;
-                    console.log(data);
-                    console.log(prestamoAntiguo)
-                    //Primer préstamo para el libro
-                    if (prestamoAntiguo.EstadoEntregado == null) {
-                        console.log("No hay préstamos antiguos")
-                        oPrestamo.EstadoEntregado = "Libro en perfectas condiciones";
-                        //Hay préstamos antiguos
-                    } else {
-                        console.log("hay préstamos antiguos")
-                        oPrestamo.EstadoEntregado = prestamoAntiguo.EstadoEntregado;
-                    }
-                    $.ajax({
-                        url: '/Lector/RegistrarPrestamo',
-                        type: 'POST',
-                        data: oPrestamo,
-                        success: function (data) {
-                            alertSuccess('¡Enhorabuena!', 'Acabas de realizar un préstamo con éxito').then(() => {
-                                location.reload(); //Recarga la página actual cuando se pulsa OK
-                            })
-                        },
-                        error: function (error) {
-                            console.log('Error al realizar el préstamo', error);
-                        },
-                    });
-                },
-                error: function (error) {
-                    console.log("Error al obtener los datos del autor:", error);
-                }
-            });
-        }
-        function registroReserva(oReserva) {
-            $.ajax({
-                url: "/Lector/ObtenerUltimaFechaReserva",
-                type: "GET",
-                data: { id: @Model },
-                success: function (data) {
-                    var fechaAntigua = data.data;
-                    getPrestamo().then(function (prestamo) {
-                        //Primera reserva para el libro
-                        if (fechaAntigua === "/Date(-62135596800000)/") {
-                            console.log("No hay reservas antiguas")
-                            oReserva.FechaReserva = getDate(prestamo.FechaDevolucion);
-                        //Hay reservas antiguas
-                        } else {
-                            console.log("Hay reservas antiguas")
-                            oReserva.FechaReserva = addDaysToDate(fechaAntigua, prestamo.Duracion);
-                        }
-                        $.ajax({
-                            url: '/Lector/RegistrarReserva',
-                            type: 'POST',
-                            data: oReserva,
-                            success: function (data) {
-                                alertSuccess('¡Enhorabuena!', 'Acabas de realizar una reserva con éxito').then(() => {
-                                })
-                            },
-                            error: function (error) {
-                                console.log('Error al realizar el préstamo', error);
-                            },
-                        });
+                    alertSuccess('¡Enhorabuena!', 'Acabas de realizar un préstamo con éxito. Ya puedes ir a recogerlo a la biblioteca.').then(() => {
+                        location.reload(); //Recarga la página actual cuando se pulsa OK
                     })
                 },
                 error: function (error) {
-                    console.log("Error al obtener los datos del autor:", error);
-                }
+                    console.log('Error al realizar el préstamo', error);
+                },
+            });
+        }
+        function registroReserva(oReserva) {
+             $.ajax({
+                url: '/Lector/RegistrarReserva',
+                type: 'POST',
+                data: oReserva,
+                success: function (data) {
+                    alertSuccess('¡Enhorabuena!', 'Acabas de realizar una reserva con éxito').then(() => {
+                    })
+                },
+                error: function (error) {
+                    console.log('Error al realizar el préstamo', error);
+                },
             });
         }
         function ValidarUsuarioRepetido(oReserva) {

@@ -66,6 +66,13 @@ namespace BiblioConnect.Controllers
             return Json(new { resultado = registrado }, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
+        public JsonResult RegistrarPendienteRecogida(Prestamo objeto)
+        {
+            bool registrado;
+            registrado = PrestamoDAL.Instancia.RegistrarPendiente(objeto);
+            return Json(new { resultado = registrado }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
         public JsonResult RegistrarReserva(Reserva objeto)
         {
             bool registrado;

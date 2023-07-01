@@ -14,6 +14,5 @@ namespace BiblioConnect.Modelo
         public DateTime FechaDevolConfirmada { get; set; }
         public string EstadoEntregado { get; set; }
         public string EstadoRecibido { get; set; }
-        public bool Estado { get; set; }
     }
 }

@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Microsoft.AspNet.SignalR;
-using BiblioConnect.HubSiganlR;
 
 namespace BiblioConnect.Controllers
 {
@@ -27,9 +25,6 @@ namespace BiblioConnect.Controllers
         }
         public ActionResult Reservas()
         {
-            var hubContext = GlobalHost.ConnectionManager.GetHubContext<NotificacionesHub>();
-            hubContext.Clients.All.mostrarNotificacion("¡Hola desde el servidor!");
-
             return View();
         }
         public ActionResult DetallesLibro(int id)

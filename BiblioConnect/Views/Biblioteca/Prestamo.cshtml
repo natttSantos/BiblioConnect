@@ -220,9 +220,9 @@
         });
 
         $(document).on('click', '.btn-devolver', function (event) {
-            var json = $(this).data("informacion")  //JSON DEL ROW SELECTED
+            var json = $(this).data("informacion")  
             $("#txtestadolibro").val(json.EstadoEntregado);
-            $("#btnGuardar").data("idprestamo", json.Id); //jQuery para asignar un atributo de datos llamado "data-informacion" a un elemento.
+            $("#btnGuardar").data("idprestamo", json.Id); 
             $("#btnGuardar").data("idLibro", json.idLibro);
             $("#devolvermodal").modal("show");
 
@@ -353,6 +353,7 @@
     }
 
 
+        //DE "En espera" a "Pendiente de recogida"
         function registrarPendienteRecogida(idLibro) {
             return new Promise(function (resolve, reject) {
             $.ajax({
@@ -367,6 +368,8 @@
                         data: prestamoPendienteRecogida,
                         success: function (data) {
                             resolve();
+                            //notificacion
+                            enviarNotificacion(prestamoPendienteRecogida);
                         },
                         error: function (error) {
                             console.log('Error al realizar el préstamo', error);
@@ -410,5 +413,20 @@
                 console.log("Error al obtener los datos del autor:", error);
             }
         });
-     }
+        }
+        function enviarNotificacion(notificacion) {
+            return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: '/Biblioteca/EnviarNotificacion',
+                type: 'POST',
+                data: notificacion,
+                success: function (data) {
+                    resolve();
+                },
+                error: function (error) {
+                    console.log('Error al realizar el préstamo', error);
+                },
+            });
+            });
+        }
     </script>

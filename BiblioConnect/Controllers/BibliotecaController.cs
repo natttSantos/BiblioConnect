@@ -125,6 +125,12 @@ namespace BiblioConnect.Controllers
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
+        public JsonResult EnviarNotificacion(Notificacion objeto)
+        {
+            bool respuesta = NotificacionDAL.Instancia.Enviar(objeto); 
+            return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
         public async Task<JsonResult> GuardarEvento(string objeto, HttpPostedFileBase imagenArchivo)
         {
             Stream image = imagenArchivo.InputStream;

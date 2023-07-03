@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.SignalR;
+using BiblioConnect.HubSiganlR;
 
 namespace BiblioConnect.Controllers
 {
@@ -25,6 +27,9 @@ namespace BiblioConnect.Controllers
         }
         public ActionResult Reservas()
         {
+            var hubContext = GlobalHost.ConnectionManager.GetHubContext<NotificacionesHub>();
+            hubContext.Clients.All.mostrarNotificacion("¡Hola desde el servidor!");
+
             return View();
         }
         public ActionResult DetallesLibro(int id)
@@ -123,11 +128,10 @@ namespace BiblioConnect.Controllers
             return Json(new { data = oPrestamo }, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
-        public JsonResult ObtenerUltimaFechaReserva(int id)
+        public JsonResult ObtenerUltimaReserva(int id)
         {
-            DateTime fechaReserva;
-            fechaReserva = ReservaDAL.Instancia.ObtenerUltimaFecha(id);
-            return Json(new { data = fechaReserva }, JsonRequestBehavior.AllowGet);
+            Reserva oReserva = ReservaDAL.Instancia.ObtenerUltima(id);
+            return Json(new { data = oReserva }, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
         public JsonResult ObtenerUltimoPrestamo(int id)

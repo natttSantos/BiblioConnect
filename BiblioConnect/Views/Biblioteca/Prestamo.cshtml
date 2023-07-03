@@ -169,17 +169,17 @@
 
         $(document).ready(function () {
 
-    // Llamar a la función de inicialización de la tabla al cargar la página
-    inicializarTabla();
+        // Llamar a la función de inicialización de la tabla al cargar la página
+        inicializarTabla();
 
-    // Añadir un event listener a cada botón de radio
-    radioButtons.forEach(button => {
-        button.addEventListener('change', function () {
-            // Actualizar la tabla al cambiar la selección del botón de radio
-            tabladata.ajax.reload(null, false); // Recargar la tabla sin cambiar la página actual
+        // Añadir un event listener a cada botón de radio
+        radioButtons.forEach(button => {
+            button.addEventListener('change', function () {
+                // Actualizar la tabla al cambiar la selección del botón de radio
+                tabladata.ajax.reload(null, false); // Recargar la tabla sin cambiar la página actual
+            });
         });
-    });
-});
+        });
 
 
         // Obtener todos los botones de radio
@@ -210,7 +210,6 @@
 
         $(document).on('click', '.btn-recogida', function (event) {
             var json = $(this).data("informacion")  //JSON DEL ROW SELECTED
-            console.log(json)
             $("#nombreLibro").text(json.Titulo);
             $("#nombreLector").text(json.Nombre + " " + json.Apellidos);
             $("#btnAsignar").data("idprestamo", json.Id); //jQuery para asignar un atributo de datos llamado "data-informacion" a un elemento.
@@ -224,7 +223,7 @@
             var json = $(this).data("informacion")  //JSON DEL ROW SELECTED
             $("#txtestadolibro").val(json.EstadoEntregado);
             $("#btnGuardar").data("idprestamo", json.Id); //jQuery para asignar un atributo de datos llamado "data-informacion" a un elemento.
-
+            $("#btnGuardar").data("idLibro", json.idLibro);
             $("#devolvermodal").modal("show");
 
 
@@ -238,7 +237,9 @@
             $("#detallemodal").modal("show");
         });
 
+
         $("#btnGuardar").on("click", function () {
+            var idLibro = $(this).data("idLibro"); 
             var prestamoDevuelto = {
                 Id: $(this).data("idprestamo"),
                 EstadoRecibido: $("#txtestadolibrorecibido").val()
@@ -248,17 +249,21 @@
                 type: "POST",
                 data: prestamoDevuelto,
                 success: function (data) {
-                    if (data.resultado) {
-                        tabladata.ajax.reload();
-                        alertSuccess('Listo', 'Se registro la devolución').then(() => {
-                            location.reload(); //Recarga la página actual cuando se pulsa OK
+                    // Asignar de manera automática el libro al lector en espera
+                    registrarPendienteRecogida(idLibro).then(function () {
+                            if (data.resultado) {
+                                tabladata.ajax.reload();
+                                $("#devolvermodal").modal("hide");
+                            }
                         })
-                        $("#devolvermodal").modal("hide");
-                    }
+                        .catch(function (error) {
+                            console.error(error);
+                        });
                 },
-
             });
         })
+
+
         $("#btnAsignar").on("click", function () {
             var oPrestamo;
             var oPrestamo = {
@@ -347,32 +352,21 @@
         });
     }
 
-       function registroPrestamo(oPrestamo) {
+
+        function registrarPendienteRecogida(idLibro) {
+            return new Promise(function (resolve, reject) {
             $.ajax({
-                url: "/Lector/ObtenerUltimoPrestamo",
-                type: "GET",
-                data: { id: oPrestamo.Id },
+                url: '/Lector/ObtenerUltimaReserva',
+                type: 'GET',
+                data: { id: idLibro },
                 success: function (data) {
-                    var prestamoAntiguo = data.data;
-                    console.log(data);
-                    console.log(prestamoAntiguo)
-                    //Primer préstamo para el libro
-                    if (prestamoAntiguo.EstadoEntregado == null) {
-                        console.log("No hay préstamos antiguos")
-                        oPrestamo.EstadoEntregado = "Libro en perfectas condiciones";
-                        //Hay préstamos antiguos
-                    } else {
-                        console.log("hay préstamos antiguos")
-                        oPrestamo.EstadoEntregado = prestamoAntiguo.EstadoEntregado;
-                    }
+                    var prestamoPendienteRecogida = data.data;
                     $.ajax({
-                        url: '/Lector/RegistrarPrestamo',
+                        url: '/Lector/RegistrarPendienteRecogida',
                         type: 'POST',
-                        data: oPrestamo,
+                        data: prestamoPendienteRecogida,
                         success: function (data) {
-                            alertSuccess('¡Bien hecho!', 'Acabas de realizar una asignación de préstamo con éxito').then(() => {
-                                location.reload(); //Recarga la página actual cuando se pulsa OK
-                            })
+                            resolve();
                         },
                         error: function (error) {
                             console.log('Error al realizar el préstamo', error);
@@ -380,8 +374,41 @@
                     });
                 },
                 error: function (error) {
-                    console.log("Error al obtener los datos del autor:", error);
-                }
+                    console.log('Error al realizar registrarPendienteRecogida', error);
+                },
+            });
             });
         }
+        function registroPrestamo(oPrestamo) {
+        $.ajax({
+            url: "/Lector/ObtenerUltimoPrestamo",
+            type: "GET",
+            data: { id: oPrestamo.Id },
+            success: function (data) {
+                var prestamoAntiguo = data.data;
+                //Primer préstamo para el libro
+                if (prestamoAntiguo.EstadoEntregado == null) {
+                    oPrestamo.EstadoEntregado = "Libro en perfectas condiciones";
+                    //Hay préstamos antiguos
+                } else {
+                    oPrestamo.EstadoEntregado = prestamoAntiguo.EstadoEntregado;
+                }
+                $.ajax({
+                    url: '/Lector/RegistrarPrestamo',
+                    type: 'POST',
+                    data: oPrestamo,
+                    success: function (data) {
+                        $("#recogidamodal").modal("hide");
+                        tabladata.ajax.reload();
+                    },
+                    error: function (error) {
+                        console.log('Error al realizar el préstamo', error);
+                    },
+                });
+            },
+            error: function (error) {
+                console.log("Error al obtener los datos del autor:", error);
+            }
+        });
+     }
     </script>

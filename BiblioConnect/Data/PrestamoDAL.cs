@@ -167,7 +167,7 @@ namespace BiblioConnect.Data
         {
             using (SqlConnection connection = new SqlConnection(Conexion.CN))
             {
-                SqlCommand cmd = new SqlCommand("select t.Id, p.FechaDevolucion, p.FechaDevolConfirmada, t.Estado, p.EstadoEntregado, p.EstadoRecibido, l.Titulo, lec.Dni, lec.Apellidos, u.Nombre " +
+                SqlCommand cmd = new SqlCommand("select t.Id, p.FechaDevolucion, p.FechaDevolConfirmada, t.Estado, p.EstadoEntregado, p.EstadoRecibido, l.Id AS idLibro, l.Titulo, lec.Dni, lec.Apellidos, u.Nombre " +
                     "from Prestamo p inner join Transaccion t on t.Id = p.Id " +
                     "inner join Biblioteca b on b.Id = t.idBiblioteca " +
                     "inner join Lector lec on lec.Id = t.idLector " +
@@ -209,8 +209,9 @@ namespace BiblioConnect.Data
                         Dni = Convert.ToString(row["Dni"]),
                         Apellidos = Convert.ToString(row["Apellidos"]),
                         Nombre = Convert.ToString(row["Nombre"]), 
-                        Id = int.Parse(row["Id"].ToString())
-                };
+                        Id = int.Parse(row["Id"].ToString()), 
+                        idLibro = int.Parse(row["idLibro"].ToString())
+                    };
 
                     listaDatos.Add(datos);
                 }
@@ -279,7 +280,7 @@ namespace BiblioConnect.Data
                 {
                     try
                     {
-                        SqlCommand cmd = new SqlCommand("sp_RegistrarRecepcionPrestamo", oConexion);
+                        SqlCommand cmd = new SqlCommand("sp_RegistrarDevolucion", oConexion);
                         cmd.Parameters.AddWithValue("Id", oPrestamo.Id); 
                         cmd.Parameters.AddWithValue("EstadoRecibido", oPrestamo.EstadoRecibido);
                         cmd.Parameters.AddWithValue("FechaDevolConfirmada", DateTime.Now);

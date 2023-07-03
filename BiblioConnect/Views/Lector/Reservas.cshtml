@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <h1>Notificaciones en tiempo real</h1>
+
+    <div id="notificacion"></div>
+
+
+    @* JQquery, Popper.js, Boostrap.js *@
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.4.3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+
+    <script>
+        $(function () {
+            var connection = new signalR.HubConnectionBuilder().withUrl("/notificacionesHub").build();
+
+            connection.on('mostrarNotificacion', function (mensaje) {
+                $('#notificacion').text(mensaje);
+            });
+
+            connection.start().then(function () {
+                console.log('Conexión establecida con el servidor de SignalR');
+            }).catch(function (err) {
+                console.error(err.toString());
+            });
+        });
+    </script>
+</body>
+</html>

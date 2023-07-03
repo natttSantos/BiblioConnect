@@ -122,12 +122,10 @@ namespace BiblioConnect.Controllers
             Prestamo oPrestamo = PrestamoDAL.Instancia.Obtener(id);
             return Json(new { data = oPrestamo }, JsonRequestBehavior.AllowGet);
         }
-        [HttpGet]
-        public JsonResult ObtenerUltimaFechaReserva(int id)
+        public JsonResult ObtenerUltimaReserva(int id)
         {
-            DateTime fechaReserva;
-            fechaReserva = ReservaDAL.Instancia.ObtenerUltimaFecha(id);
-            return Json(new { data = fechaReserva }, JsonRequestBehavior.AllowGet);
+            Reserva oReserva = ReservaDAL.Instancia.ObtenerUltima(id);
+            return Json(new { data = oReserva }, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
         public JsonResult ObtenerUltimoPrestamo(int id)

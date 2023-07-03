@@ -62,35 +62,35 @@ namespace BiblioConnect.Data
             }
             return registrado;
         }
-        public DateTime ObtenerUltimaFecha(int id)
+        public Reserva ObtenerUltima(int id)
         {
-            DateTime fechaReserva = DateTime.MinValue; // Inicializar variable
-            using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
+            Reserva oReserva = new Reserva();
+            string consultaSql = "SELECT TOP 1 R.FechaReserva AS FechaReservaMasAntigua, LEC.Id AS idLector, B.Id AS idBiblioteca, L.Id AS idLibro FROM Transaccion T " +
+                "INNER JOIN Reserva R ON T.Id = R.Id INNER JOIN Lector LEC ON T.idLector = LEC.Id " +
+                "INNER JOIN Biblioteca B ON T.idBiblioteca = B.Id " +
+                "INNER JOIN Libro L ON T.idLibro = L.Id " +
+                "WHERE T.idLibro = @idLibro " +
+                "ORDER BY R.FechaReserva ASC";
+
+            using (SqlConnection connection = new SqlConnection(Conexion.CN))
             {
-                try
-                {
-                    SqlCommand cmd = new SqlCommand("SELECT MIN(R.FechaReserva) AS FechaReservaMasAntigua " +
-                    "FROM Transaccion T INNER JOIN Reserva R ON T.Id = R.Id " +
-                    "WHERE T.idLibro = @idLibro", oConexion);
+                SqlCommand command = new SqlCommand(consultaSql, connection);
+                command.Parameters.AddWithValue("@idLibro", id);
+                connection.Open();
 
-                    cmd.Parameters.AddWithValue("@idLibro", id);
-                    cmd.CommandType = CommandType.Text;
-
-                    oConexion.Open();
-
-                    object result = cmd.ExecuteScalar();
-                    if (result != null && result != DBNull.Value)
-                    {
-                        fechaReserva = Convert.ToDateTime(result);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // Manejar la excepción
-                }
+                SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                // Manejar la excepción
+                oReserva.idLector = Convert.ToInt32(reader["idLector"]);
+                oReserva.idBiblioteca = Convert.ToInt32(reader["idBiblioteca"]);
+                oReserva.idLibro = Convert.ToInt32(reader["idLibro"]);
+                //oReserva.FechaReserva = Convert.ToDateTime(reader["FechaReserva"].ToString(), new CultureInfo("es-PE"));
             }
-
-            return fechaReserva;
+            connection.Close();
+            reader.Close();
+            }
+            return oReserva;
         }
         public bool Validar(Reserva oReserva)
         {

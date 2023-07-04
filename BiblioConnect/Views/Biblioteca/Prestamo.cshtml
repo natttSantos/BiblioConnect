@@ -353,6 +353,7 @@
 
         function registrarPendienteRecogida(idLibro) {
             return new Promise(function (resolve, reject) {
+                var oNotificacion;
                 $.ajax({
                     url: '/Lector/ObtenerUltimaReserva',
                     type: 'GET',
@@ -365,6 +366,13 @@
                             data: prestamoPendienteRecogida,
                             success: function (data) {
                                 resolve();
+                                //notificacion
+                                oNotificacion = {
+                                    idBiblioteca: prestamoPendienteRecogida.idBiblioteca,
+                                    idLector: prestamoPendienteRecogida.idLector,
+                                    idLibro: prestamoPendienteRecogida.idLibro
+                                }
+                                enviarNotificacion(oNotificacion);
                             },
                             error: function (error) {
                                 console.log('Error al realizar el préstamo', error);
@@ -407,6 +415,23 @@
                 error: function (error) {
                     console.log("Error al obtener los datos del autor:", error);
                 }
+            });
+        }
+        function enviarNotificacion(oNotificacion) {
+            console.log(oNotificacion)
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: '/Biblioteca/EnviarNotificacion',
+                    type: 'POST',
+                    data: oNotificacion,
+                    success: function (data) {
+                        console.log("notificacion enviada!")
+                        resolve();
+                    },
+                    error: function (error) {
+                        console.log('Error al enviar notificacion', error);
+                    },
+                });
             });
         }
     </script>

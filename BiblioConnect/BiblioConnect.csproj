@@ -298,6 +298,7 @@
     <Compile Include="Controllers\BibliotecaController.cs" />
     <Compile Include="Controllers\LectorController.cs" />
     <Compile Include="Data\EventoDAL.cs" />
+    <Compile Include="Data\NotificacionDAL.cs" />
     <Compile Include="Data\ReservaDAL.cs" />
     <Compile Include="Data\PrestamoDAL.cs" />
     <Compile Include="Data\LectorDAL.cs" />
@@ -311,6 +312,7 @@
     <Compile Include="Data\EditorialDAL.cs" />
     <Compile Include="Data\CategoriaDAL.cs" />
     <Compile Include="Data\Conexion.cs" />
+    <Compile Include="Modelo\Notificacion.cs" />
     <Compile Include="Modelo\Evento.cs" />
     <Compile Include="Modelo\Autor.cs" />
     <Compile Include="Modelo\Categoria.cs" />
@@ -349,6 +351,7 @@
     <Content Include="Content\jquery-ui.structure.css" />
     <Content Include="Content\jquery-ui.theme.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="CSS\Notificacion.css" />
     <Content Include="CSS\Calendario.css" />
     <Content Include="CSS\Layout.css" />
     <Content Include="CSS\CatalogoEventos.css" />
@@ -429,6 +432,7 @@
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-reboot.min.css.map" />
+    <Content Include="Scripts\MostrarNotificaciones.js" />
     <Content Include="Scripts\Fechas.js" />
     <Content Include="Scripts\sweetAlert.js" />
     <Content Include="Scripts\API_paises.js" />

@@ -124,6 +124,19 @@ namespace BiblioConnect.Controllers
             oLista = EventoDAL.Instancia.ListarPorBiblioteca(id);
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
         }
+        [HttpGet]
+        public JsonResult ListarNotificacionPorLector(int id)
+        {
+            List<Notificacion> oLista = new List<Notificacion>();
+            oLista = NotificacionDAL.Instancia.Listar(id);
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult EnviarNotificacion(Notificacion oNotificacion)
+        {
+            bool respuesta = NotificacionDAL.Instancia.Enviar(oNotificacion);
+            return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
+        }
         [HttpPost]
         public async Task<JsonResult> GuardarEvento(string objeto, HttpPostedFileBase imagenArchivo)
         {

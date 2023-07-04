@@ -406,6 +406,8 @@
                         success: function (data) {
                             $("#recogidamodal").modal("hide");
                             tabladata.ajax.reload();
+                            //Eliminar notificacion
+                            eliminarNotificacion(oPrestamo.Id);
                         },
                         error: function (error) {
                             console.log('Error al realizar el préstamo', error);
@@ -433,5 +435,26 @@
                     },
                 });
             });
+        }
+        function eliminarNotificacion(idPrestamo) {
+            $.ajax({
+                url: '/Biblioteca/ObtenerIdentificadoresPrestamo',
+                type: 'GET',
+                data: { id: idPrestamo },
+                success: function (data) {
+                    var prestamo = data.data;
+                    $.ajax({
+                        url: '/Biblioteca/EliminarNotificacion',
+                        type: 'POST',
+                        data: prestamo, 
+                        error: function (error) {
+                            console.log('Error al eliminar notificacion', error);
+                        },
+                    });
+                }, error: function (error) {
+                    console.log('Error al obtener identificadores prestamo', error); 
+                }
+
+            })
         }
     </script>

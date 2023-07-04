@@ -69,6 +69,12 @@ namespace BiblioConnect.Controllers
             Biblioteca oBiblioteca = BibliotecaDAL.Instancia.ObtenerBiblio(id);
             return Json(new { data = oBiblioteca }, JsonRequestBehavior.AllowGet);
         }
+        [HttpGet]
+        public JsonResult ObtenerIdentificadoresPrestamo(int id)
+        {
+            Prestamo objeto = PrestamoDAL.Instancia.ObtenerIdentificadores(id);
+            return Json(new { data = objeto }, JsonRequestBehavior.AllowGet);
+        }
 
         [HttpGet]
         public JsonResult ListarPrestamosBiblio(int id, string estado)
@@ -234,6 +240,13 @@ namespace BiblioConnect.Controllers
         {
             bool respuesta = false;
             respuesta = LibroDAL.Instancia.Eliminar(id);
+            return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult EliminarNotificacion(Prestamo objeto)
+        {
+            bool respuesta = false;
+            respuesta = NotificacionDAL.Instancia.Eliminar(objeto);
             return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
         }
     }

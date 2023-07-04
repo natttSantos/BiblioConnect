@@ -247,6 +247,32 @@ namespace BiblioConnect.Data
             }
             return oPrestamo;
         }
+        public Prestamo ObtenerIdentificadores(int id)
+        {
+            Prestamo oPrestamo = new Prestamo();
+            string consultaSql = "SELECT t.idLector, t.idBiblioteca, t.idLibro " +
+                "FROM Prestamo p INNER JOIN Transaccion t ON t.Id = p.Id " +
+                "WHERE p.Id = @idPrestamo";
+
+            using (SqlConnection connection = new SqlConnection(Conexion.CN))
+            {
+                SqlCommand command = new SqlCommand(consultaSql, connection);
+                command.Parameters.AddWithValue("@idPrestamo", id);
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    oPrestamo.idBiblioteca = int.Parse(reader["idBiblioteca"].ToString());
+                    oPrestamo.idLector = int.Parse(reader["idLector"].ToString());
+                    oPrestamo.idLibro = int.Parse(reader["idLibro"].ToString());
+                }
+
+                connection.Close();
+                reader.Close();
+            }
+            return oPrestamo;
+        }
         public Prestamo ObtenerUltimo(int Id)
         {
             Prestamo oPrestamo = new Prestamo();

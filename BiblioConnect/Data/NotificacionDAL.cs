@@ -102,34 +102,36 @@ namespace BiblioConnect.Data
             }
             return Lista;
         }
+        public bool Eliminar(Prestamo objeto)
+        {
+            bool respuesta = true;
+            using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand("delete from Notificacion " +
+                        "where idLibro = @idLibro AND idLector = @idLector AND idBiblioteca = @idBiblioteca", oConexion);
+                    cmd.Parameters.AddWithValue("@idLibro", objeto.idLibro);
+                    cmd.Parameters.AddWithValue("@idLector", objeto.idLector);
+                    cmd.Parameters.AddWithValue("@idBiblioteca", objeto.idBiblioteca);
+                    cmd.CommandType = CommandType.Text;
 
-        //public Notificacion ListaPorLector(int Id)
-        //{
-        //    Autor oAutor = new Autor();
-        //    string consultaSql = "SELECT Nombre " +
-        //        "FROM Autor " +
-        //        "WHERE Id = @autorId ";
+                    oConexion.Open();
 
-        //    using (SqlConnection connection = new SqlConnection(Conexion.CN))
-        //    {
-        //        SqlCommand command = new SqlCommand(consultaSql, connection);
-        //        command.Parameters.AddWithValue("@autorId", Id);
-        //        connection.Open();
+                    cmd.ExecuteNonQuery();
 
-        //        SqlDataReader reader = command.ExecuteReader();
-        //        while (reader.Read())
-        //        {
-        //            oAutor.Nombre = reader["Nombre"].ToString();
-        //            oPrestamo.EstadoEntregado = reader["EstadoEntregado"].ToString();
-        //            oPrestamo.FechaEntrega = Convert.ToDateTime(reader["FechaEntrega"].ToString(), new CultureInfo("es-PE"));
-        //            oPrestamo.FechaDevolucion = Convert.ToDateTime(reader["FechaDevolucion"].ToString(), new CultureInfo("es-PE"));
-        //            oPrestamo.Duracion = reader.GetInt32(reader.GetOrdinal("Duracion"));
-        //        }
+                    respuesta = true;
 
-        //        connection.Close();
-        //        reader.Close();
-        //    }
-        //    return oAutor;
-        //}
+                }
+                catch (Exception ex)
+                {
+                    respuesta = false;
+                }
+
+            }
+
+            return respuesta;
+
+        }
     }
 }

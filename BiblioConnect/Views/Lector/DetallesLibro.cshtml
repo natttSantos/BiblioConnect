@@ -9,13 +9,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     @* Boostrap CSS *@
     <link href="~/Content/bootstrap.min.css" rel="stylesheet">
-    @* DataTables CSS BÁSICO *@
-    <link href="~/Content/datatables.min.css" rel="stylesheet" />
-    @* DataTables estilo Boostrap 5 CSS *@
-    <link href="~/DataTables-1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
     @* CSS DE MAPAS *@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <link rel="stylesheet" type="text/css" href="~/CSS/Detalles.css" />
+
 </head>
 
 <body>
@@ -53,12 +50,51 @@
                 <a class="nav-link" href="#infoAdicional">Información adicional</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#reserva">Reserva</a>
+                <a class="nav-link" href="#reseñas">Reseñas</a>
+                <button id="botonEscribirReseña" type="button" class="btn btn-primary" style="display: none;" data-toggle="modal" data-target="#modalReseña">
+                    Escribir reseña
+                </button>
+                <div id="reseñas-list"></div>
+
             </li>
         </ul>
         <div id="descripcionLibro" class="descripcion"></div>
         <div id="descripcionAutor" class="descripcion"></div>
     </div>
+
+    @* MODAL RESEÑA *@
+
+    <div class="modal" id="modalReseña" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="exampleModalLabel">Editorial</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="descripcion">Descripción:</label>
+                        <textarea id="descripcion" name="descripcion" rows="4" cols="70" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="puntuacion">Puntuación:</label>
+                        <div class="rating">
+                            <input type="radio" id="star5" name="puntuacion" value="5" /><label for="star5" title="5 estrellas"></label>
+                            <input type="radio" id="star4" name="puntuacion" value="4" /><label for="star4" title="4 estrellas"></label>
+                            <input type="radio" id="star3" name="puntuacion" value="3" /><label for="star3" title="3 estrellas"></label>
+                            <input type="radio" id="star2" name="puntuacion" value="2" /><label for="star2" title="2 estrellas"></label>
+                            <input type="radio" id="star1" name="puntuacion" value="1" /><label for="star1" title="1 estrella"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" onclick="EnviarReseña()">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 
 
@@ -66,15 +102,11 @@
 <script src="~/Scripts/jquery-3.7.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
 <script src="~/Scripts/bootstrap.js"></script>
-@* DataTable JS *@
-<script src="~/Scripts//datatables.min.js"></script>
-@* Jquery *@
-<script src="~/Scripts/jquery-3.7.0.min.js"></script>
-@* JS DE MAPAS *@
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 @* Libreria alert *@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="~/Scripts/sweetAlert.js"></script>
+@* JS DE MAPAS *@
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 @* FECHAS *@
 <script src="~/Scripts/Fechas.js"></script>
 
@@ -130,7 +162,9 @@
                 mostrarContenido(identificadorDiv);
             });
 
-
+            $("#botonEscribirReseña").on("click", function () {
+                $('#modalReseña').modal('show');
+            });
             //Navigate to Perfil Biblioteca
             $("#btnBiblioteca").on("click", function () {
                 if (IdBiblioteca) {
@@ -173,11 +207,83 @@
         if (identificadorDiv === "#descripcionLibro") {
             var tituloLibro = $("a.nav-link.active").data("titulo");
             getDescripcionLibro(tituloLibro);
-        } else if (identificadorDiv === "#descripcionAutor") {
+        }
+        if (identificadorDiv === "#descripcionAutor") {
             var nombreAutor = $("a.nav-link.active").data("autor");
             getDescripcionAutor(nombreAutor);
         }
+        if (identificadorDiv === "#reseñas") {
+            $("#botonEscribirReseña").show()
+            getReseñas()
+        }
     }
+
+    function EnviarReseña() {
+        var oReseña = {
+            Descripcion: $("#descripcion").val(),
+            Puntuacion: $("input[name='puntuacion']:checked").val(),
+            idLibro: @Model,
+            idLector: @(((Usuario)Session["Usuario"]).Id)
+        }
+        $.ajax({
+            url: "/Lector/RegistrarReseña",
+            type: "POST",
+            data: oReseña,
+            success: function (data) {
+                alertSuccess('¡Enhorabuena!', 'Acabas de escribir una reseña.').then(() => {
+                    window.location.reload();
+                })
+            },
+            error: function (error) {
+                console.log("Error al obtener los datos del prestamo:", error);
+                reject(error);
+            }
+        });
+    }
+function getReseñas() {
+    var idLibro = @Model;
+    $.ajax({
+        url: "/Lector/ListarReseñasPorLibro",
+        type: "GET",
+        data: { id: idLibro },
+        success: function (data) {
+            $("#reseñas-list").empty(); // Eliminar contenido previo
+            $.each(data.data, function (index, reseña) {
+                mostrarInfoReseña(reseña);
+            });
+        },
+        error: function (error) {
+            console.log("Error al obtener las reseñas:", error);
+        }
+    });
+}
+
+    function mostrarInfoReseña(reseña) {
+        getLector(reseña.idLector).then(function (lector) {
+            var estrellasHTML = "";
+            for (var i = 1; i <= 5; i++) {
+                var icono = i <= reseña.Puntuacion ? "fas fa-star" : "far fa-star";
+                estrellasHTML += '<i class="' + icono + '"></i>';
+            }
+
+            var vistaReseña =
+                '<div class="reseña">' +
+                '  <div class="lector">' +
+                '    <img src="' + lector.Foto + '" ' +
+                '    <span>' + lector.Nombre + '</span>' +
+                '  </div>' +
+                '  <div class="contenido">' +
+                '    <div class="descripcion">' + reseña.Descripcion + '</div>' +
+                '    <div class="puntuacion">' + estrellasHTML + '</div>' +
+                '    <div class="fecha">' + getDate(reseña.Fecha) + '</div>' +
+                '  </div>' +
+                '</div>';
+
+            $("#reseñas-list").append(vistaReseña);
+        });
+    }
+
+
         function getPrestamo() {
             return new Promise((resolve, reject) => {
                 $.ajax({
@@ -348,6 +454,23 @@
             });
         }
 
+    function getLector(idLector) {
+        console.log(idLector)
+        return new Promise((resolve, reject) => {
+        $.ajax({
+            url: "/Lector/ObtenerLector",
+            type: "GET",
+            data: { id: idLector },
+            success: function (data) {
+                var lector = data.data;
+                resolve(lector);
+            },
+            error: function (error) {
+                console.log("Error al obtener los datos del lector:", error);
+            }
+        });
+        });
+    }
     function getDescripcionLibro(title) {
         console.log(title)
             $.ajax({

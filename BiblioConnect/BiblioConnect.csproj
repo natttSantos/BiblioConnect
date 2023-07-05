@@ -297,6 +297,7 @@
     <Compile Include="Controllers\AccesoController.cs" />
     <Compile Include="Controllers\BibliotecaController.cs" />
     <Compile Include="Controllers\LectorController.cs" />
+    <Compile Include="Data\ReseñaDAL.cs" />
     <Compile Include="Data\EventoDAL.cs" />
     <Compile Include="Data\NotificacionDAL.cs" />
     <Compile Include="Data\ReservaDAL.cs" />
@@ -312,6 +313,7 @@
     <Compile Include="Data\EditorialDAL.cs" />
     <Compile Include="Data\CategoriaDAL.cs" />
     <Compile Include="Data\Conexion.cs" />
+    <Compile Include="Modelo\Reseña.cs" />
     <Compile Include="Modelo\Notificacion.cs" />
     <Compile Include="Modelo\Evento.cs" />
     <Compile Include="Modelo\Autor.cs" />

@@ -79,7 +79,19 @@ namespace BiblioConnect.Controllers
             registrado = ReservaDAL.Instancia.Registrar(objeto);
             return Json(new { resultado = registrado }, JsonRequestBehavior.AllowGet);
         }
-
+        [HttpPost]
+        public JsonResult RegistrarReseña(Reseña objeto)
+        {
+            bool registrado;
+            registrado = ReseñaDAL.Instancia.Registrar(objeto);
+            return Json(new { resultado = registrado }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult ObtenerLector(int id)
+        {
+            Lector oLibro = LectorDAL.Instancia.Obtener(id);
+            return Json(new { data = oLibro }, JsonRequestBehavior.AllowGet);
+        }
         [HttpGet]
         public JsonResult ObtenerLibro(int id)
         {
@@ -166,6 +178,13 @@ namespace BiblioConnect.Controllers
         {
             List<Evento> oLista = new List<Evento>();
             oLista = EventoDAL.Instancia.ListarPorTipo(tipo);
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult ListarReseñasPorLibro(int id)
+        {
+            List<Reseña> oLista = new List<Reseña>();
+            oLista = ReseñaDAL.Instancia.Listar(id);
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
         }
     }

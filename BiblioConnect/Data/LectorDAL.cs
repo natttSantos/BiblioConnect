@@ -74,131 +74,30 @@ namespace BiblioConnect.Data
             }
             return registrado;
         }
-        //public Biblioteca ObtenerBiblio(int Id)
-        //{
-        //    Biblioteca oBiblioteca = new Biblioteca();
-        //    string consultaSql = "SELECT Nombre, Calle, Ciudad, CodPostal, Descripcion, Email, Telefono, Estado, Pais, Foto FROM Biblioteca WHERE Id = @Id";
+        public Lector Obtener(int Id)
+        {
+            Lector lector = new Lector();
+            string consultaSql = "select u.Nombre, u.Foto " +
+                "from Lector l inner join Usuario u on l.Id = u.Id " +
+                "where l.Id = @idLector";
 
-        //    using (SqlConnection connection = new SqlConnection(Conexion.CN))
-        //    {
-        //        SqlCommand command = new SqlCommand(consultaSql, connection);
-        //        command.Parameters.AddWithValue("@Id", Id);
-        //        connection.Open();
+            using (SqlConnection connection = new SqlConnection(Conexion.CN))
+            {
+                SqlCommand command = new SqlCommand(consultaSql, connection);
+                command.Parameters.AddWithValue("@idLector", Id);
+                connection.Open();
 
-        //        SqlDataReader reader = command.ExecuteReader();
-        //        while (reader.Read())
-        //        {                  
-        //            oBiblioteca.Calle = reader["Calle"].ToString();
-        //            oBiblioteca.Ciudad = reader["Ciudad"].ToString();
-        //            oBiblioteca.CodPostal = reader["CodPostal"].ToString();
-        //            oBiblioteca.Descripcion = reader["Descripcion"].ToString();
-        //            oBiblioteca.Nombre = reader["Nombre"].ToString();
-        //            oBiblioteca.Email = reader["Email"].ToString();
-        //            oBiblioteca.Telefono = reader["Telefono"].ToString();
-        //            oBiblioteca.Foto = reader["Foto"].ToString();
-        //            oBiblioteca.Estado = reader["Estado"].ToString();
-        //            oBiblioteca.Pais = reader["Pais"].ToString();
-        //        }
-        //        connection.Close();
-        //        reader.Close();
-        //    }
-        //    return oBiblioteca;
-        //}
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    lector.Nombre = reader["Nombre"].ToString();
+                    lector.Foto = reader["Foto"].ToString();
+                }
+                connection.Close();
+                reader.Close();
+            }
+            return lector;
+        }
 
-
-        //public List<Autor> Listar()
-        //{
-        //    List<Autor> Lista = new List<Autor>();
-        //    using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
-        //    {
-        //        try
-        //        {
-        //            SqlCommand cmd = new SqlCommand("select Id,Descripcion,Estado from Autor", oConexion);
-        //            cmd.CommandType = CommandType.Text;
-
-        //            oConexion.Open();
-        //            using (SqlDataReader dr = cmd.ExecuteReader())
-        //            {
-        //                while (dr.Read())
-        //                {
-        //                    Lista.Add(new Autor()
-        //                    {
-        //                        Id = Convert.ToInt32(dr["Id"]),
-        //                        Descripcion = dr["Descripcion"].ToString(),
-        //                        Estado = Convert.ToBoolean(dr["Estado"])
-        //                    });
-        //                }
-        //            }
-
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            Lista = new List<Autor>();
-        //        }
-        //    }
-        //    return Lista;
-        //}
-
-        //public bool Modificar(Autor oAutor)
-        //{
-        //    bool respuesta = true;
-        //    using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
-        //    {
-        //        try
-        //        {
-        //            SqlCommand cmd = new SqlCommand("sp_ModificarAutor", oConexion);
-        //            cmd.Parameters.AddWithValue("Id", oAutor.Id);
-        //            cmd.Parameters.AddWithValue("Descripcion", oAutor.Descripcion);
-        //            cmd.Parameters.AddWithValue("Estado", oAutor.Estado);
-        //            cmd.Parameters.Add("Resultado", SqlDbType.Bit).Direction = ParameterDirection.Output;
-
-        //            cmd.CommandType = CommandType.StoredProcedure;
-
-        //            oConexion.Open();
-
-        //            cmd.ExecuteNonQuery();
-
-        //            respuesta = Convert.ToBoolean(cmd.Parameters["Resultado"].Value);
-
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            respuesta = false;
-        //        }
-
-        //    }
-
-        //    return respuesta;
-
-        //}
-
-        //public bool Eliminar(int id)
-        //{
-        //    bool respuesta = true;
-        //    using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
-        //    {
-        //        try
-        //        {
-        //            SqlCommand cmd = new SqlCommand("delete from Autor where Id = @id", oConexion);
-        //            cmd.Parameters.AddWithValue("@id", id);
-        //            cmd.CommandType = CommandType.Text;
-
-        //            oConexion.Open();
-
-        //            cmd.ExecuteNonQuery();
-
-        //            respuesta = true;
-
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            respuesta = false;
-        //        }
-
-        //    }
-
-        //    return respuesta;
-
-        //}
     }
 }

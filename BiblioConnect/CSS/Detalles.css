@@ -33,3 +33,82 @@
 #InformacionAdicional {
     margin-top: 20px;
 }
+
+
+/*RESEÑAS ESTRELLAS*/
+
+.rating {
+    display: inline-block;
+    direction: rtl; /* right to left */
+    unicode-bidi: bidi-override; /* bidi de bidireccional */
+}
+
+    .rating input {
+        display: none;
+    }
+
+    .rating label {
+        color: #ddd;
+        font-size: 24px;
+        cursor: pointer;
+    }
+
+        .rating label:before {
+            content: "\f005";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            opacity: 0.3;
+        }
+
+    .rating input:checked ~ label:before,
+    .rating input:hover ~ label:before {
+        opacity: 1;
+        color: gold;
+    }
+
+    .rating input:checked ~ label:hover ~ label:before,
+    .rating label:hover:before {
+        opacity: 0.3;
+        color: #ddd;
+    }
+
+/*RESEÑAS*/
+.reseña {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: flex-start;
+}
+
+    .reseña .lector {
+        margin-right: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+        .reseña .lector img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-bottom: 5px;
+        }
+
+    .reseña .contenido {
+        flex-grow: 1;
+    }
+
+    .reseña .descripcion {
+        margin-bottom: 5px;
+    }
+
+    .reseña .puntuacion {
+        color: gold;
+        margin-bottom: 5px;
+    }
+
+    .reseña .fecha {
+        font-size: 12px;
+        color: #888;
+    }

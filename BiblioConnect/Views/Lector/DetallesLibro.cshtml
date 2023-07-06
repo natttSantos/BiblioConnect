@@ -51,15 +51,16 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#reseñas">Reseñas</a>
-                <button id="botonEscribirReseña" type="button" class="btn btn-primary" style="display: none;" data-toggle="modal" data-target="#modalReseña">
+                <button id="botonEscribirReseña" type="button" class="btn btn-primary boton-reseña" data-toggle="modal" data-target="#modalReseña">
                     Escribir reseña
                 </button>
-                <div id="reseñas-list"></div>
-
             </li>
         </ul>
         <div id="descripcionLibro" class="descripcion"></div>
         <div id="descripcionAutor" class="descripcion"></div>
+        <div id="reseñas-list" class="descripcion">
+
+        </div>
     </div>
 
     @* MODAL RESEÑA *@
@@ -203,6 +204,7 @@
         $("a.nav-link").removeClass("active"); // Remover la clase "active" de todos los elementos de la lista de pestañas
         $(`a[href="${identificadorDiv}"]`).addClass("active"); // Agregar la clase "active" al elemento de la lista de pestañas seleccionado
         $(".descripcion").empty(); // Vaciar el contenido de todas las descripciones para que no haya sobreescrituras
+        $("#botonEscribirReseña").hide();
 
         if (identificadorDiv === "#descripcionLibro") {
             var tituloLibro = $("a.nav-link.active").data("titulo");
@@ -213,7 +215,6 @@
             getDescripcionAutor(nombreAutor);
         }
         if (identificadorDiv === "#reseñas") {
-            $("#botonEscribirReseña").show()
             getReseñas()
         }
     }
@@ -280,8 +281,10 @@ function getReseñas() {
                 '</div>';
 
             $("#reseñas-list").append(vistaReseña);
+            $("#botonEscribirReseña").show();
         });
     }
+
 
 
         function getPrestamo() {
@@ -367,9 +370,7 @@ function getReseñas() {
                 data: oReserva,
                 success: function (resultado) {
                     var usuarioRepetido = resultado.resultado;
-                    console.log(usuarioRepetido)
                     if (usuarioRepetido) {
-                        console.log("entra en result")
                         var btnTransaccion = $("#btnTransaccion");
                         btnTransaccion.prop("disabled", true);
                     }
@@ -455,7 +456,6 @@ function getReseñas() {
         }
 
     function getLector(idLector) {
-        console.log(idLector)
         return new Promise((resolve, reject) => {
         $.ajax({
             url: "/Lector/ObtenerLector",
@@ -472,7 +472,6 @@ function getReseñas() {
         });
     }
     function getDescripcionLibro(title) {
-        console.log(title)
             $.ajax({
                 url: "https://es.wikipedia.org/w/api.php",
                 dataType: "jsonp",

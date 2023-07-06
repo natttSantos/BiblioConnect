@@ -434,8 +434,11 @@
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-reboot.min.css.map" />
+    <Content Include="images\logo.png" />
     <Content Include="Scripts\MostrarNotificaciones.js" />
     <Content Include="Scripts\Fechas.js" />
+    <Content Include="CSS\sidebar.min.css" />
+    <Content Include="Scripts\sidebar.js" />
     <Content Include="Scripts\sweetAlert.js" />
     <Content Include="Scripts\API_paises.js" />
     <Content Include="Scripts\API_mapa.js" />

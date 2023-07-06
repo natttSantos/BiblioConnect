@@ -9,7 +9,8 @@
     height: 300px;
     margin-right: 10px;
 }
-#FotoAutor{
+
+#FotoAutor {
     width: 300px;
     height: 300px;
     margin-right: 10px;
@@ -18,7 +19,7 @@
 #TituloDescripcionContainer {
     display: flex;
     flex-direction: column;
-    margin-right: 20px; 
+    margin-right: 20px;
 }
 
 #Titulo {
@@ -33,7 +34,6 @@
 #InformacionAdicional {
     margin-top: 20px;
 }
-
 
 /*RESEÑAS ESTRELLAS*/
 
@@ -112,3 +112,8 @@
         font-size: 12px;
         color: #888;
     }
+.boton-reseña {
+    display: none;
+    margin-top: 40px; 
+    margin-bottom: 10px; 
+}

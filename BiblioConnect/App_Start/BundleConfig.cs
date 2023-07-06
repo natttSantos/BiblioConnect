@@ -8,11 +8,22 @@ namespace BiblioConnect
         // Para obtener más información sobre las uniones, visite https://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
+            //var bundleScript = new ScriptBundle("~/bundles/bootstrap")
+            //.Include("~/vendor/jquery/jquery.min.js")
+            //.Include("~/vendor/bootstrap/js/bootstrap.bundle.js")
+            //.Include("~/vendor/jquery-easing/jquery.easing.min.js")
+            //.Include("~/js/sb-admin-2.min.js")
+            //.Include("~/vendor/datatables/jquery.dataTables.min.js")
+            //.Include("~/vendor/datatables/dataTables.bootstrap4.min.js")
+            //.Include("~/Scripts/SweetAlert/sweetalert.min.js")
+            //.Include("~/Scripts/jquery-ui.js");
+
+
+            //bundles.Add(bundleScript);
+
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
 
-            // Utilice la versión de desarrollo de Modernizr para desarrollar y obtener información sobre los formularios. De este modo, estará
-            // para la producción, use la herramienta de compilación disponible en https://modernizr.com para seleccionar solo las pruebas que necesite.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 

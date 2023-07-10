@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const tlfField = document.getElementById("tlf-field");
         const tlfInput = tlfField.querySelector(".form-control");
 
-        if (tlfInput.value.trim() === "" || tlfInput.value > 9 || tlfInput < 9) {
+        if (tlfInput.value.trim() === "" || tlfInput.value.length !== 9) {
             tlfField.classList.add("invalid");
             return false;
         } else {
@@ -100,7 +100,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const codPostalField = document.getElementById("codPostal-field");
         const codPostalInput = codPostalField.querySelector(".form-control");
 
-        if (codPostalInput.value.trim() === "" || codPostalInput.value > 5 || codPostalInput < 5) {
+        console.log(codPostalInput.value.length)
+        if (codPostalInput.value.trim() === "" || codPostalInput.value.length !== 5) {
             codPostalField.classList.add("invalid");
             return false;
         } else {
@@ -173,7 +174,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (nombreValido && emailValido && apellidosValido && calleValido && codPostalValido && passValido
             && dniValido && tlfValido && estadoValido && ciudadValido && fechaValido && imagenValido) {
-            form.submit();
+            Guardar(); 
         }
     });
 });

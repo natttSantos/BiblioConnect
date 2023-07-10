@@ -24,7 +24,7 @@
                     <h3>Inicio sesión</h3>
                 </div>
                 <div class="card-body">
-                    @*<form action="@Url.Action("Login", "Acceso")" method="post">*@
+                    <form action="@Url.Action("Login", "Acceso")" method="post">
                         <div class="input-group form-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-user"></i></span>
@@ -47,7 +47,7 @@
                         <div class="form-group">
                             <input type="submit" value="Iniciar sesión" class="btn float-right login_btn">
                         </div>
-                    @*</form>*@
+                    </form>
                 </div>
                 <div class="card-footer">
                     <div class="d-flex justify-content-center links">
@@ -74,171 +74,169 @@
                 </div>
                 <div class="modal-body">
                     <form action="#" id="formModal">
-                        <div class="container">
-                            <div class="row">
+                            <div class="container">
                                 <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-floating" id="nombre-field">
-                                            <input type="text" class="form-control" id="Nombre" placeholder="Nombre">
-                                            <label>Nombre</label>
-                                            <span class="error email error">
-                                                <i class='bx bx-error-circle error-icon'></i>
-                                                <p class="error-text">Introduce tu nombre</p>
-                                            </span>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-floating" id="nombre-field">
+                                                <input type="text" class="form-control" id="Nombre" placeholder="Nombre">
+                                                <label>Nombre</label>
+                                                <span class="error email error">
+                                                    <i class='bx bx-error-circle error-icon'></i>
+                                                    <p class="error-text">Introduce tu nombre</p>
+                                                </span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-floating" id="apellidos-field">
-                                            <input type="text" class="form-control" id="Apellidos" placeholder="Apellidos">
-                                            <label>Apellidos</label>
-                                            <span class="error email error">
-                                                <i class='bx bx-error-circle error-icon'></i>
-                                                <p class="error-text">Introduce tus apellidos</p>
-                                            </span>
+                                        <div class="col-md-4">
+                                            <div class="form-floating" id="apellidos-field">
+                                                <input type="text" class="form-control" id="Apellidos" placeholder="Apellidos">
+                                                <label>Apellidos</label>
+                                                <span class="error email error">
+                                                    <i class='bx bx-error-circle error-icon'></i>
+                                                    <p class="error-text">Introduce tus apellidos</p>
+                                                </span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-floating" id="dni-field">
-                                            <input type="text" class="form-control" id="Dni" placeholder="Dni">
-                                            <label>Dni</label>
-                                            <span class="error email error">
-                                                <i class='bx bx-error-circle error-icon'></i>
-                                                <p class="error-text">Introduce un Dni válido</p>
-                                            </span>
+                                        <div class="col-md-4">
+                                            <div class="form-floating" id="dni-field">
+                                                <input type="text" class="form-control" id="Dni" placeholder="Dni">
+                                                <label>Dni</label>
+                                                <span class="error email error">
+                                                    <i class='bx bx-error-circle error-icon'></i>
+                                                    <p class="error-text">Introduce un Dni válido</p>
+                                                </span>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-floating" id="email-field">
-                                            <input type="email" class="form-control" id="Email" placeholder="Email">
-                                            <label>Email</label>
-                                            <span class="error email error">
-                                                <i class='bx bx-error-circle error-icon'></i>
-                                                <p class="error-text">Tu email debe contener el símbolo  &#64; y un dominio.</p>
-                                            </span>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-floating" id="email-field">
+                                                <input type="email" class="form-control" id="Email" placeholder="Email">
+                                                <label>Email</label>
+                                                <span class="error email error">
+                                                    <i class='bx bx-error-circle error-icon'></i>
+                                                    <p class="error-text">Tu email debe contener el símbolo  &#64; y un dominio.</p>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-floating" id="tlf-field">
+                                                <input type="tel" class="form-control" id="Telefono" placeholder="Telefono" pattern="\d*">
+                                                <label>Teléfono</label>
+                                                <span class="error email error">
+                                                    <i class='bx bx-error-circle error-icon'></i>
+                                                    <p class="error-text">Introduce un teléfono de 9 dígitos</p>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-floating" id="fecha-field">
+                                                <input type="date" class="form-control" id="FechaNacimiento" placeholder="Fecha de Nacimiento">
+                                                <label>Fecha de Nacimiento</label>
+                                                <span class="error email error">
+                                                    <i class='bx bx-error-circle error-icon'></i>
+                                                    <p class="error-text">Seleccione una fecha</p>
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="form-floating" id="tlf-field">
-                                            <input type="tel" class="form-control" id="Telefono" placeholder="Telefono" pattern="\d*">
-                                            <label>Teléfono</label>
-                                            <span class="error email error">
-                                                <i class='bx bx-error-circle error-icon'></i>
-                                                <p class="error-text">Introduce un teléfono de 9 dígitos</p>
-                                            </span>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-floating" id="estado-field">
+                                                <select class="form-select" id="Estado" aria-label="Floating label select example">
+                                                    <option selected>Seleccione una opcion</option>
+                                                    <option value="Castello">Castello</option>
+                                                    <option value="Valencia">Valencia</option>
+                                                    <option value="Alacant">Alacant</option>
+                                                </select>
+                                                <label for="floatingSelect">Estado</label>
+                                                <span class="error email error">
+                                                    <i class='bx bx-error-circle error-icon'></i>
+                                                    <p class="error-text">Introduce un estado</p>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating" id="ciudad-field">
+                                                <select class="form-select" id="Ciudad" aria-label="Floating label select example">
+                                                    <option selected>Seleccione una opcion</option>
+                                                </select>
+                                                <label for="floatingSelect">Ciudad</label>
+                                                <span class="error email error">
+                                                    <i class='bx bx-error-circle error-icon'></i>
+                                                    <p class="error-text">Introduce una ciudad</p>
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="form-floating" id="fecha-field">
-                                            <input type="date" class="form-control" id="FechaNacimiento" placeholder="Fecha de Nacimiento">
-                                            <label>Fecha de Nacimiento</label>
-                                            <span class="error email error">
-                                                <i class='bx bx-error-circle error-icon'></i>
-                                                <p class="error-text">Seleccione una fecha</p>
-                                            </span>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-floating" id="calle-field">
+                                                <input type="text" class="form-control" id="Calle" placeholder="Calle">
+                                                <label>Calle</label>
+                                                <span class="error email error">
+                                                    <i class='bx bx-error-circle error-icon'></i>
+                                                    <p class="error-text">Introduce una calle</p>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating" id="codPostal-field">
+                                                <input type="text" class="form-control" id="CodPostal" placeholder="Código Postal">
+                                                <label>Código Postal</label>
+                                                <span class="error email error">
+                                                    <i class='bx bx-error-circle error-icon'></i>
+                                                    <p class="error-text">Introduce un código postal de 5 dígitos</p>
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-floating" id="estado-field">
-                                            <select class="form-select" id="Estado" aria-label="Floating label select example">
-                                                <option selected>Seleccione una opcion</option>
-                                                <option value="Castello">Castello</option>
-                                                <option value="Valencia">Valencia</option>
-                                                <option value="Alacant">Alacant</option>
-                                            </select>
-                                            <label for="floatingSelect">Estado</label>
-                                            <span class="error email error">
-                                                <i class='bx bx-error-circle error-icon'></i>
-                                                <p class="error-text">Introduce un estado</p>
-                                            </span>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-floating" id="password-field">
+                                                <input type="password" class="form-control" id="Contraseña" placeholder="Contraseña">
+                                                <label for="Nombre">Contraseña</label>
+                                                <span class="error email error">
+                                                    <i class='bx bx-error-circle error-icon'></i>
+                                                    <p class="error-text">Las contraseñas no coinciden</p>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating" id="confirmPassword-field">
+                                                <input type="password" class="form-control" id="confirmarContraseña" placeholder="Confirmar contraseña">
+                                                <label for="Nombre">Confirmar contraseña</label>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating" id="ciudad-field">
-                                            <select class="form-select" id="Ciudad" aria-label="Floating label select example">
-                                                <option selected>Seleccione una opcion</option>
-                                            </select>
-                                            <label for="floatingSelect">Ciudad</label>
-                                            <span class="error email error">
-                                                <i class='bx bx-error-circle error-icon'></i>
-                                                <p class="error-text">Introduce una ciudad</p>
-                                            </span>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="imagen" id="imagen-field">
+                                                <label for="filelibro" class="form-label">Seleccione una imagen:</label>
+                                                <input class="form-control" type="file" id="filelibro" onchange="readURL(this)">
+                                                <span class="error email error">
+                                                    <i class='bx bx-error-circle error-icon'></i>
+                                                    <p class="error-text">No ha seleccionado ninguna imagen</p>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <img id="imglector" class="border border-dark img-thumbnail" />
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-floating" id="calle-field">
-                                            <input type="text" class="form-control" id="Calle" placeholder="Calle">
-                                            <label>Calle</label>
-                                            <span class="error email error">
-                                                <i class='bx bx-error-circle error-icon'></i>
-                                                <p class="error-text">Introduce una calle</p>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating" id="codPostal-field">
-                                            <input type="text" class="form-control" id="Código Postal" placeholder="Código Postal">
-                                            <label>Código Postal</label>
-                                            <span class="error email error">
-                                                <i class='bx bx-error-circle error-icon'></i>
-                                                <p class="error-text">Introduce un código postal de 5 dígitos</p>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-floating" id="password-field">
-                                            <input type="password" class="form-control" id="Contraseña" placeholder="Contraseña">
-                                            <label for="Nombre">Contraseña</label>
-                                            <span class="error email error">
-                                                <i class='bx bx-error-circle error-icon'></i>
-                                                <p class="error-text">Las contraseñas no coinciden</p>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating" id="confirmPassword-field">
-                                            <input type="password" class="form-control" id="confirmarContraseña" placeholder="Confirmar contraseña">
-                                            <label for="Nombre">Confirmar contraseña</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="imagen" id="imagen-field">
-                                            <label for="filelibro" class="form-label">Seleccione una imagen:</label>
-                                            <input class="form-control" type="file" id="filelibro" onchange="readURL(this)">
-                                            <span class="error email error">
-                                                <i class='bx bx-error-circle error-icon'></i>
-                                                <p class="error-text">No ha seleccionado ninguna imagen</p>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <img id="imglector" class="border border-dark img-thumbnail" />
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <div class="form-floating button">
-                                            <input type="submit" class="btn-registrar" value="Registrar ahora" />
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="form-floating button">
+                                                <input type="submit" class="btn-registrar" value="Registrar" />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
                 </div>
             </div>
         </div>
@@ -246,6 +244,9 @@
     <script src="~/Scripts/jquery-3.7.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
     <script src="~/Scripts/bootstrap.js"></script>
+    @* Libreria alert *@
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/Scripts/sweetAlert.js"></script>
     @* Carga Script js API Paises*@
     <script src="~/Scripts/API_paises.js"></script>
     <script>
@@ -298,7 +299,9 @@
                 success: function (data) {
                     console.log("con éxito")
                     if (data.resultado) {
-                       window.location.href = '@Url.Action("Login", "Acceso")';
+                        alertSuccess('¡Enhorabuena!', 'Acabas de registrarte como lector').then(() => {
+                            $('#registroModal').modal('hide');
+                        })
                     } else {
                         alert("No se pudo guardar los cambios")
                     }

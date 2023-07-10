@@ -8,12 +8,12 @@
 <html>
 <head>
     <title>Login Page</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <link href="~/Content/css/Login.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="~/CSS/Login.css" rel="stylesheet" />
+    @* Boostrap CSS *@
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet">
+    <!-- Boxicons CSS -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
 </head>
 <body>
@@ -24,7 +24,7 @@
                     <h3>Inicio sesión</h3>
                 </div>
                 <div class="card-body">
-                    <form action="@Url.Action("Login", "Acceso")" method="post">
+                    @*<form action="@Url.Action("Login", "Acceso")" method="post">*@
                         <div class="input-group form-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-user"></i></span>
@@ -47,10 +47,12 @@
                         <div class="form-group">
                             <input type="submit" value="Iniciar sesión" class="btn float-right login_btn">
                         </div>
-                    </form>
+                    @*</form>*@
                 </div>
                 <div class="card-footer">
-                    <div class="d-flex justify-content-center links"> <a href="@Url.Action("RegistrarLector", "Acceso")">Regístrate como lector</a>
+                    <div class="d-flex justify-content-center links">
+                        @*<a href="@Url.Action("RegistrarLector", "Acceso")">Regístrate como lector</a>*@
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#registroModal">Regístrate como lector</a>
                     </div>
                     <div class="d-flex justify-content-center links">
                         ¿Tienes una Biblioteca y quieres darla de alta? <a href="@Url.Action("RegistrarBiblioteca", "Acceso")">Dar de alta Biblioteca</a>
@@ -60,7 +62,290 @@
             </div>
         </div>
     </div>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    @* MODAL LECTOR *@
+    <!-- Modal -->
+    <div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable custom-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="registroModalLabel">Registro Lector</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="#" id="formModal">
+                        <div class="container">
+                            <div class="row">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-floating" id="nombre-field">
+                                            <input type="text" class="form-control" id="Nombre" placeholder="Nombre">
+                                            <label>Nombre</label>
+                                            <span class="error email error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Introduce tu nombre</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-floating" id="apellidos-field">
+                                            <input type="text" class="form-control" id="Apellidos" placeholder="Apellidos">
+                                            <label>Apellidos</label>
+                                            <span class="error email error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Introduce tus apellidos</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-floating" id="dni-field">
+                                            <input type="text" class="form-control" id="Dni" placeholder="Dni">
+                                            <label>Dni</label>
+                                            <span class="error email error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Introduce un Dni válido</p>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-floating" id="email-field">
+                                            <input type="email" class="form-control" id="Email" placeholder="Email">
+                                            <label>Email</label>
+                                            <span class="error email error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Tu email debe contener el símbolo  &#64; y un dominio.</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-floating" id="tlf-field">
+                                            <input type="tel" class="form-control" id="Telefono" placeholder="Telefono" pattern="\d*">
+                                            <label>Teléfono</label>
+                                            <span class="error email error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Introduce un teléfono de 9 dígitos</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-floating" id="fecha-field">
+                                            <input type="date" class="form-control" id="FechaNacimiento" placeholder="Fecha de Nacimiento">
+                                            <label>Fecha de Nacimiento</label>
+                                            <span class="error email error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Seleccione una fecha</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-floating" id="estado-field">
+                                            <select class="form-select" id="Estado" aria-label="Floating label select example">
+                                                <option selected>Seleccione una opcion</option>
+                                                <option value="Castello">Castello</option>
+                                                <option value="Valencia">Valencia</option>
+                                                <option value="Alacant">Alacant</option>
+                                            </select>
+                                            <label for="floatingSelect">Estado</label>
+                                            <span class="error email error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Introduce un estado</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating" id="ciudad-field">
+                                            <select class="form-select" id="Ciudad" aria-label="Floating label select example">
+                                                <option selected>Seleccione una opcion</option>
+                                            </select>
+                                            <label for="floatingSelect">Ciudad</label>
+                                            <span class="error email error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Introduce una ciudad</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-floating" id="calle-field">
+                                            <input type="text" class="form-control" id="Calle" placeholder="Calle">
+                                            <label>Calle</label>
+                                            <span class="error email error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Introduce una calle</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating" id="codPostal-field">
+                                            <input type="text" class="form-control" id="Código Postal" placeholder="Código Postal">
+                                            <label>Código Postal</label>
+                                            <span class="error email error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Introduce un código postal de 5 dígitos</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-floating" id="password-field">
+                                            <input type="password" class="form-control" id="Contraseña" placeholder="Contraseña">
+                                            <label for="Nombre">Contraseña</label>
+                                            <span class="error email error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Las contraseñas no coinciden</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating" id="confirmPassword-field">
+                                            <input type="password" class="form-control" id="confirmarContraseña" placeholder="Confirmar contraseña">
+                                            <label for="Nombre">Confirmar contraseña</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="imagen" id="imagen-field">
+                                            <label for="filelibro" class="form-label">Seleccione una imagen:</label>
+                                            <input class="form-control" type="file" id="filelibro" onchange="readURL(this)">
+                                            <span class="error email error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">No ha seleccionado ninguna imagen</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <img id="imglector" class="border border-dark img-thumbnail" />
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-floating button">
+                                            <input type="submit" class="btn-registrar" value="Registrar ahora" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    @* Carga Script js API Paises*@
+    <script src="~/Scripts/API_paises.js"></script>
+    <script>
+        var tabladata;
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#imglector')
+                        .attr('src', e.target.result)
+                        .width(190)
+                        .height(192);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function Guardar() {
+
+            var ImagenSeleccionada = ($("#filelibro"))[0].files[0];
+
+            var objeto = {
+                Nombre: $("#Nombre").val(),
+                Email: $("#Email").val(),
+                Calle: $("#Calle").val(),
+                Ciudad: $("#Ciudad").find("option:selected").text(),
+                CodPostal: $("#CodPostal").val(),
+                Apellidos: $("#Apellidos").val(),
+                Dni: $("#Dni").val(),
+                Telefono: $("#Telefono").val(),
+                Contraseña: $("#Contraseña").val(),
+                Estado: $("#Estado").find("option:selected").text(),
+                Pais: $("#Pais").find("option:selected").text(),
+                FechaNacimiento: $("#FechaNacimiento").val(),
+            }
+
+            var request = new FormData();
+            request.append("imagenArchivo", ImagenSeleccionada);
+            request.append("objeto", JSON.stringify(objeto));
+
+            jQuery.ajax({
+                url: '@Url.Action("RegistrarLector", "Acceso")',
+                type: "POST",
+                data: request,
+                processData: false,
+                contentType : false,
+                success: function (data) {
+                    console.log("con éxito")
+                    if (data.resultado) {
+                       window.location.href = '@Url.Action("Login", "Acceso")';
+                    } else {
+                        alert("No se pudo guardar los cambios")
+                    }
+                },
+                error: function (error) {
+                    console.log(error)
+                },
+                beforeSend: function () {
+
+                },
+            });
+
+    }
+    //API DE PAISES
+        $(document).ready(function () {
+            deshabilitarFechasPosteriores();
+
+        $.ajax({
+            url: "https://www.universal-tutorial.com/api/getaccesstoken",
+            type: "GET",
+            headers: {
+                "Accept": "application/json",
+                "api-token": "4TtTboEhH8Qb-Xx3QHOeacz4RiEenMI7rqHDdjZt4oeosXPWeEsARjPVDgI5p1iaTys",
+                "user-email": "nsantosbalterra@gmail.com"
+            },
+            success: function (response) {
+                var selectedState;
+                var auth_token = response.auth_token;
+
+                $("#Estado").change(function () {
+                    selectedState = $(this).find("option:selected").text();
+                    getCities(auth_token, selectedState);
+                });
+            },
+            error: function (error) {
+                console.log("Error al obtener el access token:", error);
+            }
+        });
+    });
+
+        function deshabilitarFechasPosteriores() {
+            var inputFecha = document.getElementById("FechaNacimiento");
+            var fechaActual = new Date();
+            var fechaActualISO = fechaActual.toISOString().split('T')[0];
+            inputFecha.max = fechaActualISO;
+        }
+    </script>
+    <script src="~/Validate/Registro.js"></script>
 </body>
 </html>

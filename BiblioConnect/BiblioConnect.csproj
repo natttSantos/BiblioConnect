@@ -353,6 +353,7 @@
     <Content Include="Content\jquery-ui.structure.css" />
     <Content Include="Content\jquery-ui.theme.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="CSS\Login.css" />
     <Content Include="CSS\Notificacion.css" />
     <Content Include="CSS\Calendario.css" />
     <Content Include="CSS\Layout.css" />
@@ -475,6 +476,7 @@
     <Content Include="Scripts\jquery-3.7.0.slim.js" />
     <Content Include="Scripts\jquery-3.7.0.slim.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Validate\Registro.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

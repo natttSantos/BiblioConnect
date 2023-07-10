@@ -1,0 +1,67 @@
+﻿
+
+#registroModal .modal-dialog {
+    max-width: 800px; /* Ajusta el ancho máximo según tus necesidades */
+    width: 90%; /* Ajusta el ancho según tus necesidades */
+}
+
+
+#imglector {
+    max-width: 130px;
+    max-height: 130px;
+    width: auto;
+    height: auto;
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+/** {
+    font-family: 'Poppins', sans-serif;
+}*/
+/*VALIDATE FORM*/
+.form-floating {
+    margin-bottom: 16px;
+}
+.form-floating .error {
+    display: flex;
+    align-items: center;
+    margin-top: 6px;
+    color: #cb2323;
+    font-size: 13px;
+    font-family: 'Poppins', sans-serif;
+    display: none;
+}
+    .imagen .error {
+        display: flex;
+        align-items: center;
+        margin-top: 6px;
+        color: #cb2323;
+        font-size: 13px;
+        font-family: 'Poppins', sans-serif;
+        display: none;
+    }
+.invalid .error{
+    display: flex;
+}
+.invalid input {
+    border-color: #cb2323;
+}
+.invalid select {
+    border-color: #cb2323;
+}
+.error .error-icon{
+    margin-right: 6px; 
+    font-size: 14px; 
+    margin-top: -15px
+}
+.button{
+    margin: 25px 0 6px; 
+}
+.btn-registrar {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: #8700ff;
+}

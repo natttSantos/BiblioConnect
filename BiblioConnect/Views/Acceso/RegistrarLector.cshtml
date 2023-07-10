@@ -187,5 +187,22 @@
             }
         });
     });
+    function validateForm() {
+        var form = document.getElementById("myForm");
+        var inputs = form.querySelectorAll("input, textarea, select");
+        var valid = true;
+
+        inputs.forEach(function (input) {
+            if (!input.checkValidity()) {
+                input.classList.add("invalid");
+                valid = false;
+            } else {
+                input.classList.remove("invalid");
+            }
+        });
+
+        return valid;
+    }
+
 </script>
 

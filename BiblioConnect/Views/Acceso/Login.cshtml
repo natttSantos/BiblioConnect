@@ -2,7 +2,6 @@
 @{
     Layout = null;
 }
-
 <!DOCTYPE html>
 
 <html>
@@ -51,11 +50,10 @@
                 </div>
                 <div class="card-footer">
                     <div class="d-flex justify-content-center links">
-                        @*<a href="@Url.Action("RegistrarLector", "Acceso")">Regístrate como lector</a>*@
                         <a href="#" data-bs-toggle="modal" data-bs-target="#registroModal">Regístrate como lector</a>
                     </div>
                     <div class="d-flex justify-content-center links">
-                        ¿Tienes una Biblioteca y quieres darla de alta? <a href="@Url.Action("RegistrarBiblioteca", "Acceso")">Dar de alta Biblioteca</a>
+                        ¿Tienes una Biblioteca y quieres darla de alta? <a href="#" data-bs-toggle="modal" data-bs-target="#registroBiblioModal">Dar de alta Biblioteca</a>
                     </div>
 
                 </div>
@@ -64,7 +62,6 @@
     </div>
 
     @* MODAL LECTOR *@
-    <!-- Modal -->
     <div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable custom-modal">
             <div class="modal-content">
@@ -73,13 +70,196 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="#" id="formModal">
-                            <div class="container">
+                    <form action="#" name="formModal">
+                        <div class="container">
+                            <div class="row">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-floating" id="nombre-field">
+                                            <input type="text" class="form-control" id="Nombre" placeholder="Nombre">
+                                            <label>Nombre</label>
+                                            <span class="error email error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Introduce tu nombre</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-floating" id="apellidos-field">
+                                            <input type="text" class="form-control" id="Apellidos" placeholder="Apellidos">
+                                            <label>Apellidos</label>
+                                            <span class="error email error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Introduce tus apellidos</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-floating" id="dni-field">
+                                            <input type="text" class="form-control" id="Dni" placeholder="Dni">
+                                            <label>Dni</label>
+                                            <span class="error email error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Introduce un Dni válido</p>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-floating" id="email-field">
+                                            <input type="email" class="form-control" id="Email" placeholder="Email">
+                                            <label>Email</label>
+                                            <span class="error email error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Tu email debe contener el símbolo  &#64; y un dominio.</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-floating" id="tlf-field">
+                                            <input type="tel" class="form-control" id="Telefono" placeholder="Telefono" pattern="\d*">
+                                            <label>Teléfono</label>
+                                            <span class="error email error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Introduce un teléfono de 9 dígitos</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-floating" id="fecha-field">
+                                            <input type="date" class="form-control" id="FechaNacimiento" placeholder="Fecha de Nacimiento">
+                                            <label>Fecha de Nacimiento</label>
+                                            <span class="error email error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Seleccione una fecha</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-floating" id="estado-field">
+                                            <select class="form-select" id="Estado" aria-label="Floating label select example">
+                                                <option selected>Seleccione una opcion</option>
+                                                <option value="Castello">Castello</option>
+                                                <option value="Valencia">Valencia</option>
+                                                <option value="Alacant">Alacant</option>
+                                            </select>
+                                            <label for="floatingSelect">Estado</label>
+                                            <span class="error email error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Introduce un estado</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating" id="ciudad-field">
+                                            <select class="form-select" id="Ciudad" aria-label="Floating label select example">
+                                                <option selected>Seleccione una opcion</option>
+                                            </select>
+                                            <label for="floatingSelect">Ciudad</label>
+                                            <span class="error email error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Introduce una ciudad</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-floating" id="calle-field">
+                                            <input type="text" class="form-control" id="Calle" placeholder="Calle">
+                                            <label>Calle</label>
+                                            <span class="error email error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Introduce una calle</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating" id="codPostal-field">
+                                            <input type="text" class="form-control" id="CodPostal" placeholder="Código Postal">
+                                            <label>Código Postal</label>
+                                            <span class="error email error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Introduce un código postal de 5 dígitos</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-floating" id="password-field">
+                                            <input type="password" class="form-control" id ="Contraseña" placeholder="Contraseña">
+                                            <label for="Nombre">Contraseña</label>
+                                            <i class="bx bx-hide show-hide" id="showPassword"></i>
+                                            <span class="error email error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Las contraseñas no coinciden</p>
+                                            </span>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating" id="confirmPassword-field">
+                                            <input type="password" class="form-control" id ="confirmarContraseña" placeholder="Confirmar contraseña">
+                                            <label for="Nombre">Confirmar contraseña</label>
+                                            <i class="bx bx-hide show-hide" id="showPassword"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="imagen" id="imagen-field">
+                                            <label for="filelibro" class="form-label">Seleccione una imagen:</label>
+                                            <input class="form-control" type="file" id ="filelibro" onchange="readURL(this, false)">
+                                            <span class="error email error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">No ha seleccionado ninguna imagen</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <img id="imglector" class="border border-dark img-thumbnail" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row  d-flex justify-content-center align-items-center">
+                                    <div class="col-md-4">
+                                        <div class="form-floating button">
+                                            <input type="submit" class="btn-registrar" value="Registrar" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @* MODAL Biblio *@
+    <div class="modal fade" id="registroBiblioModal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable custom-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="registroModalLabel">Registro biblioteca</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="#" name="formModal">
+                        <div class="container">
+                            <div id="registrar-lector">
                                 <div class="row">
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <div class="form-floating" id="nombre-field">
-                                                <input type="text" class="form-control" id="Nombre" placeholder="Nombre">
+                                            <div class="form-floating" id="nombreBiblio-field">
+                                                <input type="text" class="form-control" id="NombreBiblio" placeholder="Nombre">
                                                 <label>Nombre</label>
                                                 <span class="error email error">
                                                     <i class='bx bx-error-circle error-icon'></i>
@@ -88,31 +268,8 @@
                                             </div>
                                         </div>
                                         <div class="col-md-4">
-                                            <div class="form-floating" id="apellidos-field">
-                                                <input type="text" class="form-control" id="Apellidos" placeholder="Apellidos">
-                                                <label>Apellidos</label>
-                                                <span class="error email error">
-                                                    <i class='bx bx-error-circle error-icon'></i>
-                                                    <p class="error-text">Introduce tus apellidos</p>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-floating" id="dni-field">
-                                                <input type="text" class="form-control" id="Dni" placeholder="Dni">
-                                                <label>Dni</label>
-                                                <span class="error email error">
-                                                    <i class='bx bx-error-circle error-icon'></i>
-                                                    <p class="error-text">Introduce un Dni válido</p>
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-floating" id="email-field">
-                                                <input type="email" class="form-control" id="Email" placeholder="Email">
+                                            <div class="form-floating" id="emailBiblio-field">
+                                                <input type="email" class="form-control" id="EmailBiblio" placeholder="Email">
                                                 <label>Email</label>
                                                 <span class="error email error">
                                                     <i class='bx bx-error-circle error-icon'></i>
@@ -121,8 +278,8 @@
                                             </div>
                                         </div>
                                         <div class="col-md-4">
-                                            <div class="form-floating" id="tlf-field">
-                                                <input type="tel" class="form-control" id="Telefono" placeholder="Telefono" pattern="\d*">
+                                            <div class="form-floating" id="tlfBiblio-field">
+                                                <input type="tel" class="form-control" id ="TelefonoBiblio" placeholder="Telefono" pattern="\d*">
                                                 <label>Teléfono</label>
                                                 <span class="error email error">
                                                     <i class='bx bx-error-circle error-icon'></i>
@@ -130,21 +287,11 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <div class="form-floating" id="fecha-field">
-                                                <input type="date" class="form-control" id="FechaNacimiento" placeholder="Fecha de Nacimiento">
-                                                <label>Fecha de Nacimiento</label>
-                                                <span class="error email error">
-                                                    <i class='bx bx-error-circle error-icon'></i>
-                                                    <p class="error-text">Seleccione una fecha</p>
-                                                </span>
-                                            </div>
-                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <div class="form-floating" id="estado-field">
-                                                <select class="form-select" id="Estado" aria-label="Floating label select example">
+                                            <div class="form-floating" id="estadoBiblio-field">
+                                                <select class="form-select" id="EstadoBiblio" aria-label="Floating label select example">
                                                     <option selected>Seleccione una opcion</option>
                                                     <option value="Castello">Castello</option>
                                                     <option value="Valencia">Valencia</option>
@@ -158,8 +305,8 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="form-floating" id="ciudad-field">
-                                                <select class="form-select" id="Ciudad" aria-label="Floating label select example">
+                                            <div class="form-floating" id="ciudadBiblio-field">
+                                                <select class="form-select" id="CiudadBiblio" aria-label="Floating label select example">
                                                     <option selected>Seleccione una opcion</option>
                                                 </select>
                                                 <label for="floatingSelect">Ciudad</label>
@@ -172,8 +319,8 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <div class="form-floating" id="calle-field">
-                                                <input type="text" class="form-control" id="Calle" placeholder="Calle">
+                                            <div class="form-floating" id="calleBiblio-field">
+                                                <input type="text" class="form-control" id="CalleBiblio" placeholder="Calle">
                                                 <label>Calle</label>
                                                 <span class="error email error">
                                                     <i class='bx bx-error-circle error-icon'></i>
@@ -182,8 +329,8 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="form-floating" id="codPostal-field">
-                                                <input type="text" class="form-control" id="CodPostal" placeholder="Código Postal">
+                                            <div class="form-floating" id="codPostalBiblio-field">
+                                                <input type="text" class="form-control" id="CodPostalBiblio" placeholder="Código Postal">
                                                 <label>Código Postal</label>
                                                 <span class="error email error">
                                                     <i class='bx bx-error-circle error-icon'></i>
@@ -194,8 +341,8 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <div class="form-floating" id="password-field">
-                                                <input type="password" class="form-control" id="Contraseña" placeholder="Contraseña">
+                                            <div class="form-floating" id="passwordBiblio-field">
+                                                <input type="password" class="form-control" id="ContraseñaBiblio" placeholder="Contraseña">
                                                 <label for="Nombre">Contraseña</label>
                                                 <i class="bx bx-hide show-hide" id="showPassword"></i>
                                                 <span class="error email error">
@@ -206,18 +353,30 @@
 
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="form-floating" id="confirmPassword-field">
-                                                <input type="password" class="form-control" id="confirmarContraseña" placeholder="Confirmar contraseña">
+                                            <div class="form-floating" id="confirmPasswordBiblio-field">
+                                                <input type="password" class="form-control" id="confirmarContraseñaBiblio" placeholder="Confirmar contraseña">
                                                 <label for="Nombre">Confirmar contraseña</label>
                                                 <i class="bx bx-hide show-hide" id="showPassword"></i>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-floating" id="descripcionBiblio-field">
+                                                <input type="text" class="form-control" id="DescripcionBiblio" placeholder="Descripcion">
+                                                <label>Descripcion</label>
+                                                <span class="error email error">
+                                                    <i class='bx bx-error-circle error-icon'></i>
+                                                    <p class="error-text">Introduce una descripción</p>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-md-6">
-                                            <div class="imagen" id="imagen-field">
+                                            <div class="imagen" id="imagenBiblio-field">
                                                 <label for="filelibro" class="form-label">Seleccione una imagen:</label>
-                                                <input class="form-control" type="file" id="filelibro" onchange="readURL(this)">
+                                                <input class="form-control" type="file" id="filelibroBiblio" onchange="readURL(this, true)">
                                                 <span class="error email error">
                                                     <i class='bx bx-error-circle error-icon'></i>
                                                     <p class="error-text">No ha seleccionado ninguna imagen</p>
@@ -226,7 +385,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <img id="imglector" class="border border-dark img-thumbnail" />
+                                                <img id="imglectorBiblio" class="border border-dark img-thumbnail" />
                                             </div>
                                         </div>
                                     </div>
@@ -239,11 +398,13 @@
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+
     <script src="~/Scripts/jquery-3.7.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
     <script src="~/Scripts/bootstrap.js"></script>
@@ -255,25 +416,31 @@
     <script>
         var tabladata;
 
-        function readURL(input) {
+        function readURL(input, esBiblio) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
 
                 reader.onload = function (e) {
-                    $('#imglector')
-                        .attr('src', e.target.result)
-                        .width(190)
-                        .height(192);
+                    if (!esBiblio) {
+                        $('#imglector')
+                            .attr('src', e.target.result)
+                            .width(190)
+                            .height(192);
+                    } else {
+                        $('#imglectorBiblio')
+                            .attr('src', e.target.result)
+                            .width(190)
+                            .height(192);
+                    }
+
                 };
 
                 reader.readAsDataURL(input.files[0]);
             }
         }
 
-        function Guardar() {
-
+        function GuardarLector() {
             var ImagenSeleccionada = ($("#filelibro"))[0].files[0];
-
             var objeto = {
                 Nombre: $("#Nombre").val(),
                 Email: $("#Email").val(),
@@ -288,11 +455,9 @@
                 Pais: $("#Pais").find("option:selected").text(),
                 FechaNacimiento: $("#FechaNacimiento").val(),
             }
-
             var request = new FormData();
             request.append("imagenArchivo", ImagenSeleccionada);
             request.append("objeto", JSON.stringify(objeto));
-
             jQuery.ajax({
                 url: '@Url.Action("RegistrarLector", "Acceso")',
                 type: "POST",
@@ -300,7 +465,6 @@
                 processData: false,
                 contentType : false,
                 success: function (data) {
-                    console.log("con éxito")
                     if (data.resultado) {
                         alertSuccess('¡Enhorabuena!', 'Acabas de registrarte como lector').then(() => {
                             $('#registroModal').modal('hide');
@@ -311,12 +475,48 @@
                 },
                 error: function (error) {
                     console.log(error)
-                },
-                beforeSend: function () {
-
-                },
+                }
             });
+    }
+            function GuardarBiblioteca() {
+                var ImagenSeleccionada = ($("#filelibroBiblio"))[0].files[0];
 
+            var objeto = {
+                Nombre: $("#NombreBiblio").val(),
+                Email: $("#EmailBiblio").val(),
+                Calle: $("#CalleBiblio").val(),
+                Ciudad: $("#CiudadBiblio").find("option:selected").text(),
+                CodPostal: $("#CodPostalBiblio").val(),
+                Descripcion: $("#DescripcionBiblio").val(),
+                Telefono: $("#TelefonoBiblio").val(),
+                Contraseña: $("#ContraseñaBiblio").val(),
+                Estado: $("#EstadoBiblio").find("option:selected").text(),
+                Pais: $("#PaisBiblio").find("option:selected").text(),
+            }
+
+            var request = new FormData();
+            request.append("imagenArchivo", ImagenSeleccionada);
+            request.append("objeto", JSON.stringify(objeto));
+
+            jQuery.ajax({
+                url: '@Url.Action("RegistrarBiblioteca", "Acceso")',
+                type: "POST",
+                data: request,
+                processData: false,
+                contentType : false,
+                success: function (data) {
+                    if (data.resultado) {
+                        alertSuccess('¡Enhorabuena!', 'Acabas de registrar una biblioteca').then(() => {
+                            $('#registroBiblioModal').modal('hide');
+                        })
+                    } else {
+                        alert("No se pudo guardar los cambios")
+                    }
+                },
+                error: function (error) {
+                    console.log(error)
+                }
+            });
     }
     //API DE PAISES
         $(document).ready(function () {
@@ -336,7 +536,11 @@
 
                 $("#Estado").change(function () {
                     selectedState = $(this).find("option:selected").text();
-                    getCities(auth_token, selectedState);
+                    getCities(auth_token, selectedState,'#Ciudad');
+                });
+                $("#EstadoBiblio").change(function () {
+                    selectedState = $(this).find("option:selected").text();
+                    getCities(auth_token, selectedState,'#CiudadBiblio');
                 });
             },
             error: function (error) {

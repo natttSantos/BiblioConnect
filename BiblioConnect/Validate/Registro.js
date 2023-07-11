@@ -1,9 +1,54 @@
 
 document.addEventListener("DOMContentLoaded", function () {
-    const form = document.querySelector("#registroModal form");
+    const registroLectorModal = document.querySelector("#registroModal form");
+    const registroBiblioModal = document.querySelector("#registroBiblioModal form");
 
-    function validarNombre() {
-        const nombreField = document.getElementById("nombre-field");
+    //LECTOR
+    registroLectorModal.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const nombreValido = validarNombre("nombre-field");
+        const emailValido = validarEmail("email-field");
+        const apellidosValido = validarApellidos("apellidos-field");
+        const calleValido = validarCalle("calle-field");
+        const codPostalValido = validarCodPostal("codPostal-field");
+        const passValido = validarPassword("password-field", "confirmPassword-field");
+        const dniValido = validarDni("dni-field");
+        const tlfValido = validarTlf("tlf-field");
+        const estadoValido = validarEstado("estado-field");
+        const ciudadValido = validarCiudad("ciudad-field");
+        const fechaValido = validarFecha("fecha-field");
+        const imagenValido = validarImagen("imagen-field");
+
+        if (nombreValido && emailValido && apellidosValido && calleValido && codPostalValido && passValido
+            && dniValido && tlfValido && estadoValido && ciudadValido && fechaValido && imagenValido) {
+            GuardarLector();
+        }
+    });
+
+    //BIBLIOTECA
+    registroBiblioModal.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const nombreValido = validarNombre("nombreBiblio-field");
+        const descripcionValido = validarDescripcion("descripcionBiblio-field");
+        const emailValido = validarEmail("emailBiblio-field");
+        const calleValido = validarCalle("calleBiblio-field");
+        const codPostalValido = validarCodPostal("codPostalBiblio-field");
+        const passValido = validarPassword("passwordBiblio-field", "confirmPasswordBiblio-field");
+        const tlfValido = validarTlf("tlfBiblio-field");
+        const estadoValido = validarEstado("estadoBiblio-field");
+        const ciudadValido = validarCiudad("ciudadBiblio-field");
+        const imagenValido = validarImagen("imagenBiblio-field");
+
+        if (nombreValido && emailValido && calleValido && codPostalValido && passValido
+            && tlfValido && estadoValido && ciudadValido && imagenValido && descripcionValido) {
+            GuardarBiblioteca();
+        }
+    });
+
+    function validarNombre(field) {
+        const nombreField = document.getElementById(field);
         const nombreInput = nombreField.querySelector(".form-control");
         if (nombreInput.value.trim() === "") {
             nombreField.classList.add("invalid");
@@ -13,8 +58,8 @@ document.addEventListener("DOMContentLoaded", function () {
             return true;
         }
     }
-    function validarApellidos() {
-        const apellidosField = document.getElementById("apellidos-field");
+    function validarApellidos(field) {
+        const apellidosField = document.getElementById(field);
         const apellidosInput = apellidosField.querySelector(".form-control");
         if (apellidosInput.value.trim() === "") {
             apellidosField.classList.add("invalid");
@@ -24,8 +69,8 @@ document.addEventListener("DOMContentLoaded", function () {
             return true;
         }
     }
-    function validarDni() {
-        const dniField = document.getElementById("dni-field");
+    function validarDni(field) {
+        const dniField = document.getElementById(field);
         const dniInput = dniField.querySelector(".form-control");
         const pattern = /^\d{8}[a-zA-Z]$/;
 
@@ -37,8 +82,8 @@ document.addEventListener("DOMContentLoaded", function () {
             return true;
         }
     }
-    function validarEmail() {
-        const emailField = document.getElementById("email-field");
+    function validarEmail(field) {
+        const emailField = document.getElementById(field);
         const emailInput = emailField.querySelector(".form-control");
         const pattern = /^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$/;
 
@@ -50,8 +95,20 @@ document.addEventListener("DOMContentLoaded", function () {
             return true;
         }
     }
-    function validarTlf() {
-        const tlfField = document.getElementById("tlf-field");
+
+    function validarDescripcion(field) {
+        const descripcionField = document.getElementById(field);
+        const descripcionInput = descripcionField.querySelector(".form-control");
+        if (descripcionInput.value.trim() === "") {
+            descripcionField.classList.add("invalid");
+            return false;
+        } else {
+            descripcionField.classList.remove("invalid");
+            return true;
+        }
+    }
+    function validarTlf(field) {
+        const tlfField = document.getElementById(field);
         const tlfInput = tlfField.querySelector(".form-control");
 
         if (tlfInput.value.trim() === "" || tlfInput.value.length !== 9) {
@@ -62,8 +119,8 @@ document.addEventListener("DOMContentLoaded", function () {
             return true;
         }
     }
-    function validarEstado() {
-        const estadoField = document.getElementById("estado-field");
+    function validarEstado(field) {
+        const estadoField = document.getElementById(field);
         const estadoInput = estadoField.querySelector(".form-select");
         if (estadoInput.value.trim() === "Seleccione una opcion") {
             estadoField.classList.add("invalid");
@@ -73,8 +130,8 @@ document.addEventListener("DOMContentLoaded", function () {
             return true;
         }
     }
-    function validarCiudad() {
-        const ciudadField = document.getElementById("ciudad-field");
+    function validarCiudad(field) {
+        const ciudadField = document.getElementById(field);
         const ciudadInput = ciudadField.querySelector(".form-select");
         if (ciudadInput.value == "Seleccione una opcion" || ciudadInput.value.trim() === "") {
             ciudadField.classList.add("invalid");
@@ -84,8 +141,8 @@ document.addEventListener("DOMContentLoaded", function () {
             return true;
         }
     }
-    function validarCalle() {
-        const calleField = document.getElementById("calle-field");
+    function validarCalle(field) {
+        const calleField = document.getElementById(field);
         const calleInput = calleField.querySelector(".form-control");
 
         if (calleInput.value.trim() === "") {
@@ -96,8 +153,8 @@ document.addEventListener("DOMContentLoaded", function () {
             return true;
         }
     }
-    function validarCodPostal() {
-        const codPostalField = document.getElementById("codPostal-field");
+    function validarCodPostal(field) {
+        const codPostalField = document.getElementById(field);
         const codPostalInput = codPostalField.querySelector(".form-control");
 
         console.log(codPostalInput.value.length)
@@ -109,8 +166,8 @@ document.addEventListener("DOMContentLoaded", function () {
             return true;
         }
     }
-    function validarFecha() {
-        const fechaField = document.getElementById("fecha-field");
+    function validarFecha(field) {
+        const fechaField = document.getElementById(field);
         const fechaInput = fechaField.querySelector(".form-control");
 
         if (fechaInput.value.trim() === "") {
@@ -121,9 +178,9 @@ document.addEventListener("DOMContentLoaded", function () {
             return true;
         }
     }
-    function validarPassword() {
-        const passwordField = document.getElementById("password-field");
-        const confirmPasswordField = document.getElementById("confirmPassword-field");
+    function validarPassword(fieldpass, fieldconfirm) {
+        const passwordField = document.getElementById(fieldpass);
+        const confirmPasswordField = document.getElementById(fieldconfirm);
         const passwordInput = passwordField.querySelector(".form-control");
         const confirmPasswordInput = confirmPasswordField.querySelector(".form-control");
         const errorElement = passwordField.querySelector(".error-text");
@@ -142,8 +199,8 @@ document.addEventListener("DOMContentLoaded", function () {
             return true;
         }
     }
-    function validarImagen() {
-        const imagenField = document.getElementById("imagen-field");
+    function validarImagen(field) {
+        const imagenField = document.getElementById(field);
         const imagenInput = imagenField.querySelector(".form-control");
 
         if (imagenInput.value.trim() === "") {
@@ -169,28 +226,4 @@ document.addEventListener("DOMContentLoaded", function () {
             return pInput.type = "password";
         });
     }); 
-
-    // Evento de envío del formulario
-    form.addEventListener("submit", function (e) {
-        e.preventDefault();
-
-        // Realizar las validaciones necesarias antes de enviar el formulario
-        const nombreValido = validarNombre();
-        const emailValido = validarEmail();
-        const apellidosValido = validarApellidos();
-        const calleValido = validarCalle();
-        const codPostalValido = validarCodPostal();
-        const passValido = validarPassword();
-        const dniValido = validarDni();
-        const tlfValido = validarTlf();
-        const estadoValido = validarEstado();
-        const ciudadValido = validarCiudad();
-        const fechaValido = validarFecha();
-        const imagenValido = validarImagen();
-
-        if (nombreValido && emailValido && apellidosValido && calleValido && codPostalValido && passValido
-            && dniValido && tlfValido && estadoValido && ciudadValido && fechaValido && imagenValido) {
-            Guardar(); 
-        }
-    });
 });

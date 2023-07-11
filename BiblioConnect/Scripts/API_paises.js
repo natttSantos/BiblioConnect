@@ -37,7 +37,7 @@
 //    });
 //}
 // Obtener la lista de ciudades en función del estado seleccionado
-function getCities(auth_token, selectedState) {
+function getCities(auth_token, selectedState, ciudadHTML) {
     $.ajax({
         url: "https://www.universal-tutorial.com/api/cities/" + selectedState,
         type: "GET",
@@ -46,9 +46,9 @@ function getCities(auth_token, selectedState) {
             "Accept": "application/json"
         },
         success: function (data) {
-            $("#Ciudad").empty(); // Vaciar el elemento <select> antes de agregar nuevas opciones
+            $(ciudadHTML).empty(); // Vaciar el elemento <select> antes de agregar nuevas opciones
             data.forEach(function (city, index) {
-                $("<option>").attr({ "value": index }).text(city.city_name).appendTo("#Ciudad");
+                $("<option>").attr({ "value": index }).text(city.city_name).appendTo(ciudadHTML);
             });
         },
         error: function (error) {

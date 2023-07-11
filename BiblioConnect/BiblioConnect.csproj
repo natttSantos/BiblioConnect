@@ -361,7 +361,6 @@
     <Content Include="CSS\Detalles.css" />
     <Content Include="CSS\Mapa.css" />
     <Content Include="CSS\Catalogo.css" />
-    <Content Include="CSS\Registro.css" />
     <Content Include="DataTables-1.13.4\css\dataTables.bootstrap.css" />
     <Content Include="DataTables-1.13.4\css\dataTables.bootstrap.min.css" />
     <Content Include="DataTables-1.13.4\css\dataTables.bootstrap4.css" />

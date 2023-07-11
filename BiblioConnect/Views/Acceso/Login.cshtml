@@ -69,7 +69,7 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable custom-modal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="registroModalLabel">Registro Lector</h4>
+                    <h4 class="modal-title" id="registroModalLabel">Registro lector</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -197,16 +197,19 @@
                                             <div class="form-floating" id="password-field">
                                                 <input type="password" class="form-control" id="Contraseña" placeholder="Contraseña">
                                                 <label for="Nombre">Contraseña</label>
+                                                <i class="bx bx-hide show-hide" id="showPassword"></i>
                                                 <span class="error email error">
                                                     <i class='bx bx-error-circle error-icon'></i>
                                                     <p class="error-text">Las contraseñas no coinciden</p>
                                                 </span>
                                             </div>
+
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-floating" id="confirmPassword-field">
                                                 <input type="password" class="form-control" id="confirmarContraseña" placeholder="Confirmar contraseña">
                                                 <label for="Nombre">Confirmar contraseña</label>
+                                                <i class="bx bx-hide show-hide" id="showPassword"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -227,8 +230,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-8">
+                                    <div class="row  d-flex justify-content-center align-items-center">
+                                        <div class="col-md-4">
                                             <div class="form-floating button">
                                                 <input type="submit" class="btn-registrar" value="Registrar" />
                                             </div>

@@ -434,6 +434,7 @@
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-reboot.min.css.map" />
+    <Content Include="images\fondo.png" />
     <Content Include="images\logo.png" />
     <Content Include="Scripts\MostrarNotificaciones.js" />
     <Content Include="Scripts\Fechas.js" />

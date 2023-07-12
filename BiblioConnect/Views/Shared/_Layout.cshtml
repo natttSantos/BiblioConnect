@@ -15,7 +15,6 @@
     <link href="~/CSS/Layout.css" rel="stylesheet" />
     <!-- CSS only -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/next-sidebar@1/assets/css/next-sidebar.min.css">
-    @*<link href="~/CSS/sidebar.min.css" rel="stylesheet" />*@
 
 </head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -215,29 +214,34 @@
         @* LECTOR NAVRBAR *@
         else
         {
-            <nav class="navbar navbar-expand-lg bg-body-tertiary">
-                <div class="container-fluid">
-                    <a class="navbar-brand" href="#">BiblioConnect</a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <nav>
+                <div>
+                    <input type="checkbox" id="check">
+                    <label for="check" class="checkbtn">
+                        <i class="fas fa-bars"></i>
+                    </label>
+                    <a href="#" class="enlaceLogo">
+                        <img src="~/images/logo.png" alt="" class="logo" />
+                    </a>
+                    @*<a class="navbar-brand" href="#">BiblioConnect</a>*@
+                    @*<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="/Lector/Inicio">Inicio</a>
+                    </button>*@
+                        <ul>
+                            <li>
+                                <a class="active" href="/Lector/Inicio">Inicio</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/Lector/CatalogoLibros">Catálogo</a>
+                            <li>
+                                <a href="/Lector/CatalogoLibros">Catálogo</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/Lector/CatalogoEventos">Eventos</a>
+                            <li>
+                                <a href="/Lector/CatalogoEventos">Eventos</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/Biblioteca/Perfil">Reservas</a>
+                            <li>
+                                <a href="/Biblioteca/Perfil">Reservas</a>
                             </li>
-                            <!-- NOTIFICACIONES -->
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="notificationsDropdown" role="button" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle" href="#" id="notificationsDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-bell"></i>
                                     <span id="notificationCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"></span>
                                 </a>
@@ -250,37 +254,48 @@
                             </li>
                         </ul>
                     </div>
-                </div>
             </nav>
+            @*<section></section>*@
+
         }
     }
-    <form class="d-flex">
+    @*<form class="d-flex">
         <div class="fs-5 mb-3">
             @{ String nombre = oUsuario.Nombre; }
 
             <i class="bi bi-person-circle"></i>
             <span class="ms-2">Bienvenido, @nombre</span>
         </div>
-    </form>
+    </form>*@
     <div class="spinner" id="spinner">
         <i class="fas fa-spinner fa-spin"></i>
     </div>
     <div class="container body-content">
         @RenderBody()
-        <hr />
+        @*<hr />
         <footer>
             <p>&copy; @DateTime.Now.Year - Mi aplicación ASP.NET</p>
-        </footer>
+        </footer>*@
     </div>
 
     @Scripts.Render("~/bundles/jquery")
     <script src="~/Scripts/jquery-3.7.0.min.js"></script>
     <script src="~/Scripts/bootstrap.bundle.min.js"></script>
-    <!-- JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/next-sidebar@1/assets/js/next-sidebar.min.js"></script>
     <script src="~/Scripts/Fechas.js"></script>
     <script src="~/Scripts/MostrarNotificaciones.js"></script>
     <script>
+        //Cambiar ACTIVE DEL NAVBAR
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('nav ul li a').forEach(link => {
+                if (link.getAttribute('href').toLowerCase() === location.pathname.toLowerCase()) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        })
+
         $(document).ready(function () {
             var idLector = @(((Usuario)Session["Usuario"]).Id);
             ListarNotificaciones(idLector)

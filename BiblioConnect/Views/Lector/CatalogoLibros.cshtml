@@ -18,36 +18,38 @@
     </head>
 
     <body>
-        <div class="row">
-            <div class="col-md-3">
-                <section>
-                    <div>
-                        <h4>Filtros:</h4>
-                        <h6>Categoría:</h6>
-                        <ul id="categorias-list" class="category-list"></ul>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <section>
+                        <div>
+                            <h4>Filtros:</h4>
+                            <h6>Categoría:</h6>
+                            <ul id="categorias-list" class="category-list"></ul>
+                        </div>
+                        <div>
+                            <h6>Idioma:</h6>
+                            <ul id="idiomas-list" class="idiomas-list">
+                                <li class="listIdiomas">Castellano</li>
+                                <li class="listIdiomas">Inglés</li>
+                                <li class="listIdiomas">Catalán</li>
+                            </ul>
+                        </div>
+                    </section>
+                </div>
+                <div class="col-md-9">
+                    <div class="row">
+                        <form class="d-flex" role="search">
+                            <input id="searchInput" class="form-control me-2 custom-input" type="search" placeholder="Título, Autor, ISBN, Editorial" aria-label="Search">
+                            <button id="searchButton" class="btn btn-outline-success" type="button" onClick="Search()">Search</button>
+                        </form>
                     </div>
-                    <div>
-                        <h6>Idioma:</h6>
-                        <ul id="idiomas-list" class="idiomas-list">
-                            <li class="listIdiomas">Castellano</li>
-                            <li class="listIdiomas">Inglés</li>
-                            <li class="listIdiomas">Catalán</li>
-                        </ul>
+                    <div class="row">
+                        <div id="libros-list" class="row"></div>
                     </div>
-                </section>
-            </div>
-            <div class="col-md-9">
-                <form class="d-flex" role="search">
-                    <input id="searchInput" class="form-control me-2 custom-input" type="search" placeholder="Título, Autor, ISBN, Editorial" aria-label="Search">
-                    <button id="searchButton" class="btn btn-outline-success" type="button" onClick="Search()">Search</button>
-                </form>
-
-                <section>
-                    <ul id="libros-list"></ul>
-                </section>
+                </div>
             </div>
         </div>
-
     </body>
 
 
@@ -75,33 +77,38 @@
                 console.log("Error al obtener los libros.");
             }
         });
+
         $.ajax({
-            url: '@Url.Action("ListarCategoria", "Biblioteca")',
-            dataType: "json",
-            success: function (data) {
-                $.each(data.data, function (index, categoria) {
-                    var listItem = $("<li ></li>");
-                    var nombre = $("<div></div>").addClass("Nombre").text(categoria.Nombre);
+          url: '@Url.Action("ListarCategoria", "Biblioteca")',
+          dataType: "json",
+          success: function (data) {
+            $.each(data.data, function (index, categoria) {
+              var listItem = $("<li></li>");
+              var nombre = $("<div></div>").addClass("Nombre").text(categoria.Nombre);
 
-                    listItem.append(nombre);
+              listItem.append(nombre);
 
-                    listItem.click(function () {
-                        var categoriaSeleccionada = $(this).find('.Nombre').text();
-                        ListarLibroPorCategoria(categoriaSeleccionada)
-                    });
+              listItem.click(function () {
+                $("#categorias-list li").removeClass("selected");
+                $(this).addClass("selected");
 
-                    $("#categorias-list").append(listItem);
-                });
-            },
-            error: function () {
-                console.log("Error al obtener las categorias");
-            }
+                var categoriaSeleccionada = $(this).find('.Nombre').text();
+                ListarLibroPorCategoria(categoriaSeleccionada);
+              });
+
+              $("#categorias-list").append(listItem);
+            });
+          },
+          error: function () {
+            console.log("Error al obtener las categorias");
+          }
         });
-
-        //Seleccionar un Idioma 
+        //Seleccionar un Idioma
         $(".listIdiomas").on("click", function () {
+            $("#idiomas-list li").removeClass("selected");
+            $(this).addClass("selected");
             var idiomaSeleccionado = $(this).text();
-            ListarLibroPorIdioma(idiomaSeleccionado); 
+            ListarLibroPorIdioma(idiomaSeleccionado);
         });
 
         $(window).on('load', function () {
@@ -175,6 +182,7 @@
             });
         }
         function mostrarInfoLibros(libro) {
+            var divCard = $("<div></div>").addClass("card");
             var listItem = $("<li></li>");
             var link = $("<a></a>").attr("href", '@Url.Action("DetallesLibro", "Lector")?id=' + libro.Id);
             var image = $("<img>").attr("src", libro.Foto);
@@ -190,13 +198,13 @@
                     console.log("Error al obtener la distancia:", error);
                     distanceElement.text("Error al obtener la distancia");
                 });
-
             link.append(image);
-            listItem.append(link);
-            listItem.append(title);
-            listItem.append(distanceElement);
+            divCard.append(listItem);
+            divCard.append(link);
+            divCard.append(title);
+            divCard.append(distanceElement);
 
-            $("#libros-list").append(listItem);
+            $("#libros-list").append(divCard);
         }
         function getDistance(idBiblioteca) {
             return new Promise(function (resolve, reject) {

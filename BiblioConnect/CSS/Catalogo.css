@@ -1,4 +1,15 @@
 ﻿
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Roboto:wght@300&display=swap');
+
+
+body {
+    width: 100%; 
+    height: 100%; 
+    font-family: sans-serif; 
+    letter-spacing: 0.03em; 
+    line-height: 1.6; 
+    font-family: 'Open Sans', sans-serif; 
+}
 ul {
     list-style-type: none;
     margin: 0;
@@ -12,24 +23,66 @@ li {
 }
 
 img {
-    width: 150px;
-    height: auto;
+    width: 170px;
+    height: 220px;
+    margin-top: -30px; 
+    margin-left: -13px
 }
 
 .title {
     margin-top: 5px;
+    text-align:center; 
+    font-size: 15px; 
+    color: #5b3e7b; 
+    font-weight: 300; 
+    font-family: 'Roboto', sans-serif;
 }
-ul.category-list {
+
+/*FILTROS*/
+ul.category-list, ul.idiomas-list {
     list-style-type: none;
     margin: 0;
     padding: 0;
 }
 
-ul.category-list li {
-    display: block;
-    margin: 10px;
+    ul.category-list li, ul.idiomas-list li {
+        display: block;
+        margin: 10px;
+        padding: 10px;
+        background-color: #f8f8f8;
+        border-radius: 8px;
+        transition: background-color 0.25s;
+        cursor: pointer;
+    }
+
+        ul.category-list li.selected, ul.idiomas-list li.selected {
+            background-color: #d09bdf;
+        }
+
+        ul.category-list li:hover, ul.idiomas-list li:hover {
+            background-color: #d09bdf;
+        }
+
+
+/*LIBROS*/
+.container{
+    width: 100%; 
+    display: flex; 
+    flex-wrap: wrap; 
 }
-.custom-input {
-    flex-grow: 1;
-    width: auto;
+.container .card{
+    width: 170px; 
+    height: 330px; 
+    border-radius: 8px; 
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2); 
+    overflow: hidden; 
+    margin: 10px; 
+    text-align: center; 
+    display: inline-block;
+    transition: all 0.25s;
 }
+.container .card:hover{
+    transform: translateY(-15px);
+    box-shadow: 0 12px 16px rgba(0, 0, 0, 0.2); 
+}
+

@@ -1,25 +1,74 @@
-﻿#libroContainer {
+﻿@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Poppins:wght@300;400;500;600&family=Roboto:wght@300&display=swap');
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+.ficha-tecnica {
+    background-color: #f5f5f5;
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 20px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+    .ficha-tecnica .col-md-2 {
+        margin-bottom: 20px;
+    }
+    .ficha-tecnica .info-title {
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #555;
+    }
+
+    .ficha-tecnica .info-value {
+        color: #6A1BBF;
+    }
+
+.title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-family: 'Merriweather', serif;
+    }
+/*MOSTRAR MÁS*/
+.purple-link {
+    color: #8A2BE2; 
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+    .purple-link:hover {
+        color: #6A1BBF;
+        text-decoration: underline;
+    }
+
+/*#libroContainer {
     margin-top: 20px;
     display: flex;
     align-items: flex-start;
-}
+}*/
 
 #FotoLibro {
-    width: 200px;
-    height: 300px;
+    width: 220px;
+    height: 320px;
     margin-right: 10px;
 }
 
 #FotoAutor {
-    width: 300px;
-    height: 300px;
-    margin-right: 10px;
+    width: 160px;
+    height: 220px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
 
 #TituloDescripcionContainer {
     display: flex;
     flex-direction: column;
-    margin-right: 20px;
+    margin-right: 10px;
 }
 
 #Titulo {
@@ -89,8 +138,8 @@
     }
 
         .reseña .lector img {
-            width: 50px;
-            height: 50px;
+            width: 55px;
+            height: 55px;
             border-radius: 50%;
             margin-bottom: 5px;
         }
@@ -117,3 +166,31 @@
     margin-top: 40px; 
     margin-bottom: 10px; 
 }
+
+/*TOTAL DE RESEÑAS*/
+.infoReseñas {
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 20px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+    .infoReseñas #num-reseñas {
+        font-family: 'Roboto', serif;
+        font-size: 14px;
+    }
+
+    .infoReseñas #media-reseñas {
+        font-family: 'Poppins', serif;
+        font-size: 55px;
+        font-weight: 200;
+    }
+
+    .infoReseñas #estrellas-media {
+        opacity: 1;
+        color: gold;
+    }

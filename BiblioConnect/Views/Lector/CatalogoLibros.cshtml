@@ -181,31 +181,33 @@
                 }
             });
         }
-        function mostrarInfoLibros(libro) {
-            var divCard = $("<div></div>").addClass("card");
-            var listItem = $("<li></li>");
-            var link = $("<a></a>").attr("href", '@Url.Action("DetallesLibro", "Lector")?id=' + libro.Id);
-            var image = $("<img>").attr("src", libro.Foto);
-            var title = $("<div></div>").addClass("title").text(libro.Titulo);
-            var distanceElement = $("<div></div>").addClass("distancia");
+    function mostrarInfoLibros(libro) {
+      var divCard = $("<div></div>").addClass("card");
+      var listItem = $("<li></li>");
+      var link = $("<a></a>").attr("href", '@Url.Action("DetallesLibro", "Lector")?id=' + libro.Id);
+      var image = $("<img>").attr("src", libro.Foto);
+      var title = $("<div></div>").addClass("title").text(libro.Titulo);
+      var distanceElement = $("<div></div>").addClass("distancia");
 
-            getDistance(libro.idBiblioteca)
-                .then(function (distance) {
-                    var distance = distance.toFixed(2); //Redondear el resultado de la distancia a 2 decimales
-                    distanceElement.text(distance + " kilómetros");
-                })
-                .catch(function (error) {
-                    console.log("Error al obtener la distancia:", error);
-                    distanceElement.text("Error al obtener la distancia");
-                });
-            link.append(image);
-            divCard.append(listItem);
-            divCard.append(link);
-            divCard.append(title);
-            divCard.append(distanceElement);
+      getDistance(libro.idBiblioteca)
+        .then(function (distance) {
+          var distance = distance.toFixed(2); // Redondear el resultado de la distancia a 2 decimales
+          distanceElement.html('<i class="fas fa-map-marker-alt"></i> ' + distance + " kilómetros"); // Agregar el icono de mapa junto a la distancia
+        })
+        .catch(function (error) {
+          console.log("Error al obtener la distancia:", error);
+          distanceElement.text("Error al obtener la distancia");
+        });
 
-            $("#libros-list").append(divCard);
-        }
+      link.append(image);
+      divCard.append(listItem);
+      divCard.append(link);
+      divCard.append(title);
+      divCard.append(distanceElement);
+
+      $("#libros-list").append(divCard);
+    }
+
         function getDistance(idBiblioteca) {
             return new Promise(function (resolve, reject) {
                 $.ajax({

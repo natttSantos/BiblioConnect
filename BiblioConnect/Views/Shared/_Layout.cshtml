@@ -18,7 +18,8 @@
 
 </head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<body class="app is-collapsed">
+@*<body class="app is-collapsed">*@
+<body>
     @* BIBLIOTECA NAVRBAR *@
     @{ Usuario oUsuario = Session["Usuario"] as Usuario;
         String tipoUsuario = oUsuario.TipoUsuario;
@@ -225,57 +226,57 @@
                     </a>
                     @*<a class="navbar-brand" href="#">BiblioConnect</a>*@
                     @*<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>*@
-                        <ul>
-                            <li>
-                                <a class="active" href="/Lector/Inicio">Inicio</a>
-                            </li>
-                            <li>
-                                <a href="/Lector/CatalogoLibros">Catálogo</a>
-                            </li>
-                            <li>
-                                <a href="/Lector/CatalogoEventos">Eventos</a>
-                            </li>
-                            <li>
-                                <a href="/Biblioteca/Perfil">Reservas</a>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="notificationsDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-bell"></i>
-                                    <span id="notificationCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"></span>
+                            <span class="navbar-toggler-icon"></span>
+                        </button>*@
+                    <ul>
+                        <li>
+                            <a class="active" href="/Lector/Inicio">Inicio</a>
+                        </li>
+                        <li>
+                            <a href="/Lector/CatalogoLibros">Catálogo</a>
+                        </li>
+                        <li>
+                            <a href="/Lector/CatalogoEventos">Eventos</a>
+                        </li>
+                        <li>
+                            <a href="/Biblioteca/Perfil">Reservas</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="notificationsDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-bell"></i>
+                                <span id="notificationCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notificationsDropdown">
+                                <ul id="notificationList" class="list-unstyled"></ul>
+                                <a class="dropdown-item" href="#">
+                                    No hay más notificaciones
                                 </a>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notificationsDropdown">
-                                    <ul id="notificationList" class="list-unstyled"></ul>
-                                    <a class="dropdown-item" href="#">
-                                        No hay más notificaciones
-                                    </a>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </nav>
             @*<section></section>*@
 
         }
     }
     @*<form class="d-flex">
-        <div class="fs-5 mb-3">
-            @{ String nombre = oUsuario.Nombre; }
+            <div class="fs-5 mb-3">
+                @{ String nombre = oUsuario.Nombre; }
 
-            <i class="bi bi-person-circle"></i>
-            <span class="ms-2">Bienvenido, @nombre</span>
-        </div>
-    </form>*@
+                <i class="bi bi-person-circle"></i>
+                <span class="ms-2">Bienvenido, @nombre</span>
+            </div>
+        </form>*@
     <div class="spinner" id="spinner">
         <i class="fas fa-spinner fa-spin"></i>
     </div>
     <div class="container body-content">
         @RenderBody()
         @*<hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Mi aplicación ASP.NET</p>
-        </footer>*@
+            <footer>
+                <p>&copy; @DateTime.Now.Year - Mi aplicación ASP.NET</p>
+            </footer>*@
     </div>
 
     @Scripts.Render("~/bundles/jquery")

@@ -31,12 +31,24 @@ img {
 
 .title {
     margin-top: 5px;
-    text-align:center; 
-    font-size: 15px; 
-    color: #5b3e7b; 
-    font-weight: 300; 
-    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    font-size: 15px;
+/*    color: #5b3e7b;*/
+    font-weight: 400;
+    font-family: 'Open Sans', sans-serif;
 }
+.distancia {
+    margin-top: 5px;
+    text-align: right;
+    font-size: 13px;
+    font-weight: 300;
+    font-family: 'Roboto', sans-serif;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    color: #745596;
+}
+
 
 /*FILTROS*/
 ul.category-list, ul.idiomas-list {
@@ -49,7 +61,7 @@ ul.category-list, ul.idiomas-list {
         display: block;
         margin: 10px;
         padding: 10px;
-        background-color: #f8f8f8;
+        background-color: #f9eefb;
         border-radius: 8px;
         transition: background-color 0.25s;
         cursor: pointer;
@@ -63,6 +75,21 @@ ul.category-list, ul.idiomas-list {
             background-color: #d09bdf;
         }
 
+h4 {
+    font-size: 24px;
+    color: #5b3e7b;
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Estilos para el encabezado "Categoría" */
+h6 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 5px;
+    font-family: 'Roboto', sans-serif;
+}
 
 /*LIBROS*/
 .container{
@@ -72,7 +99,7 @@ ul.category-list, ul.idiomas-list {
 }
 .container .card{
     width: 170px; 
-    height: 330px; 
+    height: 320px; 
     border-radius: 8px; 
     box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2); 
     overflow: hidden; 

@@ -24,20 +24,18 @@
                         <img id="FotoLibro" src="#" alt="Imagen">
                     </div>
                 </div>
-                <div class="col-md-7">
-                    <div id="TituloDescripcionContainer">
-                        <h3 id="Titulo"></h3>
-                        <h6 id="Autor"></h6>
-                        <p id="descripcionLibro"></p>
-                        <a id="toggleDescripcion" href="#" class="purple-link">Mostrar más</a>
-                    </div>
+                <div class="col-md-6 tituloDescripcion">
+                    <h3 id="Titulo"></h3>
+                    <h6 id="Autor"></h6>
+                    <p id="descripcionLibro"></p>
+                    <a id="toggleDescripcion" href="#" class="purple-link">Mostrar más</a>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <div class="card">
                         <div class="card-body">
                             <h6 id="Biblioteca"></h6>
                             <p class="card-text" id="txtCard"></p>
-                            <button class="btn btn-primary" id="btnTransaccion"></button>
+                            <button class="btn-prestamo" id="btnTransaccion"></button>
                         </div>
                     </div>
                 </div>
@@ -80,17 +78,17 @@
                 <div class="col-md-10 infoReseñas">
                     <h5 class="title">Reseñas de los lectores</h5>
                     <div id="infoReseñas">
-                        <p id="num-reseñas"></p>
                         <p id="media-reseñas"></p>
                         <p id="estrellas-media"></p>
+                        <button id="botonEscribirReseña" type="button" class="btn-reseña" data-toggle="modal" data-target="#modalReseña">
+                            Escribir reseña
+                        </button>
                     </div>
-                    <button id="botonEscribirReseña" type="button" class="btn btn-primary boton-reseña" data-toggle="modal" data-target="#modalReseña">
-                        Escribir reseña
-                    </button>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-10">
+                    <p id="num-reseñas"></p>
                     <div id="reseñas-list" class="descripcion"></div>
                 </div>
             </div>

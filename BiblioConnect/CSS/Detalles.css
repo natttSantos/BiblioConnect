@@ -4,6 +4,21 @@
     margin: 0 auto;
     padding: 20px;
 }
+
+.tituloDescripcion #Titulo {
+    font-size: 21px;
+    font-weight: 800;
+    font-family: 'Merriweather', serif;
+}
+.tituloDescripcion #Autor {
+    font-size: 14px;
+    font-weight: 500;
+    color: #808080;
+    font-family: 'Merriweather', serif;
+}
+
+
+
 .ficha-tecnica {
     background-color: #f5f5f5;
     padding: 15px;
@@ -45,12 +60,6 @@
         text-decoration: underline;
     }
 
-/*#libroContainer {
-    margin-top: 20px;
-    display: flex;
-    align-items: flex-start;
-}*/
-
 #FotoLibro {
     width: 220px;
     height: 320px;
@@ -62,26 +71,6 @@
     height: 220px;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-
-#TituloDescripcionContainer {
-    display: flex;
-    flex-direction: column;
-    margin-right: 10px;
-}
-
-#Titulo {
-    text-align: left;
-}
-
-#Descripcion {
-    text-align: justify;
-    max-width: 800px;
-}
-
-#InformacionAdicional {
-    margin-top: 20px;
 }
 
 /*RESEÑAS ESTRELLAS*/
@@ -170,20 +159,13 @@
 /*TOTAL DE RESEÑAS*/
 .infoReseñas {
     border-radius: 5px;
-    padding: 10px;
-    margin-top: 20px; 
-    display: flex;
-    flex-direction: column;
+    margin-top: 20px;
     align-items: center;
     justify-content: center;
+    display: flex;
     text-align: center;
+    flex-direction: column;
 }
-
-    .infoReseñas #num-reseñas {
-        font-family: 'Roboto', serif;
-        font-size: 14px;
-    }
-
     .infoReseñas #media-reseñas {
         font-family: 'Poppins', serif;
         font-size: 55px;
@@ -193,4 +175,46 @@
     .infoReseñas #estrellas-media {
         opacity: 1;
         color: gold;
+    }
+ #num-reseñas {
+        font-family: 'Roboto', serif;
+        font-size: 14px;
+    }
+
+/*BOTONES*/
+
+.btn-prestamo {
+    display: block;
+    width: 60%;
+    padding: 10px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    background-color: #2f8b56;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-prestamo:hover {
+        background-color: #4eac6a;
+    }
+.btn-reseña {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    background-color: #ed9921;
+    color: #fff;
+    margin: 0 auto;
+    border: none;
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-reseña:hover {
+        background-color: #fddd56; 
     }

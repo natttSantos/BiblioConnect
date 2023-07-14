@@ -20,9 +20,7 @@
         <div class="row">
             <div class="row">
                 <div class="col-md-3">
-                    <div id="libroContainer">
-                        <img id="FotoLibro" src="#" alt="Imagen">
-                    </div>
+                     <img id="FotoLibro" src="#" alt="Imagen">
                 </div>
                 <div class="col-md-6 tituloDescripcion">
                     <h3 id="Titulo"></h3>
@@ -59,32 +57,31 @@
                     <h6 class="info-value"> 90642832379</h6>
                 </div>
             </div>
-            <div class="row mt-4">
+            <div class="row">
                 <div class="col-md-3">
-                    <div id="libroContainer">
-                        <img id="FotoAutor" src="#" alt="Imagen">
-                    </div>
+                    <img id="FotoAutor" src="#" alt="Imagen">
                 </div>
-                <div class="col-md-7">
+                <div class="col-md-9 infoAutor">
                     <h5 class="title">Información sobre el autor</h5>
-                    <div id="AutorContainer">
-                        <h6 id="Autor"></h6>
-                        <p id="descripcionAutor"></p>
-                        <a id="toggleAutor" href="#" class="purple-link">Mostrar más</a>
+                    <h6 id="Autor"></h6>
+                    <p id="descripcionAutor"></p>
+                    <a id="toggleAutor" href="#" class="purple-link">Mostrar más</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7 infoReseñas">
+                    <h5 class="title">Reseñas de los lectores</h5>
+                    <div id="infoReseñas">
+                        <p id="media-reseñas"></p>
+                        <p id="sin-reseñas"></p>
+                        <p id="estrellas-media"></p>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-10 infoReseñas">
-                    <h5 class="title">Reseñas de los lectores</h5>
-                    <div id="infoReseñas">
-                        <p id="media-reseñas"></p>
-                        <p id="estrellas-media"></p>
-                        <button id="botonEscribirReseña" type="button" class="btn-reseña" data-toggle="modal" data-target="#modalReseña">
-                            Escribir reseña
-                        </button>
-                    </div>
-                </div>
+                <button id="botonEscribirReseña" type="button" class="btn-reseña" data-toggle="modal" data-target="#modalReseña">
+                    Escribir reseña
+                </button>
             </div>
             <div class="row">
                 <div class="col-md-10">
@@ -178,23 +175,10 @@
                     getEditorial(libro.idEditorial);
                     getReseñas();
 
-                    // Asignar el título como atributo de datos al enlace del tab
-                    $("a.nav-link").data("titulo", Titulo);
-
                 },
                 error: function (error) {
                     console.log("Error al obtener los datos del libro:", error);
                 }
-            });
-
-           //TABS
-            var primerElemento = $("a.nav-link").first();
-            var identificadorDiv = primerElemento.attr("href");
-            mostrarContenido(identificadorDiv);
-
-            $("a.nav-link").on("click", function () {
-                var identificadorDiv = $(this).attr("href"); // Obtener el identificador del div de descripción asociado al tab
-                mostrarContenido(identificadorDiv);
             });
 
             $("#botonEscribirReseña").on("click", function () {
@@ -232,26 +216,6 @@
                 }
             });
         });
-
-    // Función para mostrar el contenido correspondiente al elemento
-    function mostrarContenido(identificadorDiv) {
-        $("a.nav-link").removeClass("active"); // Remover la clase "active" de todos los elementos de la lista de pestañas
-        $(`a[href="${identificadorDiv}"]`).addClass("active"); // Agregar la clase "active" al elemento de la lista de pestañas seleccionado
-        $(".descripcion").empty(); // Vaciar el contenido de todas las descripciones para que no haya sobreescrituras
-        $("#botonEscribirReseña").hide();
-
-        if (identificadorDiv === "#descripcionLibro") {
-            var tituloLibro = $("a.nav-link.active").data("titulo");
-            getDescripcionLibro(tituloLibro);
-        }
-        if (identificadorDiv === "#descripcionAutor") {
-            var nombreAutor = $("a.nav-link.active").data("autor");
-            getDescripcionAutor(nombreAutor);
-        }
-        if (identificadorDiv === "#reseñas") {
-            getReseñas()
-        }
-    }
 
     function EnviarReseña() {
         var oReseña = {
@@ -329,8 +293,12 @@ function getReseñas() {
         const estrellas = generarEstrellas(mediaRedondeada);
 
         $("#num-reseñas").text(numReseñas + " opiniones de lectores");
-        $("#media-reseñas").text(mediaRedondeada + "/5");
         $("#estrellas-media").html(estrellas);
+        if (numReseñas > 0) {
+            $("#media-reseñas").text(mediaRedondeada + "/5");
+        } else {
+            $("#sin-reseñas").text("Todavía no hay reseñas. Sé el primero en dar tu opinión sobre el libro");
+        }
     }
     function generarEstrellas(media) {
         const numEstrellas = 5;

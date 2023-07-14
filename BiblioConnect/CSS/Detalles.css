@@ -4,7 +4,13 @@
     margin: 0 auto;
     padding: 20px;
 }
-
+/*IMPORTANTE ROW*/
+.row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px; 
+}
 .tituloDescripcion #Titulo {
     font-size: 21px;
     font-weight: 800;
@@ -17,13 +23,10 @@
     font-family: 'Merriweather', serif;
 }
 
-
-
 .ficha-tecnica {
     background-color: #f5f5f5;
     padding: 15px;
     border-radius: 5px;
-    margin-top: 20px;
     align-items: center;
     justify-content: center;
     text-align: center;
@@ -47,7 +50,9 @@
     text-align: center;
     margin-bottom: 20px;
     font-family: 'Merriweather', serif;
-    }
+}
+
+
 /*MOSTRAR MÁS*/
 .purple-link {
     color: #8A2BE2; 
@@ -63,7 +68,6 @@
 #FotoLibro {
     width: 220px;
     height: 320px;
-    margin-right: 10px;
 }
 
 #FotoAutor {
@@ -158,20 +162,19 @@
 
 /*TOTAL DE RESEÑAS*/
 .infoReseñas {
-    border-radius: 5px;
-    margin-top: 20px;
-    align-items: center;
-    justify-content: center;
-    display: flex;
     text-align: center;
-    flex-direction: column;
+    margin: 0 auto;
 }
     .infoReseñas #media-reseñas {
         font-family: 'Poppins', serif;
         font-size: 55px;
         font-weight: 200;
     }
-
+    .infoReseñas #sin-reseñas {
+        font-family: 'Roboto', serif;
+        font-size: 16px;
+        font-weight: 200;
+    }
     .infoReseñas #estrellas-media {
         opacity: 1;
         color: gold;
@@ -179,7 +182,7 @@
  #num-reseñas {
         font-family: 'Roboto', serif;
         font-size: 14px;
-    }
+}
 
 /*BOTONES*/
 
@@ -200,21 +203,28 @@
     .btn-prestamo:hover {
         background-color: #4eac6a;
     }
+
 .btn-reseña {
     display: block;
-    width: 100%;
-    padding: 10px;
+    width: 150px; /* Cambia el ancho del botón según tus necesidades */
+    padding: 8px; /* Ajusta el padding según tus necesidades */
     font-size: 16px;
     text-align: center;
     text-decoration: none;
     background-color: #ed9921;
     color: #fff;
-    margin: 0 auto;
+    margin: 0 auto; /* Centra el botón horizontalmente */
     border: none;
     border-radius: 20px;
     transition: background-color 0.3s ease;
 }
 
     .btn-reseña:hover {
-        background-color: #fddd56; 
+        background-color: #fddd56;
     }
+
+@media screen and (max-width: 767px) {
+    .btn-reseña {
+        width: 80%; /* Para hacerlo responsive, ajusta el ancho al 100% en pantallas pequeñas */
+    }
+}

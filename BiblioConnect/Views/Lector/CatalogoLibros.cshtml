@@ -20,33 +20,43 @@
     <body>
         <div class="container">
             <div class="row">
-                <div class="col-md-3">
-                    <section>
-                        <div>
-                            <h4>Filtros:</h4>
-                            <h6>Categoría:</h6>
-                            <ul id="categorias-list" class="category-list"></ul>
+                <div class="col-md-2">
+                    <div id="side-menu" class="fas fa-angle-double-right"></div>
+
+                    <div class="side-bar">
+                        <h1 class="heading">filtros</h1>
+                        <div class="box">
+                            <h3 class="title">Búsqueda libro:</h3>
+                            <div class="search-box">
+                                <input type="text" placeholder="Título, Autor, ISBN, Editorial" id="searchInput" class="form-control">
+                                <span class="search-icon" onclick="Search()"><i class="fas fa-search"></i></span>
+                            </div>
                         </div>
-                        <div>
-                            <h6>Idioma:</h6>
-                            <ul id="idiomas-list" class="idiomas-list">
-                                <li class="listIdiomas">Castellano</li>
-                                <li class="listIdiomas">Inglés</li>
-                                <li class="listIdiomas">Catalán</li>
-                            </ul>
+                        <div class="box">
+                            <h3 class="title">Categoria</h3>
+                            <ul id="categorias-list" class="filtros-list"></ul>
                         </div>
-                    </section>
+                        <div class="box">
+                            <h3 class="title">Idioma</h3>
+                            <div class="type">
+                                <ul id="idiomas-list" class="filtros-list">
+                                    <li class="listIdiomas">Castellano</li>
+                                    <li class="listIdiomas">Inglés</li>
+                                    <li class="listIdiomas">Catalán</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="reset-btn">
+                            <div class="btn" onclick="resetFilters()">Eliminar filtros</div>
+                        </div>
+                    </div>
+
                 </div>
-                <div class="col-md-9">
-                    <div class="row">
-                        <form class="d-flex" role="search">
-                            <input id="searchInput" class="form-control me-2 custom-input" type="search" placeholder="Título, Autor, ISBN, Editorial" aria-label="Search">
-                            <button id="searchButton" class="btn btn-outline-success" type="button" onClick="Search()">Search</button>
-                        </form>
-                    </div>
-                    <div class="row">
-                        <div id="libros-list" class="row"></div>
-                    </div>
+                <div class="col-md-10">
+                    <h4>Libros </h4>
+                    <p id="numeroLibros"></p>
+                    <p id="sin-libros"></p>
+                    <div id="libros-list" class="row"></div>
                 </div>
             </div>
         </div>
@@ -65,18 +75,7 @@
 
     <script>
     $(document).ready(function () {
-        $.ajax({
-            url: '@Url.Action("ListarLibro", "Biblioteca")',
-            dataType: "json",
-            success: function (data) {
-                $.each(data.data, function (index, libro) {
-                    mostrarInfoLibros(libro);
-                });
-            },
-            error: function () {
-                console.log("Error al obtener los libros.");
-            }
-        });
+        ListarAllLibros();
 
         $.ajax({
           url: '@Url.Action("ListarCategoria", "Biblioteca")',
@@ -88,72 +87,98 @@
 
               listItem.append(nombre);
 
-              listItem.click(function () {
-                $("#categorias-list li").removeClass("selected");
-                $(this).addClass("selected");
-
-                var categoriaSeleccionada = $(this).find('.Nombre').text();
-                ListarLibroPorCategoria(categoriaSeleccionada);
-              });
-
               $("#categorias-list").append(listItem);
             });
+
+            // Llamar a la función para enlazar el evento click después de agregar los elementos
+            bindCategoriaClick();
           },
           error: function () {
             console.log("Error al obtener las categorias");
           }
         });
+
+        //SIDEBAR
+        var sideBar = document.querySelector('.side-bar');
+        var sideMenuIcon = document.getElementById('side-menu');
+
+        sideMenuIcon.addEventListener('click', function () {
+            sideBar.classList.toggle('active');
+            sideMenuIcon.classList.toggle('fa-angle-double-right');
+            sideMenuIcon.classList.toggle('fa-angle-double-left');
+        });
+
         //Seleccionar un Idioma
         $(".listIdiomas").on("click", function () {
             $("#idiomas-list li").removeClass("selected");
             $(this).addClass("selected");
+
             var idiomaSeleccionado = $(this).text();
-            ListarLibroPorIdioma(idiomaSeleccionado);
+            var categoriaSeleccionada = $("#categorias-list li.selected .Nombre").text();
+            ListarLibroPorIdiomaCategoria(idiomaSeleccionado, categoriaSeleccionada);
         });
+        //Seleccionar una Categoria
+        function bindCategoriaClick() {
+            $("#categorias-list li").click(function () {
+                $("#categorias-list li").removeClass("selected");
+                $(this).addClass("selected");
+
+                var categoriaSeleccionada = $(this).find('.Nombre').text();
+                var idiomaSeleccionado = $("#idiomas-list li.selected").text();
+                ListarLibroPorIdiomaCategoria(idiomaSeleccionado, categoriaSeleccionada);
+            });
+        }
+
 
         $(window).on('load', function () {
             $("#spinner").hide();
         });
     });
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            var categoriaItems = document.querySelectorAll('#categorias-list li');
+            categoriaItems.forEach(function (item) {
+                item.classList.remove('selected');
+            });
+            var idiomaItems = document.querySelectorAll('#idiomas-list li');
+            idiomaItems.forEach(function (item) {
+                item.classList.remove('selected');
+            });
+            ListarAllLibros();
+        }
 
-       function ListarLibroPorCategoria(nombreCategoria) {
-           $.ajax({
-               url: "/Lector/ListarLibroPorCategoria",
-               type: "GET",
-               data: { nombre: nombreCategoria },
-               success: function (data) {
-                   $("#libros-list").empty(); // Eliminar contenido previo
-                   $.each(data.data, function (index, libro) {
-                       mostrarInfoLibros(libro);
+        //REFACTORIZACIÓN FILTROS
+        function ObtenerLibrosFiltrado(url, params) {
+            $.ajax({
+                url: url,
+                type: "GET",
+                data: params,
+                success: function (data) {
+                    var libros = data.data
+                    var totalLibros = libros.length;
+                    console.log(totalLibros)
+                    $("#libros-list").empty();
+                    $.each(libros, function (index, libro) {
+                        mostrarInfoLibros(libro);
                     });
+                    if (totalLibros === 0) { // No hay libros por los filtros
+                        $("#sin-libros").text("No hay resultados para los filtros aplicados :(");
+                    }
+                    $("#numeroLibros").text("1-"+ totalLibros + " de " + totalLibros + " resultados");
                 },
                 error: function (error) {
                     console.log("Error al obtener los libros:", error);
                 }
             });
         }
-        function ListarLibroPorIdioma(idiomaSeleccionado) {
-            $.ajax({
-                url: "/Lector/ListarLibroPorIdioma",
-                type: "GET",
-                data: { idioma: idiomaSeleccionado },
-                success: function (data) {
-                    $("#libros-list").empty();
-                    $.each(data.data, function (index, libro) {
-                        mostrarInfoLibros(libro);
-                    });
-                },
-                error: function (error) {
-                    console.log("Error al obtener los libros según el idioma:", error);
-                }
-            });
+        function ListarLibroPorIdiomaCategoria(idiomaSeleccionado, categoriaSeleccionada) {
+            ObtenerLibrosFiltrado("/Lector/ListarLibroPorIdiomaCategoria", { idioma: idiomaSeleccionado, categoria: categoriaSeleccionada});
         }
-
-
-        //Listado Libros por Filtrado
+        function ListarAllLibros() {
+            ObtenerLibrosFiltrado("/Biblioteca/ListarLibro", { });
+        }
         function Search() {
             var searchInput = document.getElementById('searchInput').value;
-            console.log(searchInput)
             $.ajax({
                 url: "/Lector/ListarLibroPorFiltrado",
                 type: "GET",
@@ -183,7 +208,7 @@
         }
     function mostrarInfoLibros(libro) {
       var divCard = $("<div></div>").addClass("card");
-      var listItem = $("<li></li>");
+        var listItem = $("<li></li>").addClass("listCategorias");
       var link = $("<a></a>").attr("href", '@Url.Action("DetallesLibro", "Lector")?id=' + libro.Id);
       var image = $("<img>").attr("src", libro.Foto);
       var title = $("<div></div>").addClass("title").text(libro.Titulo);

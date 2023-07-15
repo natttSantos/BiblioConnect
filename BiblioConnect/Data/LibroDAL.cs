@@ -190,19 +190,42 @@ namespace BiblioConnect.Data
                 }
             }
         }
-        public List<Libro> ListarPorCategoria(string nombre)
+        public List<Libro> ListarLibroPorIdiomaCategoria(string idioma, string categoria)
         {
-
             List<Libro> listaLibros = new List<Libro>();
+            string sql = "";
+
             using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
             {
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = oConexion;
-                cmd.CommandText = "SELECT l.Id, l.Titulo, l.Foto, l.idBiblioteca, l.idAutor, l.idCategoria, l.idEditorial, l.numEjemplares, l.Estado " +
-                    "from Libro l inner join Categoria c on c.Nombre = @nombreCategoria " +
-                    "where c.Id = l.idCategoria"; 
 
-                cmd.Parameters.AddWithValue("@nombreCategoria", nombre);
+                if (string.IsNullOrEmpty(categoria)) // Seleccionado Idioma
+                {
+                    sql = "SELECT l.Id, l.Titulo, l.Foto, l.idBiblioteca, l.idAutor, l.idCategoria, l.idEditorial, l.numEjemplares, l.Estado, l.Idioma " +
+                        "FROM Libro l WHERE l.Idioma = @idioma";
+
+                    cmd.Parameters.AddWithValue("@idioma", idioma);
+                }
+                else if (string.IsNullOrEmpty(idioma)) // Seleccionado Categoría
+                {
+                    sql = "SELECT l.Id, l.Titulo, l.Foto, l.idBiblioteca, l.idAutor, l.idCategoria, l.idEditorial, l.numEjemplares, l.Estado " +
+                        "FROM Libro l INNER JOIN Categoria c ON c.Nombre = @nombreCategoria " +
+                        "WHERE c.Id = l.idCategoria";
+
+                    cmd.Parameters.AddWithValue("@nombreCategoria", categoria);
+                }
+                else // Seleccionado ambos
+                {
+                    sql = "SELECT l.Id, l.Titulo, l.Foto, l.idBiblioteca, l.idAutor, l.idCategoria, l.idEditorial, l.numEjemplares, l.Estado " +
+                        "FROM Libro l INNER JOIN Categoria c ON c.Nombre = @nombreCategoria " +
+                        "WHERE c.Id = l.idCategoria AND l.Idioma = @idioma";
+
+                    cmd.Parameters.AddWithValue("@idioma", idioma);
+                    cmd.Parameters.AddWithValue("@nombreCategoria", categoria);
+                }
+
+                cmd.CommandText = sql;
                 cmd.CommandType = CommandType.Text;
 
                 try
@@ -216,6 +239,7 @@ namespace BiblioConnect.Data
                         {
                             Id = Convert.ToInt32(dr["Id"].ToString()),
                             Titulo = dr["Titulo"].ToString(),
+                            //Idioma = dr["Idioma"].ToString(),
                             Foto = dr["Foto"].ToString(),
                             idBiblioteca = Convert.ToInt32(dr["idBiblioteca"].ToString()),
                             idAutor = Convert.ToInt32(dr["idAutor"].ToString()),
@@ -227,53 +251,6 @@ namespace BiblioConnect.Data
                     dr.Close();
 
                     return listaLibros;
-
-                }
-                catch (Exception ex)
-                {
-                    listaLibros = null;
-                    return listaLibros;
-                }
-            }
-        }
-        public List<Libro> ListarPorIdioma(string idioma)
-        {
-
-            List<Libro> listaLibros = new List<Libro>();
-            using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
-            {
-                SqlCommand cmd = new SqlCommand();
-                cmd.Connection = oConexion;
-                cmd.CommandText = "SELECT l.Id, l.Titulo, l.Foto, l.idBiblioteca, l.idAutor, l.idCategoria, l.idEditorial, l.numEjemplares, l.Estado, l.Idioma " +
-                    "from Libro l where l.Idioma = @idioma";
-
-                cmd.Parameters.AddWithValue("@idioma", idioma);
-                cmd.CommandType = CommandType.Text;
-
-                try
-                {
-                    oConexion.Open();
-                    SqlDataReader dr = cmd.ExecuteReader();
-
-                    while (dr.Read())
-                    {
-                        listaLibros.Add(new Libro()
-                        {
-                            Id = Convert.ToInt32(dr["Id"].ToString()),
-                            Titulo = dr["Titulo"].ToString(),
-                            Idioma = dr["Idioma"].ToString(),
-                            Foto = dr["Foto"].ToString(),
-                            idBiblioteca = Convert.ToInt32(dr["idBiblioteca"].ToString()),
-                            idAutor = Convert.ToInt32(dr["idAutor"].ToString()),
-                            idCategoria = Convert.ToInt32(dr["idCategoria"].ToString()),
-                            idEditorial = Convert.ToInt32(dr["idEditorial"].ToString()),
-                            numEjemplares = Convert.ToInt32(dr["numEjemplares"].ToString()),
-                        });
-                    }
-                    dr.Close();
-
-                    return listaLibros;
-
                 }
                 catch (Exception ex)
                 {

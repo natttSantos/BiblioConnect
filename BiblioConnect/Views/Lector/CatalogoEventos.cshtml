@@ -22,6 +22,7 @@
             <div class="col-md-3">
                 <section>
                     <div>
+                        <h4>Filtros:</h4>
                         <h6>Tipo de evento:</h6>
                         <ul id="evento-list" class="evento-list">
                             <li class="listTipoEvento">Conferencia</li>
@@ -67,7 +68,7 @@
                 console.log("Error al obtener los libros.");
             }
         });
-        //Seleccionar un Idioma 
+        //Seleccionar un Idioma
         $(".listTipoEvento").on("click", function () {
             var eventoSeleccionado = $(this).text();
             ListarEventoPorTipo(eventoSeleccionado);
@@ -91,39 +92,40 @@
             });
 
         }
-       function mostrarInfoEventos(evento) {
-           getBiblioteca(evento.idBiblioteca).then(function (biblioteca) {
-               return getDistance(biblioteca).then(function (distance) {
-                var listItemContent =
-                    '<div class="card mb-3" style="max-width: 900px;">' +
-                    '<div class="row g-0">' +
-                    '<div class="col-md-4">' +
-                    '<img src="' + evento.Foto + '" class="img-fluid rounded-start" alt="...">' +
-                    '</div>' +
-                    '<div class="col-md-8">' +
-                    '<div class="card-body">' +
-                    '<h4 class="card-title">' + evento.Tipo + ' en la ' + biblioteca.Nombre + '</h4>' +
-                    '<h5 class="card-title">' + evento.NombreAutor + '</h5>' +
-                    '<h6 class="card-title">' + formatDateToReadable(evento.FechaRealizacion) + '</h6>' +
-                    '<h6 class="card-title">' + evento.HoraInicio+ '-'+evento.HoraFin+ '</h6>' +
-                    '<p class="card-text">' + evento.DescripcionEvento + '</p>' +
-                    '<p class="card-text"><small class="text-body-secondary">' + distance.toFixed(2) + ' kilómetros</small></p>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>';
+function mostrarInfoEventos(evento) {
+  getBiblioteca(evento.idBiblioteca).then(function(biblioteca) {
+    return getDistance(biblioteca).then(function(distance) {
+      var fotoHtml = $('<img>').attr('src', evento.Foto).attr('alt', '...');
+      var tituloHtml = $('<h4>').addClass('titulo').text(evento.Tipo + ' en la ' + biblioteca.Nombre);
+      var autorHtml = $('<h5>').addClass('nombreAutor').text(evento.NombreAutor);
 
-                //Navigate asociado al CARD
-                var link = $("<a></a>").attr("href", '@Url.Action("DetallesEvento", "Lector")' + '?id=' + evento.Id);
-                var listItem = $("<li></li>").append(link).append(listItemContent);
-                listItem.click(function() {
-                    window.location.href = link.attr("href");
-                });
+      var fechaIconoHtml = $('<i>').addClass('far fa-calendar-alt');
+      var fechaHtml = $('<p>').addClass('Fecha').append(fechaIconoHtml).append(" "+ formatDateToReadable(evento.FechaRealizacion));
 
-                $("#eventos-list").append(listItem);
-               });
-           });
-        }
+      var horaHtml = $('<p>').addClass('Hora').text(evento.HoraInicio + '-' + evento.HoraFin);
+      var descripcionHtml = $('<p>').addClass('descripcion').text(evento.DescripcionEvento);
+      var distanciaHtml = $('<p>').addClass('distancia').append($('<small>').addClass('text-body-secondary').text(distance.toFixed(2) + ' kilómetros'));
+
+      var divCol4 = $('<div>').addClass('col-md-4').append(fotoHtml);
+      var divCol8 = $('<div>').addClass('col-md-8').append($('<div>').addClass('card-body').append(tituloHtml, autorHtml, fechaHtml, horaHtml, descripcionHtml, distanciaHtml));
+      var divRow = $('<div>').addClass('row g-0').append(divCol4, divCol8);
+      var divCard = $('<div>').addClass('card mb-3').css('max-width', '900px').append(divRow);
+
+      var listItem = $('<li>').append(divCard);
+
+      // Navigate asociado al CARD
+      var link = $('<a>').attr('href', '@Url.Action("DetallesEvento", "Lector")' + '?id=' + evento.Id);
+      listItem.click(function() {
+        window.location.href = link.attr('href');
+      });
+
+      $("#eventos-list").append(listItem);
+    });
+  });
+}
+
+
+
         function getDistance(biblio) {
             return new Promise(function (resolve, reject) {
             //Coordinates Biblioteca

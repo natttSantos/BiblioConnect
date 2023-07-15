@@ -146,17 +146,10 @@ namespace BiblioConnect.Controllers
             return Json(new { data = oPrestamo }, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
-        public JsonResult ListarLibroPorCategoria(string nombre)
+        public JsonResult ListarLibroPorIdiomaCategoria(string idioma, string categoria)
         {
             List<Libro> oLista = new List<Libro>();
-            oLista = LibroDAL.Instancia.ListarPorCategoria(nombre);
-            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
-        }
-        [HttpGet]
-        public JsonResult ListarLibroPorIdioma(string idioma)
-        {
-            List<Libro> oLista = new List<Libro>();
-            oLista = LibroDAL.Instancia.ListarPorIdioma(idioma);
+            oLista = LibroDAL.Instancia.ListarLibroPorIdiomaCategoria(idioma, categoria);
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]

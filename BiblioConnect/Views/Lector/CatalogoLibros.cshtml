@@ -24,20 +24,20 @@
                     <div id="side-menu" class="fas fa-angle-double-right"></div>
 
                     <div class="side-bar">
-                        <h1 class="heading">filtros</h1>
+                        <h1 class="heading">Filtros</h1>
                         <div class="box">
-                            <h3 class="title">Búsqueda libro:</h3>
+                            <h3 class="filterTitle">Búsqueda</h3>
                             <div class="search-box">
                                 <input type="text" placeholder="Título, Autor, ISBN, Editorial" id="searchInput" class="form-control">
                                 <span class="search-icon" onclick="Search()"><i class="fas fa-search"></i></span>
                             </div>
                         </div>
                         <div class="box">
-                            <h3 class="title">Categoria</h3>
+                            <h6 class="filterTitle">CATEGORÍAS</h6>
                             <ul id="categorias-list" class="filtros-list"></ul>
                         </div>
                         <div class="box">
-                            <h3 class="title">Idioma</h3>
+                            <h6 class="filterTitle">Idioma</h6>
                             <div class="type">
                                 <ul id="idiomas-list" class="filtros-list">
                                     <li class="listIdiomas">Castellano</li>
@@ -161,9 +161,7 @@
                     $.each(libros, function (index, libro) {
                         mostrarInfoLibros(libro);
                     });
-                    if (totalLibros === 0) { // No hay libros por los filtros
-                        $("#sin-libros").text("No hay resultados para los filtros aplicados :(");
-                    }
+                    comprobarSiHayLibros(libros); 
                     $("#numeroLibros").text("1-"+ totalLibros + " de " + totalLibros + " resultados");
                 },
                 error: function (error) {
@@ -184,8 +182,9 @@
                 type: "GET",
                 data: { nombre: searchInput },
                 success: function (data) {
+                    var libros = data.data; 
                     $("#libros-list").empty(); // Eliminar contenido previo
-                    $.each(data.data, function (index, idLibro) {
+                    $.each(libros, function (index, idLibro) {
                         $.ajax({
                             url: "/Lector/ObtenerLibro",
                             type: "GET",
@@ -200,11 +199,20 @@
                             }
                         });
                     });
+                    comprobarSiHayLibros(libros); 
                 },
                 error: function (error) {
                     console.log("Error al realizar el filtrado", error);
                 }
             });
+        }
+        function comprobarSiHayLibros(libros) {
+            var totalLibros = libros.length; 
+            if (totalLibros === 0) { // No hay libros por los filtros
+                $("#sin-libros").text("No hay resultados para los filtros aplicados :(");
+            } else {
+                $("#sin-libros").text("");
+            }
         }
     function mostrarInfoLibros(libro) {
       var divCard = $("<div></div>").addClass("card");

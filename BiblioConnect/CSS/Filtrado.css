@@ -49,7 +49,7 @@ img {
     margin-top: 5px;
     text-align: center;
     font-size: 15px;
-    color: #5b3e7b;
+
     font-weight: 400;
     font-family: 'Open Sans', sans-serif;
 }
@@ -61,7 +61,7 @@ h4 {
     font-family: 'Roboto', sans-serif;
 }
 
-z {
+#numeroItems {
     padding: 5px 10px;
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
@@ -78,12 +78,12 @@ z {
     margin-top: 5px;
     text-align: right;
     font-size: 13px;
-    font-weight: 300;
-    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-family: 'Poppins', sans-serif;
     position: absolute;
     bottom: 10px;
     right: 10px;
-    color: #745596;
+    color: #5b3e7b;
 }
 
 
@@ -112,29 +112,6 @@ z {
             background-color: #d09bdf;
         }
 
-/*LIBROS*/
-.container {
-    max-width: 1400px; /* Ajusta el ancho máximo del contenedor */
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Define las columnas de la rejilla */
-}
-
-    .container .card {
-        width: 170px;
-        height: 320px;
-        border-radius: 8px;
-        box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
-        overflow: hidden;
-        margin: 10px;
-        text-align: center;
-        display: inline-block;
-        transition: all 0.25s;
-    }
-
-        .container .card:hover {
-            transform: translateY(-15px);
-            box-shadow: 0 12px 16px rgba(0, 0, 0, 0.2);
-        }
 
 /*SIDE BAR FILTROS*/
 :root {
@@ -262,7 +239,6 @@ z {
         color: #333; /* Color del icono al pasar el cursor sobre él */
     }
 
-
 @media (max-width:1200px) {
     #sideMenuIcon {
         display: block;
@@ -282,32 +258,4 @@ z {
             left: 0;
             z-index: 1000;
         }
-}
-
-@media (max-width: 768px) {
-    .container .card {
-        width: 90%;
-        height: 300px;
-    }
-
-    img {
-        width: 170px;
-        height: 220px;
-        margin-top: 20px;
-        margin-left: -13px
-    }
-}
-
-@media (max-width: 480px) {
-    .container .card {
-        width: 90%;
-        height: 300px;
-    }
-
-    img {
-        width: 170px;
-        height: 220px;
-        margin-top: 20px;
-        margin-left: -13px
-    }
 }

@@ -14,34 +14,45 @@
         <link href="~/DataTables-1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
         @* CSS DE MAPAS *@
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+        <link rel="stylesheet" type="text/css" href="~/CSS/Filtrado.css" />
         <link rel="stylesheet" type="text/css" href="~/CSS/CatalogoEventos.css" />
     </head>
 
     <body>
-        <div class="row">
-            <div class="col-md-3">
-                <section>
-                    <div>
-                        <h4>Filtros:</h4>
-                        <h6>Tipo de evento:</h6>
-                        <ul id="evento-list" class="evento-list">
-                            <li class="listTipoEvento">Conferencia</li>
-                            <li class="listTipoEvento">Presentación libro</li>
-                            <li class="listTipoEvento">Club de lectura</li>
-                            <li class="listTipoEvento">Taller escritura</li>
-                            <li class="listTipoEvento">Firma de libro</li>
-                        </ul>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2">
+                    <div id="sideMenuIcon" class="fas fa-angle-double-right"></div>
+
+                    <div class="side-bar">
+                        <h1 class="heading">Filtros</h1>
+                        <div class="box">
+                            <h6 class="filterTitle">Tipo</h6>
+                            <div class="type">
+                                <ul id="evento-list" class="filtros-list">
+                                    <li class="listTipoEvento">Conferencia</li>
+                                    <li class="listTipoEvento">Presentación libro</li>
+                                    <li class="listTipoEvento">Club de lectura</li>
+                                    <li class="listTipoEvento">Taller escritura</li>
+                                    <li class="listTipoEvento">Firma de libro</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="reset-btn">
+                            <div class="btn" onclick="resetFilters()">Eliminar filtros</div>
+                        </div>
                     </div>
-                </section>
-            </div>
-            <div class="col-md-9">
-                <section>
-                    <ol id="eventos-list" class="card-list"></ol>
-                </section>
+
+                </div>
+                <div class="col-md-10">
+                    <h4>Eventos </h4>
+                    <p id="numeroItems"></p>
+                    <p id="sin-items"></p>
+                    <div id="eventos-list" class="row"></div>
+                </div>
             </div>
         </div>
     </body>
-
 
     @* JQquery, Popper.js, Boostrap.js *@
     <script src="~/Scripts/jquery-3.7.0.min.js"></script>
@@ -52,79 +63,111 @@
     <script src="~/Scripts/API_mapa.js"></script>
     <script src="~/Scripts/Fechas.js"></script>
 
-
-
     <script>
-    $(document).ready(function () {
-        $.ajax({
-            url: '@Url.Action("ListarEvento", "Lector")',
-            dataType: "json",
-            success: function (data) {
-                $.each(data.data, function (index, evento) {
-                    mostrarInfoEventos(evento);
-                });
-            },
-            error: function () {
-                console.log("Error al obtener los libros.");
-            }
-        });
-        //Seleccionar un Idioma
-        $(".listTipoEvento").on("click", function () {
-            var eventoSeleccionado = $(this).text();
-            ListarEventoPorTipo(eventoSeleccionado);
-        });
+        $(document).ready(function () {
+            ListarAllEventos();
 
-    });
-        function ListarEventoPorTipo(tipoEvento) {
+        //Seleccionar un Tipo Evento
+            $(".listTipoEvento").on("click", function () {
+                $("#evento-list li").removeClass("selected"); //Montener seleccionado
+                $(this).addClass("selected"); //1 botón seleccionado
+                var eventoSeleccionado = $(this).text();
+                ListarEventoPorTipo(eventoSeleccionado);
+            });
+
+            //SIDEBAR
+            var sideBar = document.querySelector('.side-bar');
+            var sideMenuIcon = document.getElementById('sideMenuIcon');
+
+            sideMenuIcon.addEventListener('click', function () {
+                sideBar.classList.toggle('active');
+                sideMenuIcon.classList.toggle('fa-angle-double-right');
+                sideMenuIcon.classList.toggle('fa-angle-double-left');
+            });
+
+        });
+        function ObtenerEventos(url, params) {
             $.ajax({
-                url: "/Lector/ListarEventoPorTipo",
+                url: url,
                 type: "GET",
-                data: { tipo: tipoEvento },
+                data: params,
                 success: function (data) {
+                    var eventos = data.data
+                    var totalEventos = eventos.length;
+
                     $("#eventos-list").empty(); // Eliminar contenido previo
                     $.each(data.data, function (index, evento) {
                         mostrarInfoEventos(evento);
                     });
+                    comprobarSiHayEventos(eventos);
+                    $("#numeroItems").text("1-" + totalEventos + " de " + totalEventos + " resultados");
                 },
                 error: function (error) {
-                    console.log("Error al obtener los libros:", error);
+                    console.log("Error al obtener los eventos:", error);
                 }
             });
-
         }
-function mostrarInfoEventos(evento) {
-  getBiblioteca(evento.idBiblioteca).then(function(biblioteca) {
-    return getDistance(biblioteca).then(function(distance) {
-      var fotoHtml = $('<img>').attr('src', evento.Foto).attr('alt', '...');
-      var tituloHtml = $('<h4>').addClass('titulo').text(evento.Tipo + ' en la ' + biblioteca.Nombre);
-      var autorHtml = $('<h5>').addClass('nombreAutor').text(evento.NombreAutor);
+        function ListarAllEventos() {
+            ObtenerEventos("/Lector/ListarEvento", {});
+        }
+        function ListarEventoPorTipo(tipoEvento) {
+            ObtenerEventos("/Lector/ListarEventoPorTipo", { tipo: tipoEvento});
+        }
 
-      var fechaIconoHtml = $('<i>').addClass('far fa-calendar-alt');
-      var fechaHtml = $('<p>').addClass('Fecha').append(fechaIconoHtml).append(" "+ formatDateToReadable(evento.FechaRealizacion));
+        function resetFilters() {
+            var eventoItems = document.querySelectorAll('#evento-list li');
+            eventoItems.forEach(function (item) {
+                item.classList.remove('selected');
+            });
+            ListarAllEventos();
+        }
+        function mostrarInfoEventos(evento) {
+        getBiblioteca(evento.idBiblioteca).then(function(biblioteca) {
+            return getDistance(biblioteca).then(function (distance) {
 
-      var horaHtml = $('<p>').addClass('Hora').text(evento.HoraInicio + '-' + evento.HoraFin);
-      var descripcionHtml = $('<p>').addClass('descripcion').text(evento.DescripcionEvento);
-      var distanciaHtml = $('<p>').addClass('distancia').append($('<small>').addClass('text-body-secondary').text(distance.toFixed(2) + ' kilómetros'));
+            var fotoHtml = $('<img>').attr('src', evento.Foto).attr('alt', '...');
+            var tituloHtml = $('<h4>').addClass('titulo').text(evento.Tipo + ' en la ' + biblioteca.Nombre);
+            var autorHtml = $('<h5>').addClass('nombreAutor').text(evento.NombreAutor);
+            var fechaIconoHtml = $('<i>').addClass('far fa-calendar-alt');
+            var fechaHtml = $('<p>').addClass('Fecha').append(fechaIconoHtml).append(" "+ formatDateToReadable(evento.FechaRealizacion));
+            var horaHtml = $('<p>').addClass('Hora').text(evento.HoraInicio + '-' + evento.HoraFin);
+            var descripcionHtml = $('<p>').addClass('descripcion').text(recortarDescripcion(evento.DescripcionEvento));
 
-      var divCol4 = $('<div>').addClass('col-md-4').append(fotoHtml);
-      var divCol8 = $('<div>').addClass('col-md-8').append($('<div>').addClass('card-body').append(tituloHtml, autorHtml, fechaHtml, horaHtml, descripcionHtml, distanciaHtml));
-      var divRow = $('<div>').addClass('row g-0').append(divCol4, divCol8);
-      var divCard = $('<div>').addClass('card mb-3').css('max-width', '900px').append(divRow);
+                var distanciaHtml = $("<div></div>").addClass("distancia");
+                distanciaHtml.html('<i class="fas fa-map-marker-alt"></i> ' + distance.toFixed(2) + " kilómetros");
 
-      var listItem = $('<li>').append(divCard);
+            var divCol4 = $('<div>').addClass('col-md-4').append(fotoHtml);
+            var divCol8 = $('<div>').addClass('col-md-8').append($('<div>').addClass('card-body').append(tituloHtml, autorHtml, fechaHtml, horaHtml, descripcionHtml, distanciaHtml));
+            var divRow = $('<div>').addClass('row g-0').append(divCol4, divCol8);
+            var divCard = $('<div>').addClass('card mb-3').css('max-width', '900px').append(divRow);
 
-      // Navigate asociado al CARD
-      var link = $('<a>').attr('href', '@Url.Action("DetallesEvento", "Lector")' + '?id=' + evento.Id);
-      listItem.click(function() {
-        window.location.href = link.attr('href');
-      });
+            var listItem = $('<li>').append(divCard);
 
-      $("#eventos-list").append(listItem);
-    });
-  });
-}
+            // Navigate asociado al CARD
+            var link = $('<a>').attr('href', '@Url.Action("DetallesEvento", "Lector")' + '?id=' + evento.Id);
+            listItem.click(function() {
+                window.location.href = link.attr('href');
+            });
+            $("#eventos-list").append(listItem);
+            });
+          });
+        }
+        function recortarDescripcion(descripcion) {
+            var caracteresMaximos = 245; 
+            if (descripcion.length > caracteresMaximos) {
+                return descripcion.slice(0, caracteresMaximos) + '...';
+            }
+            return descripcion;
+        }
 
-
+        function comprobarSiHayEventos(eventos) {
+            var totalEventos = eventos.length;
+            if (totalEventos === 0) {
+                $("#sin-items").text("No hay resultados para los filtros aplicados :(");
+            } else {
+                $("#sin-items").text("");
+            }
+        }
 
         function getDistance(biblio) {
             return new Promise(function (resolve, reject) {

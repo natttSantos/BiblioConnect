@@ -14,6 +14,7 @@
         <link href="~/DataTables-1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
         @* CSS DE MAPAS *@
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+        <link rel="stylesheet" type="text/css" href="~/CSS/Filtrado.css" />
         <link rel="stylesheet" type="text/css" href="~/CSS/Catalogo.css" />
     </head>
 
@@ -54,8 +55,8 @@
                 </div>
                 <div class="col-md-10">
                     <h4>Libros </h4>
-                    <p id="numeroLibros"></p>
-                    <p id="sin-libros"></p>
+                    <p id="numeroItems"></p>
+                    <p id="sin-items"></p>
                     <div id="libros-list" class="row"></div>
                 </div>
             </div>
@@ -129,10 +130,6 @@
             });
         }
 
-
-        $(window).on('load', function () {
-            $("#spinner").hide();
-        });
     });
         function resetFilters() {
             document.getElementById('searchInput').value = '';
@@ -148,7 +145,7 @@
         }
 
         //REFACTORIZACIÓN FILTROS
-        function ObtenerLibrosFiltrado(url, params) {
+        function ObtenerLibros(url, params) {
             $.ajax({
                 url: url,
                 type: "GET",
@@ -156,13 +153,13 @@
                 success: function (data) {
                     var libros = data.data
                     var totalLibros = libros.length;
-                    console.log(totalLibros)
+
                     $("#libros-list").empty();
                     $.each(libros, function (index, libro) {
                         mostrarInfoLibros(libro);
                     });
                     comprobarSiHayLibros(libros); 
-                    $("#numeroLibros").text("1-"+ totalLibros + " de " + totalLibros + " resultados");
+                    $("#numeroItems").text("1-"+ totalLibros + " de " + totalLibros + " resultados");
                 },
                 error: function (error) {
                     console.log("Error al obtener los libros:", error);
@@ -170,10 +167,10 @@
             });
         }
         function ListarLibroPorIdiomaCategoria(idiomaSeleccionado, categoriaSeleccionada) {
-            ObtenerLibrosFiltrado("/Lector/ListarLibroPorIdiomaCategoria", { idioma: idiomaSeleccionado, categoria: categoriaSeleccionada});
+            ObtenerLibros("/Lector/ListarLibroPorIdiomaCategoria", { idioma: idiomaSeleccionado, categoria: categoriaSeleccionada});
         }
         function ListarAllLibros() {
-            ObtenerLibrosFiltrado("/Biblioteca/ListarLibro", { });
+            ObtenerLibros("/Biblioteca/ListarLibro", { });
         }
         function Search() {
             var searchInput = document.getElementById('searchInput').value;
@@ -209,9 +206,9 @@
         function comprobarSiHayLibros(libros) {
             var totalLibros = libros.length; 
             if (totalLibros === 0) { // No hay libros por los filtros
-                $("#sin-libros").text("No hay resultados para los filtros aplicados :(");
+                $("#sin-items").text("No hay resultados para los filtros aplicados :(");
             } else {
-                $("#sin-libros").text("");
+                $("#sin-items").text("");
             }
         }
     function mostrarInfoLibros(libro) {

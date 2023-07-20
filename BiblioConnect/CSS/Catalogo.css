@@ -210,23 +210,26 @@ h4 {
         width: 100%;
     }
 
-#side-menu {
+#sideMenuIcon {
     position: fixed;
     top: 20px;
     left: 20px;
-    height: 50px;
-    width: 50px;
-    line-height: 50px;
+    height: 40px; 
+    width: 40px; 
+    line-height: 40px;
     text-align: center;
     background-color: var(--white);
     color: var(--black);
     cursor: pointer;
-    font-size: 25px;
+    font-size: 20px;
     z-index: 1100;
     box-shadow: var(--box-shadow);
     border: var(--border);
     display: none;
+    border-radius: 50%;
 }
+
+
 /*boton de búsqueda*/
 .search-box {
     position: relative;
@@ -255,11 +258,11 @@ h4 {
 
 
 @media (max-width:1200px) {
-    #side-menu {
+    #sideMenuIcon {
         display: block;
     }
 
-        #side-menu.fa-times {
+        #sideMenuIcon.fa-times {
             top: 0;
             left: 300px;
         }
@@ -300,3 +303,4 @@ h4 {
         margin-left: -13px
     }
 }
+

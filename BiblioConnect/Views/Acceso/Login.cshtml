@@ -8,6 +8,7 @@
 <head>
     <title>Login Page</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="~/CSS/Registro.css" rel="stylesheet" />
     <link href="~/CSS/Login.css" rel="stylesheet" />
     @* Boostrap CSS *@
     <link href="~/Content/bootstrap.min.css" rel="stylesheet">
@@ -16,50 +17,74 @@
 
 </head>
 <body>
-    <div class="container">
-        <div class="d-flex justify-content-center h-100">
-            <div class="card">
-                <div class="card-header">
-                    <h3>Inicio sesión</h3>
-                </div>
-                <div class="card-body">
-                    <form action="@Url.Action("Login", "Acceso")" method="post">
-                        <div class="input-group form-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-user"></i></span>
-                            </div>
-                            <input type="text" name="Email" class="form-control" placeholder="Email">
 
+    <div class="containerLogin" id="LoginFormulario">
+        <div class="image"></div>
+        <div class="login-form">
+            <img src="~/images/LogoAppWeb.png" />
+            <form action="@Url.Action("Login", "Acceso")" method="post" class="formLogin">
+                <div class="row">
+                    @if (ViewData["Mensaje"] != null)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            Tu contraseña no es correcta. Compruébala.
                         </div>
-                        <div class="input-group form-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                    }
+                    <div class="row">
+                        <div class="col-md-1">
+                            <div class="form-floating input-icon">
+                                <i class="bx bxs-envelope" id="icon"></i>
                             </div>
-                            <input type="password" name="Contraseña" class="form-control" placeholder="Contraseña">
                         </div>
-                        @if (ViewData["Mensaje"] != null)
-                        {
-                            <div class="alert alert-danger" role="alert">
-                                El email introducido no existe.
+                        <div class="col-md-11">
+                            <div class="form-floating input-icon" id="email-field">
+                                <input type="text" class="form-control" name="Email" placeholder="Correo electrónico">
+                                <label>Correo electrónico</label>
+                                <span class="error email error">
+                                    <i class='bx bx-error-circle error-icon'></i>
+                                    <p class="error-text">Introduce tu email</p>
+                                </span>
                             </div>
-                        }
-                        <div class="form-group">
-                            <input type="submit" value="Iniciar sesión" class="btn float-right login_btn">
                         </div>
-                    </form>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1">
+                            <div class="form-floating input-icon">
+                                <i class="fas fa-lock" id="icon"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-11">
+                            <div class="form-floating input-icon" id="password-field">
+                                <input type="password" class="form-control" name="Contraseña" placeholder="Contraseña">
+                                <label for="Nombre">Contraseña</label>
+                                <i class="bx bx-hide show-hide" id="showPassword"></i>
+                                <span class="error email error">
+                                    <i class='bx bx-error-circle error-icon'></i>
+                                    <p class="error-text">Introduzca una contraseña</p>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <input type="submit" class="btn-login" value="Iniciar sesión" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <a href="#" class="btn-login" data-bs-toggle="modal" data-bs-target="#registroModal">Regístrame</a>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-footer">
-                    <div class="d-flex justify-content-center links">
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#registroModal">Regístrate como lector</a>
-                    </div>
-                    <div class="d-flex justify-content-center links">
-                        ¿Tienes una Biblioteca y quieres darla de alta? <a href="#" data-bs-toggle="modal" data-bs-target="#registroBiblioModal">Dar de alta Biblioteca</a>
-                    </div>
-
+            </form>
+            <div class="card-footer">
+                <div class="d-flex justify-content-center links">
+                    ¿Tienes una Biblioteca y quieres darla de alta? <a href="#" data-bs-toggle="modal" data-bs-target="#registroBiblioModal">Dar de alta Biblioteca</a>
                 </div>
             </div>
         </div>
     </div>
+
 
     @* MODAL LECTOR *@
     <div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
@@ -192,7 +217,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-floating" id="password-field">
-                                            <input type="password" class="form-control" id ="Contraseña" placeholder="Contraseña">
+                                            <input type="password" class="form-control" id="Contraseña" placeholder="Contraseña">
                                             <label for="Nombre">Contraseña</label>
                                             <i class="bx bx-hide show-hide" id="showPassword"></i>
                                             <span class="error email error">
@@ -204,7 +229,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-floating" id="confirmPassword-field">
-                                            <input type="password" class="form-control" id ="confirmarContraseña" placeholder="Confirmar contraseña">
+                                            <input type="password" class="form-control" id="confirmarContraseña" placeholder="Confirmar contraseña">
                                             <label for="Nombre">Confirmar contraseña</label>
                                             <i class="bx bx-hide show-hide" id="showPassword"></i>
                                         </div>
@@ -214,7 +239,7 @@
                                     <div class="col-md-6">
                                         <div class="imagen" id="imagen-field">
                                             <label for="filelibro" class="form-label">Seleccione una imagen:</label>
-                                            <input class="form-control" type="file" id ="filelibro" onchange="readURL(this, false)">
+                                            <input class="form-control" type="file" id="filelibro" onchange="readURL(this, false)">
                                             <span class="error email error">
                                                 <i class='bx bx-error-circle error-icon'></i>
                                                 <p class="error-text">No ha seleccionado ninguna imagen</p>
@@ -279,7 +304,7 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-floating" id="tlfBiblio-field">
-                                                <input type="tel" class="form-control" id ="TelefonoBiblio" placeholder="Telefono" pattern="\d*">
+                                                <input type="tel" class="form-control" id="TelefonoBiblio" placeholder="Telefono" pattern="\d*">
                                                 <label>Teléfono</label>
                                                 <span class="error email error">
                                                     <i class='bx bx-error-circle error-icon'></i>
@@ -557,5 +582,6 @@
         }
     </script>
     <script src="~/Validate/Registro.js"></script>
+    <script src="~/Validate/Login.js"></script>
 </body>
 </html>

@@ -353,6 +353,7 @@
     <Content Include="Content\jquery-ui.structure.css" />
     <Content Include="Content\jquery-ui.theme.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="CSS\Registro.css" />
     <Content Include="CSS\Login.css" />
     <Content Include="CSS\Notificacion.css" />
     <Content Include="CSS\Calendario.css" />
@@ -435,7 +436,10 @@
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-reboot.min.css.map" />
     <Content Include="images\fondo.png" />
+    <Content Include="images\image1.jpg" />
+    <Content Include="images\imagenfondo.jpg" />
     <Content Include="images\logo.png" />
+    <Content Include="images\LogoAppWeb.png" />
     <Content Include="Scripts\MostrarNotificaciones.js" />
     <Content Include="Scripts\Fechas.js" />
     <Content Include="CSS\sidebar.min.css" />
@@ -476,6 +480,7 @@
     <Content Include="Scripts\jquery-3.7.0.slim.js" />
     <Content Include="Scripts\jquery-3.7.0.slim.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Validate\Login.js" />
     <Content Include="Validate\Registro.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

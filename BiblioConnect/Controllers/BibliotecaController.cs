@@ -249,6 +249,13 @@ namespace BiblioConnect.Controllers
             respuesta = NotificacionDAL.Instancia.Eliminar(objeto);
             return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
         }
+        [HttpPost]
+        public JsonResult ModificarBiblioteca(Biblioteca objeto)
+        {
+            bool respuesta; 
+            respuesta = BibliotecaDAL.Instancia.Modificar(objeto); 
+            return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
+        }
     }
     public class Response
     {

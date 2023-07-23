@@ -8,43 +8,257 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     @* Boostrap CSS *@
     <link href="~/Content/bootstrap.min.css" rel="stylesheet">
-    @* DataTables CSS BÁSICO *@
-    <link href="~/Content/datatables.min.css" rel="stylesheet" />
-    @* DataTables estilo Boostrap 5 CSS *@
-    <link href="~/DataTables-1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     @* CSS DE MAPAS *@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <link rel="stylesheet" type="text/css" href="~/CSS/Mapa.css" />
+    <link rel="stylesheet" type="text/css" href="~/CSS/Perfil.css" />
+    <link rel="stylesheet" type="text/css" href="~/CSS/Registro.css" />
 </head>
 <body>
-    <div id="biblioContainer">
-        <img id="txtimagen" src="#" alt="Imagen" style="width: 300px; height: 300px; margin-right: 10px;">
-        <div>
-            <h5 id="txtnombre"></h5>
-            <p id="txtdescripcion"></p>
+    <div class="containerPerfil">
+        <div class="row">
+            <div class="row">
+                <h4 class="heading" id="txtnombre"></h4>
+                <div class="col-md-4">
+                    <img id="txtimagen" src="#" alt="Imagen">
+                </div>
+                <div class="col-md-8">
+                    <div class="datosTabla">
+                        <div class="row rowgrey">
+                            <div class="col-md-4">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <h6>Dirección</h6>
+                            </div>
+                            <div class="col-md-8">
+                                <p id="txtcalle"></p>
+                                <p id="txtcodpostalCiudad"></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <i class="fas fa-at"></i>
+                                <h6>Datos contacto</h6>
+                            </div>
+                            <div class="col-md-8">
+                                <p id="txttelefono"></p>
+                                <p id="txtemail"></p>
+                            </div>
+                        </div>
+                        <div class="row rowgrey">
+                            <div class="col-md-4">
+                                <i class="far fa-clock"></i>
+                                <h6>Horario</h6>
+                            </div>
+                            <div class="col-md-8">
+                                <p id="horario"></p>
+                                <p>Mañanas: de 8.45 a 14.45 h</p>
+                                <p>Tardes: de 16.15 a 19.45 h</p>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row rowPerfil">
+                    <div class="col-md-10">
+                        <h5 class="title">Descripción</h5>
+                        <p id="txtdescripcion"></p>
+                    </div>
+                </div>
+                <div class="row rowPerfil">
+                    <h5 class="title">Ubicación</h5>
+                    <div id="map"></div>
+                </div>
+                <div class="row rowPerfil">
+                    <div class="col">
+                        <div class="col">
+                            <a href="#" class="btn-login" onclick="openEditarPerfilModal()">Editar perfil</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <h5>Ubicación biblioteca:</h5>
-    <div id="map"></div>
 
-    <h5>Información de contacto:</h5>
-    <p id="txttelefono"></p>
-    <p id="txtemail"></p>
+    @* MODAL EDITAR BIBLIO *@
+    <div class="modal fade" id="registroBiblioModal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable custom-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="registroModalLabel">Editar perfil</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="#" name="formModal">
+                        <div class="container">
+                            <div id="registrar-lector">
+                                <div class="row">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-floating" id="nombreBiblio-field">
+                                                <input type="text" class="form-control" id="NombreBiblio" placeholder="Nombre">
+                                                <label>Nombre</label>
+                                                <span class="error email error">
+                                                    <i class='bx bx-error-circle error-icon'></i>
+                                                    <p class="error-text">Introduce tu nombre</p>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-floating" id="emailBiblio-field">
+                                                <input type="email" class="form-control" id="EmailBiblio" placeholder="Email">
+                                                <label>Email</label>
+                                                <span class="error email error">
+                                                    <i class='bx bx-error-circle error-icon'></i>
+                                                    <p class="error-text">Tu email debe contener el símbolo  &#64; y un dominio.</p>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-floating" id="tlfBiblio-field">
+                                                <input type="tel" class="form-control" id="TelefonoBiblio" placeholder="Telefono" pattern="\d*">
+                                                <label>Teléfono</label>
+                                                <span class="error email error">
+                                                    <i class='bx bx-error-circle error-icon'></i>
+                                                    <p class="error-text">Introduce un teléfono de 9 dígitos</p>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-floating" id="estadoBiblio-field">
+                                                <select class="form-select" id="EstadoBiblio" aria-label="Floating label select example">
+                                                    <option selected>Seleccione una opcion</option>
+                                                    <option value="Castello">Castello</option>
+                                                    <option value="Valencia">Valencia</option>
+                                                    <option value="Alacant">Alacant</option>
+                                                </select>
+                                                <label for="floatingSelect">Estado</label>
+                                                <span class="error email error">
+                                                    <i class='bx bx-error-circle error-icon'></i>
+                                                    <p class="error-text">Introduce un estado</p>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating" id="ciudadBiblio-field">
+                                                <select class="form-select" id="CiudadBiblio" aria-label="Floating label select example">
+                                                    <option selected>Seleccione una opcion</option>
+                                                </select>
+                                                <label for="floatingSelect">Ciudad</label>
+                                                <span class="error email error">
+                                                    <i class='bx bx-error-circle error-icon'></i>
+                                                    <p class="error-text">Introduce una ciudad</p>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-floating" id="calleBiblio-field">
+                                                <input type="text" class="form-control" id="CalleBiblio" placeholder="Calle">
+                                                <label>Calle</label>
+                                                <span class="error email error">
+                                                    <i class='bx bx-error-circle error-icon'></i>
+                                                    <p class="error-text">Introduce una calle</p>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating" id="codPostalBiblio-field">
+                                                <input type="text" class="form-control" id="CodPostalBiblio" placeholder="Código Postal">
+                                                <label>Código Postal</label>
+                                                <span class="error email error">
+                                                    <i class='bx bx-error-circle error-icon'></i>
+                                                    <p class="error-text">Introduce un código postal de 5 dígitos</p>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-floating" id="passwordBiblio-field">
+                                                <input type="password" class="form-control" id="ContraseñaBiblio" placeholder="Contraseña">
+                                                <label for="Nombre">Contraseña</label>
+                                                <i class="bx bx-hide show-hide" id="showPassword"></i>
+                                                <span class="error email error">
+                                                    <i class='bx bx-error-circle error-icon'></i>
+                                                    <p class="error-text">Las contraseñas no coinciden</p>
+                                                </span>
+                                            </div>
 
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating" id="confirmPasswordBiblio-field">
+                                                <input type="password" class="form-control" id="confirmarContraseñaBiblio" placeholder="Confirmar contraseña">
+                                                <label for="Nombre">Confirmar contraseña</label>
+                                                <i class="bx bx-hide show-hide" id="showPassword"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-floating formDescripcion" id="descripcionBiblio-field">
+                                                <textarea class="form-control" id="DescripcionBiblio" placeholder="Descripcion" maxlength="500"></textarea>
+                                                <label for="DescripcionBiblio">Descripcion</label>
+                                                <span class="error email error">
+                                                    <i class='bx bx-error-circle error-icon'></i>
+                                                    <p class="error-text">Introduce una descripción</p>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="imagen" id="imagenBiblio-field">
+                                                <label for="filelibro" class="form-label">Seleccione una imagen:</label>
+                                                <input class="form-control" type="file" id="filelibroBiblio" onchange="readURL(this, true)">
+                                                <span class="error email error">
+                                                    <i class='bx bx-error-circle error-icon'></i>
+                                                    <p class="error-text">No ha seleccionado ninguna imagen</p>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <img id="imglectorBiblio" class="border border-dark img-thumbnail" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row  d-flex justify-content-center align-items-center">
+                                        <div class="col-md-4">
+                                            <div class="form-floating button">
+                                                <input type="submit" class="btn-registrar" value="Guardar cambios" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     @* JQquery, Popper.js, Boostrap.js *@
     <script src="~/Scripts/jquery-3.7.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
     <script src="~/Scripts/bootstrap.js"></script>
-    @* DataTable JS *@
-    <script src="~/Scripts//datatables.min.js"></script>
-    @* Jquery *@
-    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    @* Libreria alert *@
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/Scripts/sweetAlert.js"></script>
     @* JS DE MAPAS *@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="~/Scripts/API_mapa.js"></script>
+    <script src="~/Scripts/API_paises.js"></script>
     <script>
         $(document).ready(function () {
+            cargarDatosBiblio();
+        });
+        function cargarDatosBiblio() {
             var Id = @ViewBag.IdBiblioteca;
             $.ajax({
                 url: "/Biblioteca/ObtenerBiblio",
@@ -54,24 +268,57 @@
                     var biblio = data.data;
                     $("#txtimagen").attr("src", biblio.Foto);
                     $("#txtdescripcion").text(biblio.Descripcion);
+                    $("#txtcalle").text(biblio.Calle);
+                    $("#txtcodpostalCiudad").text(biblio.CodPostal + " " + biblio.Ciudad);
                     $("#txtnombre").text(biblio.Nombre);
-                    $("#txtemail").text(biblio.Email);
-                    $("#txttelefono").text(biblio.Telefono);
+                    $("#txtemail").text("Correo electrónico: " + biblio.Email);
+                    $("#txttelefono").text("Teléfono: " + biblio.Telefono);
 
                     //Mostrar mapa
                     getLatLong(biblio.Calle, biblio.Ciudad, biblio.Estado, biblio.Pais, biblio.CodPostal)
                         .then(function (coordinatesLibro) {
                             const lat = coordinatesLibro[0];
                             const lon = coordinatesLibro[1];
-                            mostrarMapa(lat, lon); 
+                            mostrarMapa(lat, lon);
                         })
-                    
+
                 },
                 error: function (error) {
                     console.log("Error al obtener los datos de la biblioteca:", error);
                 }
             });
+        }
+        function openEditarPerfilModal() {
+            insertarCiudadesSelect();
+        var Id = @ViewBag.IdBiblioteca;
+        $.ajax({
+            url: "/Biblioteca/ObtenerBiblio",
+            type: "GET",
+            data: { id: Id },
+            success: function (data) {
+                var biblio = data.data;
+                $("#NombreBiblio").val(biblio.Nombre);
+                $("#EmailBiblio").val(biblio.Email);
+                $("#TelefonoBiblio").val(biblio.Telefono);
+                $("#EstadoBiblio").val(biblio.Estado);
+                $("#CiudadBiblio").val(biblio.Ciudad);
+                $("#CalleBiblio").val(biblio.Calle);
+                $("#CodPostalBiblio").val(biblio.CodPostal);
+                $("#ContraseñaBiblio").val(biblio.Contraseña);
+                $("#confirmarContraseñaBiblio").val(biblio.Contraseña);
+                $("#DescripcionBiblio").val(biblio.Descripcion);
+
+                // Open the modal
+                $("#registroBiblioModal").modal("show");
+            },
+            error: function (error) {
+                console.log("Error al obtener los datos de la biblioteca:", error);
+            }
         });
+        }
+
     </script>
+    <script src="~/Validate/Registro.js"></script>
+    <script src="~/Validate/Login.js"></script>
 </body>
 

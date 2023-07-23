@@ -353,6 +353,7 @@
     <Content Include="Content\jquery-ui.structure.css" />
     <Content Include="Content\jquery-ui.theme.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="CSS\Perfil.css" />
     <Content Include="CSS\Filtrado.css" />
     <Content Include="CSS\Registro.css" />
     <Content Include="CSS\Login.css" />

@@ -1,14 +1,21 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 
+
 /*MODAL*/
 #registroModal .modal-dialog {
     max-width: 800px;
     width: 90%;
 }
 #registroBiblioModal .modal-dialog {
-    max-width: 800px;
+    max-width: 688px;
     width: 90%;
 }
+/*TAMAÑO TEXTAREA*/
+#DescripcionBiblio {
+    height: 140px;
+    min-width: 100%;
+}
+
 #imglector {
     max-width: 130px;
     max-height: 130px;

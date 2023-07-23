@@ -38,7 +38,7 @@
                         </div>
                         <div class="col-md-11">
                             <div class="form-floating input-icon" id="email-field">
-                                <input type="text" class="form-control" name="Email" placeholder="Correo electrónico">
+                                <input type="text" class="form-control" name="Email" placeholder="Correo electrónico" required>
                                 <label>Correo electrónico</label>
                                 <span class="error email error">
                                     <i class='bx bx-error-circle error-icon'></i>
@@ -55,7 +55,7 @@
                         </div>
                         <div class="col-md-11">
                             <div class="form-floating input-icon" id="password-field">
-                                <input type="password" class="form-control" name="Contraseña" placeholder="Contraseña">
+                                <input type="password" class="form-control" name="Contraseña" placeholder="Contraseña" required>
                                 <label for="Nombre">Contraseña</label>
                                 <i class="bx bx-hide show-hide" id="showPassword"></i>
                                 <span class="error email error">
@@ -388,8 +388,8 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-floating" id="descripcionBiblio-field">
-                                                <input type="text" class="form-control" id="DescripcionBiblio" placeholder="Descripcion">
-                                                <label>Descripcion</label>
+                                                <textarea class="form-control" id="DescripcionBiblio" placeholder="Descripcion" maxlength="500"></textarea>
+                                                <label for="DescripcionBiblio">Descripcion</label>
                                                 <span class="error email error">
                                                     <i class='bx bx-error-circle error-icon'></i>
                                                     <p class="error-text">Introduce una descripción</p>
@@ -397,6 +397,7 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="imagen" id="imagenBiblio-field">
@@ -546,32 +547,7 @@
     //API DE PAISES
         $(document).ready(function () {
             deshabilitarFechasPosteriores();
-
-        $.ajax({
-            url: "https://www.universal-tutorial.com/api/getaccesstoken",
-            type: "GET",
-            headers: {
-                "Accept": "application/json",
-                "api-token": "4TtTboEhH8Qb-Xx3QHOeacz4RiEenMI7rqHDdjZt4oeosXPWeEsARjPVDgI5p1iaTys",
-                "user-email": "nsantosbalterra@gmail.com"
-            },
-            success: function (response) {
-                var selectedState;
-                var auth_token = response.auth_token;
-
-                $("#Estado").change(function () {
-                    selectedState = $(this).find("option:selected").text();
-                    getCities(auth_token, selectedState,'#Ciudad');
-                });
-                $("#EstadoBiblio").change(function () {
-                    selectedState = $(this).find("option:selected").text();
-                    getCities(auth_token, selectedState,'#CiudadBiblio');
-                });
-            },
-            error: function (error) {
-                console.log("Error al obtener el access token:", error);
-            }
-        });
+            insertarCiudadesSelect();
     });
 
         function deshabilitarFechasPosteriores() {

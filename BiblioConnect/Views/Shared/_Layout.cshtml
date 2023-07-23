@@ -25,59 +25,6 @@
         int Id = oUsuario.Id;
         if (tipoUsuario.Equals("biblioteca"))
         {
-            @*<div class="container body">
-                    <div class="main_container">
-                        <div class="col-md-3 left_col">
-                            <div class="left_col scroll-view">
-                                <div class="navbar nav_title" style="border: 0;">
-                                    <a href="index.html" class="site_title"><i class="fa fa-database"></i> <span>Alela!</span></a>
-                                </div>
-
-                                <div class="clearfix"></div>
-                                <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-                                    <div class="menu_section">
-                                        <h3>General</h3>
-                                        <ul class="nav side-menu">
-                                            <li>
-                                                <a><i class="fa fa-home"></i> Estadísticas <span class="fa fa-chevron-down"></span></a>
-                                                <ul class="nav child_menu">
-                                                    <li><a href="/Biblioteca/Dashboard">Dashboard</a></li>
-                                                </ul>
-                                            </li>
-                                            <li>
-                                                <a><i class="fa fa-home"></i> General <span class="fa fa-chevron-down"></span></a>
-                                                <ul class="nav child_menu">
-                                                    <li><a href="/Biblioteca/Perfil">Perfil</a></li>
-                                                </ul>
-                                                <ul class="nav child_menu">
-                                                    <li><a href="/Biblioteca/Calendario">Calendario</a></li>
-                                                </ul>
-                                            </li>
-                                            <li>
-                                                <a><i class="fa fa-bar-chart-o"></i> Gestión <span class="fa fa-chevron-down"></span></a>
-                                                <ul class="nav child_menu">
-                                                    <li><a href="/Biblioteca/Editorial">Editorial</a></li>
-                                                    <li><a href="/Biblioteca/Autor">Autor</a></li>
-                                                    <li><a href="/Biblioteca/Libro">Libro</a></li>
-                                                    <li><a href="/Biblioteca/Evento">Evento</a></li>
-                                                </ul>
-                                                <ul class="nav child_menu">
-                                                    <li><a href="/Biblioteca/Prestamo">Préstamos>
-                                                </ul>
-                                            </li>
-                                            <li>
-                                                <a><i class="fa fa-bar-chart-o"></i> Cerrar sesion <span class="fa fa-chevron-down"></span></a>
-                                                <ul class="nav child_menu">
-                                                    <li>@Html.ActionLink("Salir", "CerrarSesion", "Home")</li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>*@
             <div class="sidebar">
                 <div class="sidebar-inner">
                     <div class="sidebar-logo">
@@ -171,44 +118,6 @@
                     </ul>
                 </div>
             </div>
-
-            @*<nav class="navbar navbar-expand navbar-light bg-light">
-                <div class="container-fluid">
-                    <a id="sidebar-toggle" class="sidebar-toggle nav-link" href="#">
-                        <i class="fas fa-bars"></i>
-                    </a>
-
-                    <ul class="navbar-nav me-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Left</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
-                        </li>
-                    </ul>
-
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Right</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>*@
-
-
-            @*<li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Recursos
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/Biblioteca/Editorial">Editoriales</a></li>
-                        <li><a class="dropdown-item" href="/Biblioteca/Autores">Autores</a></li>
-                        <li><a class="dropdown-item" href="/Biblioteca/Libros">Libros</a></li>
-                    </ul>
-                </li>*@
         }
 
         @* LECTOR NAVRBAR *@
@@ -278,7 +187,7 @@
     <script src="~/Scripts/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/next-sidebar@1/assets/js/next-sidebar.min.js"></script>
     <script src="~/Scripts/Fechas.js"></script>
-    <script src="~/Scripts/MostrarNotificaciones.js"></script>
+    @*<script src="~/Scripts/MostrarNotificaciones.js"></script> PENDIENTE!!*@
     <script>
         //Cambiar ACTIVE DEL NAVBAR
         document.addEventListener('DOMContentLoaded', () => {
@@ -293,7 +202,7 @@
 
         $(document).ready(function () {
             var idLector = @(((Usuario)Session["Usuario"]).Id);
-            ListarNotificaciones(idLector)
+            //ListarNotificaciones(idLector) PENDIENTE
             $("#spinner").hide(); // Ocultar el spinner al cargar la página
         })
         // Mostrar el spinner al hacer una petición AJAX

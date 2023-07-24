@@ -2,31 +2,29 @@
 document.addEventListener("DOMContentLoaded", function () {
     const registroLectorModal = document.querySelector("#registroModal form");
     const registroBiblioModal = document.querySelector("#registroBiblioModal form");
-    console.log(registroLectorModal)
+
     //LECTOR
-    if (registroLectorModal ) {
-        registroLectorModal.addEventListener("submit", function (e) {
-            e.preventDefault();
+    //registroLectorModal.addEventListener("submit", function (e) {
+    //    e.preventDefault();
 
-            const nombreValido = validarNombre("nombre-field");
-            const emailValido = validarEmail("email-field");
-            const apellidosValido = validarApellidos("apellidos-field");
-            const calleValido = validarCalle("calle-field");
-            const codPostalValido = validarCodPostal("codPostal-field");
-            const passValido = validarPassword("password-field", "confirmPassword-field");
-            const dniValido = validarDni("dni-field");
-            const tlfValido = validarTlf("tlf-field");
-            const estadoValido = validarEstado("estado-field");
-            const ciudadValido = validarCiudad("ciudad-field");
-            const fechaValido = validarFecha("fecha-field");
-            const imagenValido = validarImagen("imagen-field");
+    //    const nombreValido = validarNombre("nombre-field");
+    //    const emailValido = validarEmail("email-field");
+    //    const apellidosValido = validarApellidos("apellidos-field");
+    //    const calleValido = validarCalle("calle-field");
+    //    const codPostalValido = validarCodPostal("codPostal-field");
+    //    const passValido = validarPassword("password-field", "confirmPassword-field");
+    //    const dniValido = validarDni("dni-field");
+    //    const tlfValido = validarTlf("tlf-field");
+    //    const estadoValido = validarEstado("estado-field");
+    //    const ciudadValido = validarCiudad("ciudad-field");
+    //    const fechaValido = validarFecha("fecha-field");
+    //    const imagenValido = validarImagen("imagen-field");
 
-            if (nombreValido && emailValido && apellidosValido && calleValido && codPostalValido && passValido
-                && dniValido && tlfValido && estadoValido && ciudadValido && fechaValido && imagenValido) {
-                GuardarLector();
-            }
-        });
-    }
+    //    if (nombreValido && emailValido && apellidosValido && calleValido && codPostalValido && passValido
+    //        && dniValido && tlfValido && estadoValido && ciudadValido && fechaValido && imagenValido) {
+    //        GuardarLector();
+    //    }
+    //});
 
     //BIBLIOTECA
     registroBiblioModal.addEventListener("submit", function (e) {

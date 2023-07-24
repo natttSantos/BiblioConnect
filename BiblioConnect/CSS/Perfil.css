@@ -59,18 +59,18 @@
 
 .btn-editar {
     display: block;
-    width: 200px; /* Cambia el ancho del botón según tus necesidades */
-    padding: 8px; /* Ajusta el padding según tus necesidades */
+    width: 200px; 
+    padding: 8px; 
     font-size: 16px;
     text-align: center;
     text-decoration: none;
-    background-color: #ed9921;
+    background-color: #0a5483;
     color: #fff;
-    margin: 0 auto; /* Centra el botón horizontalmente */
+    margin: 0 auto; 
     border: none;
     border-radius: 20px;
     transition: background-color 0.3s ease;
 }
-.btn-editar:hover {
-    background-color: #fddd56;
-}
+    .btn-editar:hover {
+        background-color: #1d86ca;
+    }

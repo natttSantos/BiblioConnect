@@ -484,6 +484,7 @@
     <Content Include="Scripts\jquery-3.7.0.slim.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Validate\Login.js" />
+    <Content Include="Validate\RegistroLector.js" />
     <Content Include="Validate\RegistroUsuario.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

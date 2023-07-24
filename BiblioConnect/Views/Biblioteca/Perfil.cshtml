@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <link rel="stylesheet" type="text/css" href="~/CSS/Mapa.css" />
     <link rel="stylesheet" type="text/css" href="~/CSS/Perfil.css" />
-    <link rel="stylesheet" type="text/css" href="~/CSS/Registro.css" />
+    <link rel="stylesheet" type="text/css" href="~/CSS/Modal.css" />
 </head>
 <body>
     <div class="containerPerfil">
@@ -72,7 +72,9 @@
                 <div class="row rowPerfil">
                     <div class="col">
                         <div class="col">
-                            <a href="#" class="btn-login" onclick="openEditarPerfilModal()">Editar perfil</a>
+                            <a href="#" class="btn-editar" onclick="openEditarPerfilModal(@ViewBag.IdBiblioteca)">
+                                <i class="fas fa-edit"></i> Editar perfil
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -228,7 +230,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row  d-flex justify-content-center align-items-center">
+                                    <div class="row d-flex justify-content-center align-items-center">
                                         <div class="col-md-4">
                                             <div class="form-floating button">
                                                 <input type="submit" class="btn-registrar" value="Guardar cambios" />
@@ -254,10 +256,12 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="~/Scripts/API_mapa.js"></script>
     <script src="~/Scripts/API_paises.js"></script>
+    <script src="~/Validate/RegistroUsuario.js"></script>
     <script>
         $(document).ready(function () {
             cargarDatosBiblio();
         });
+
         function cargarDatosBiblio() {
             var Id = @ViewBag.IdBiblioteca;
             $.ajax({
@@ -288,8 +292,8 @@
                 }
             });
         }
-        function openEditarPerfilModal() {
-            insertarCiudadesSelect();
+     function openEditarPerfilModal(id) {
+        insertarCiudadesSelect();
         var Id = @ViewBag.IdBiblioteca;
         $.ajax({
             url: "/Biblioteca/ObtenerBiblio",
@@ -315,10 +319,51 @@
                 console.log("Error al obtener los datos de la biblioteca:", error);
             }
         });
+    }
+
+        function GuardarBiblioteca() {
+            var ImagenSeleccionada = ($("#filelibroBiblio"))[0].files[0];
+            console.log(@ViewBag.IdBiblioteca)
+            var objeto = {
+                Nombre: $("#NombreBiblio").val(),
+                Email: $("#EmailBiblio").val(),
+                Calle: $("#CalleBiblio").val(),
+                Ciudad: $("#CiudadBiblio").find("option:selected").text(),
+                CodPostal: $("#CodPostalBiblio").val(),
+                Descripcion: $("#DescripcionBiblio").val(),
+                Telefono: $("#TelefonoBiblio").val(),
+                Contraseña: $("#ContraseñaBiblio").val(),
+                Estado: $("#EstadoBiblio").find("option:selected").text(),
+                Pais: $("#PaisBiblio").find("option:selected").text(),
+                Id: @ViewBag.IdBiblioteca,
+            }
+            console.log(objeto)
+            var request = new FormData();
+            request.append("imagenArchivo", ImagenSeleccionada);
+            request.append("objeto", JSON.stringify(objeto));
+
+            jQuery.ajax({
+                url: '@Url.Action("ModificarBiblioteca", "Biblioteca")',
+                type: "POST",
+                data: request,
+                processData: false,
+                contentType : false,
+                success: function (data) {
+                    if (data.resultado) {
+                        alertSuccess('¡Enhorabuena!', 'Acabas de actualizar una biblioteca').then(() => {
+                            $('#registroBiblioModal').modal('hide');
+                            location.reload();
+                        })
+                    } else {
+                        alert("No se pudo guardar los cambios")
+                    }
+                },
+                error: function (error) {
+                    console.log(error)
+                }
+            });
         }
 
     </script>
-    <script src="~/Validate/Registro.js"></script>
-    <script src="~/Validate/Login.js"></script>
 </body>
 

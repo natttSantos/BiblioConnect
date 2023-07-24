@@ -250,10 +250,19 @@ namespace BiblioConnect.Controllers
             return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
-        public JsonResult ModificarBiblioteca(Biblioteca objeto)
+        public async Task<JsonResult> ModificarBiblioteca(string objeto, HttpPostedFileBase imagenArchivo)
         {
+            //Get url de la imagen subida a Firebase
+            Stream image = imagenArchivo.InputStream;
+            string fileName = Path.GetFileName(imagenArchivo.FileName);
+            string urlImagen = await new Helpers().SetImageToFirebase(image, fileName, "Fotos_Bibliotecas");
+
+            Biblioteca oBiblioteca = new Biblioteca();
+            oBiblioteca = JsonConvert.DeserializeObject<Biblioteca>(objeto);
+            oBiblioteca.Foto = urlImagen;
+
             bool respuesta; 
-            respuesta = BibliotecaDAL.Instancia.Modificar(objeto); 
+            respuesta = BibliotecaDAL.Instancia.Modificar(oBiblioteca); 
             return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
         }
     }

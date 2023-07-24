@@ -14,7 +14,6 @@
 .heading {
     font-size: 28px;
     margin-bottom: 15px; 
-    margin-top: -50px; 
     color: #5b3e7b;
     font-weight: 600;
     font-family: 'Merriweather', sans-serif;
@@ -58,3 +57,20 @@
 
     }
 
+.btn-editar {
+    display: block;
+    width: 200px; /* Cambia el ancho del botón según tus necesidades */
+    padding: 8px; /* Ajusta el padding según tus necesidades */
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    background-color: #ed9921;
+    color: #fff;
+    margin: 0 auto; /* Centra el botón horizontalmente */
+    border: none;
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
+}
+.btn-editar:hover {
+    background-color: #fddd56;
+}

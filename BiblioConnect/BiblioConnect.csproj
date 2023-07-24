@@ -355,7 +355,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="CSS\Perfil.css" />
     <Content Include="CSS\Filtrado.css" />
-    <Content Include="CSS\Registro.css" />
+    <Content Include="CSS\Modal.css" />
     <Content Include="CSS\Login.css" />
     <Content Include="CSS\Notificacion.css" />
     <Content Include="CSS\Calendario.css" />
@@ -484,7 +484,7 @@
     <Content Include="Scripts\jquery-3.7.0.slim.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Validate\Login.js" />
-    <Content Include="Validate\Registro.js" />
+    <Content Include="Validate\RegistroUsuario.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

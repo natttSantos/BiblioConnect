@@ -42,15 +42,6 @@ namespace BiblioConnect.Controllers
             return View();
         }
 
-        public ActionResult Autores()
-        {
-            return View();
-        }
-
-        public ActionResult Editorial()
-        {
-            return View();
-        }
         public ActionResult Prestamo() {
             return View();
         }
@@ -92,21 +83,6 @@ namespace BiblioConnect.Controllers
         {
             List<Categoria> oLista = new List<Categoria>();
             oLista = CategoriaDAL.Instancia.Listar();
-            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpGet]
-        public JsonResult ListarEditorial(int id)
-        {
-            List<Editorial> oLista = new List<Editorial>();
-            oLista = EditorialDAL.Instancia.Listar(id);
-            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
-        }
-        [HttpGet]
-        public JsonResult ListarAutor(int id)
-        {
-            List<Autor> oLista = new List<Autor>();
-            oLista = AutorDAL.Instancia.Listar(id);
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
@@ -158,81 +134,26 @@ namespace BiblioConnect.Controllers
             respuesta = EventoDAL.Instancia.Registrar(oEvento);
             return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
         }
-
-        [HttpPost]
-        public JsonResult GuardarEditorial(Editorial objeto)
-        {
-            bool respuesta = false;
-            respuesta = (objeto.Id == 0) ? EditorialDAL.Instancia.Registrar(objeto) : EditorialDAL.Instancia.Modificar(objeto);
-            return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpPost]
-        public JsonResult GuardarAutor(Autor objeto)
-        {
-            bool respuesta = false;
-            respuesta = (objeto.Id == 0) ? AutorDAL.Instancia.Registrar(objeto) : AutorDAL.Instancia.Modificar(objeto);
-            return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
-        }
         [HttpPost]
         public async Task<JsonResult> GuardarLibro(string objeto, HttpPostedFileBase imagenArchivo)
         {
-            Response oresponse = new Response() { resultado = true, mensaje = "" };
+            Stream image = imagenArchivo.InputStream;
+            string fileName = Path.GetFileName(imagenArchivo.FileName);
+            string urlImagen = await new Helpers().SetImageToFirebase(image, fileName, "Fotos_Libros");
 
-            try
-            {
-                Stream image = imagenArchivo.InputStream;
-                string fileName = Path.GetFileName(imagenArchivo.FileName);
-                string urlimagen = await new Helpers().SetImageToFirebase(image, fileName, "Fotos_Libros");
+            Libro oLibro = new Libro();
+            oLibro = JsonConvert.DeserializeObject<Libro>(objeto);
+            oLibro.Foto = urlImagen;
 
-                Libro oLibro = new Libro();
-                oLibro = JsonConvert.DeserializeObject<Libro>(objeto);
-                oLibro.Foto = urlimagen;
-
-                Usuario oUsuario = Session["Usuario"] as Usuario;
-                oLibro.idBiblioteca = oUsuario.Id;
-
-                //Registro Libro
-                if (oLibro.Id == 0)
-                {
-                    int id = LibroDAL.Instancia.Registrar(oLibro);
-                    oLibro.Id = id;
-                    oresponse.resultado = oLibro.Id == 0 ? false : true;
-
-                }
-                //Modificacion Libro
-                else
-                {
-                    oresponse.resultado = LibroDAL.Instancia.Modificar(oLibro);
-                }
-            }
-            catch (Exception e)
-            {
-                oresponse.resultado = false;
-                oresponse.mensaje = e.Message;
-            }
-
-            return Json(oresponse, JsonRequestBehavior.AllowGet);
+            bool respuesta = false;
+            respuesta = LibroDAL.Instancia.Registrar(oLibro);
+            return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public JsonResult DevolverPrestamo(Prestamo objeto)
         {
             bool respuesta = false;
             respuesta = PrestamoDAL.Instancia.Devolver(objeto); 
-            return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
-        }
-        [HttpPost]
-        public JsonResult EliminarEditorial(int id)
-        {
-            bool respuesta = false;
-            respuesta = EditorialDAL.Instancia.Eliminar(id);
-            return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
-        }
-        [HttpPost]
-        public JsonResult EliminarAutor(int id)
-        {
-            bool respuesta = false;
-            respuesta = AutorDAL.Instancia.Eliminar(id);
             return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]

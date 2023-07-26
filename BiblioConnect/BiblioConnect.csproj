@@ -309,16 +309,12 @@
     <Compile Include="Data\BibliotecaDAL.cs" />
     <Compile Include="Data\Helpers.cs" />
     <Compile Include="Data\LibroDAL.cs" />
-    <Compile Include="Data\AutorDAL.cs" />
-    <Compile Include="Data\EditorialDAL.cs" />
     <Compile Include="Data\CategoriaDAL.cs" />
     <Compile Include="Data\Conexion.cs" />
     <Compile Include="Modelo\Reseña.cs" />
     <Compile Include="Modelo\Notificacion.cs" />
     <Compile Include="Modelo\Evento.cs" />
-    <Compile Include="Modelo\Autor.cs" />
     <Compile Include="Modelo\Categoria.cs" />
-    <Compile Include="Modelo\Editorial.cs" />
     <Compile Include="Modelo\Biblioteca.cs" />
     <Compile Include="Modelo\Libro.cs" />
     <Compile Include="Modelo\Lector.cs" />
@@ -483,8 +479,7 @@
     <Content Include="Scripts\jquery-3.7.0.slim.js" />
     <Content Include="Scripts\jquery-3.7.0.slim.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Validate\Login.js" />
-    <Content Include="Validate\RegistroLector.js" />
+    <Content Include="Validate\RegistroLibro.js" />
     <Content Include="Validate\RegistroUsuario.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -503,8 +498,6 @@
     <Content Include="Views\Biblioteca\Dashboard.cshtml" />
     <Content Include="Views\Biblioteca\Perfil.cshtml" />
     <Content Include="Views\Biblioteca\Libros.cshtml" />
-    <Content Include="Views\Biblioteca\Autores.cshtml" />
-    <Content Include="Views\Biblioteca\Editorial.cshtml" />
     <Content Include="Views\Acceso\RegistrarLector.cshtml" />
     <Content Include="Views\Lector\CatalogoLibros.cshtml" />
     <Content Include="Views\Lector\Inicio.cshtml" />

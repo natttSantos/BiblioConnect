@@ -16,14 +16,8 @@ namespace BiblioConnect.Data
 {
     public class LibroDAL
     {
-
         private static LibroDAL instancia = null;
-
-        public LibroDAL()
-        {
-
-        }
-
+        public LibroDAL(){}
         public static LibroDAL Instancia
         {
             get
@@ -39,10 +33,9 @@ namespace BiblioConnect.Data
         public Libro Obtener(int Id)
         {
             Libro oLibro = new Libro();
-            string consultaSql = "SELECT Titulo, Foto, idBiblioteca, idAutor, idCategoria, idEditorial, numEjemplares, Idioma " +
+            string consultaSql = "SELECT Titulo, Foto, idBiblioteca, Autor, idCategoria, Editorial, numEjemplares, Idioma " +
                 "FROM Libro " +
                 "WHERE Id = @libroId ";
-
             using (SqlConnection connection = new SqlConnection(Conexion.CN))
             {
                 SqlCommand command = new SqlCommand(consultaSql, connection);
@@ -57,9 +50,9 @@ namespace BiblioConnect.Data
                     oLibro.Foto = reader["Foto"].ToString();
                     oLibro.numEjemplares = reader.GetInt32(reader.GetOrdinal("numEjemplares")); 
                     oLibro.idBiblioteca = reader.GetInt32(reader.GetOrdinal("idBiblioteca"));
-                    oLibro.idAutor = reader.GetInt32(reader.GetOrdinal("idAutor"));
+                    oLibro.Autor = reader["Autor"].ToString();
                     oLibro.idCategoria = reader.GetInt32(reader.GetOrdinal("idCategoria"));
-                    oLibro.idEditorial = reader.GetInt32(reader.GetOrdinal("idEditorial"));
+                    oLibro.Editorial = reader["Editorial"].ToString();
                 }
                 connection.Close();
                 reader.Close();
@@ -95,13 +88,11 @@ namespace BiblioConnect.Data
             using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
             {
                 string query = @"
-                    SELECT l.Id, l.Titulo, l.Foto, l.idBiblioteca, l.idAutor, l.idCategoria, l.idEditorial,
+                    SELECT l.Id, l.Titulo, l.Foto, l.idBiblioteca, l.Autor, l.idCategoria, l.Editorial,
                     l.Ubicacion, l.numEjemplares, l.Estado
                     FROM LIBRO l
-                    INNER JOIN AUTOR a ON a.Id = l.idAutor
                     INNER JOIN biblioteca b ON b.Id = l.idBiblioteca
-                    INNER JOIN CATEGORIA c ON c.Id = l.idCategoria
-                    INNER JOIN EDITORIAL e ON e.Id = l.idEditorial";
+                    INNER JOIN CATEGORIA c ON c.Id = l.idCategoria";
 
                 SqlCommand cmd = new SqlCommand(query, oConexion);
                 cmd.CommandType = CommandType.Text;
@@ -119,12 +110,11 @@ namespace BiblioConnect.Data
                             Titulo = dr["Titulo"].ToString(),
                             Foto = dr["Foto"].ToString(),
                             idBiblioteca = Convert.ToInt32(dr["idBiblioteca"].ToString()),
-                            idAutor = Convert.ToInt32(dr["idAutor"].ToString()),
+                            Autor = dr["Autor"].ToString(),
                             idCategoria = Convert.ToInt32(dr["idCategoria"].ToString()),
-                            idEditorial = Convert.ToInt32(dr["idEditorial"].ToString()),
+                            Editorial = dr["Editorial"].ToString(),
                             Ubicacion = dr["Ubicacion"].ToString(),
                             numEjemplares = Convert.ToInt32(dr["numEjemplares"].ToString()),
-                            //Estado = Convert.ToBoolean(dr["Estado"].ToString())
                         });
                     }
                     dr.Close();
@@ -146,12 +136,10 @@ namespace BiblioConnect.Data
             {
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = oConexion;
-                cmd.CommandText = "SELECT l.Id, l.Titulo, l.Foto, l.idBiblioteca, l.idAutor, l.idCategoria, l.idEditorial, l.Ubicacion, l.numEjemplares, l.Estado " +
+                cmd.CommandText = "SELECT l.Id, l.Titulo, l.Foto, l.idBiblioteca, l.Autor, l.idCategoria, l.Editorial, l.Ubicacion, l.numEjemplares, l.Estado " +
                                   "FROM LIBRO l " +
-                                  "INNER JOIN AUTOR a ON a.Id = l.idAutor " +
                                   "INNER JOIN biblioteca b ON b.Id = l.idBiblioteca " +
                                   "INNER JOIN CATEGORIA c ON c.Id = l.idCategoria " +
-                                  "INNER JOIN EDITORIAL e ON e.Id = l.idEditorial " +
                                   "WHERE l.idBiblioteca = @idBiblioteca";
 
                 cmd.Parameters.AddWithValue("@idBiblioteca", id);
@@ -170,9 +158,9 @@ namespace BiblioConnect.Data
                             Titulo = dr["Titulo"].ToString(),
                             Foto = dr["Foto"].ToString(),
                             idBiblioteca = Convert.ToInt32(dr["idBiblioteca"].ToString()),
-                            idAutor = Convert.ToInt32(dr["idAutor"].ToString()),
+                            Autor = dr["Autor"].ToString(),
                             idCategoria = Convert.ToInt32(dr["idCategoria"].ToString()),
-                            idEditorial = Convert.ToInt32(dr["idEditorial"].ToString()),                
+                            Editorial = dr["Editorial"].ToString(),
                             Ubicacion = dr["Ubicacion"].ToString(),
                             numEjemplares = Convert.ToInt32(dr["numEjemplares"].ToString()),
                             //Estado = Convert.ToBoolean(dr["Estado"].ToString())
@@ -202,14 +190,14 @@ namespace BiblioConnect.Data
 
                 if (string.IsNullOrEmpty(categoria)) // Seleccionado Idioma
                 {
-                    sql = "SELECT l.Id, l.Titulo, l.Foto, l.idBiblioteca, l.idAutor, l.idCategoria, l.idEditorial, l.numEjemplares, l.Estado, l.Idioma " +
+                    sql = "SELECT l.Id, l.Titulo, l.Foto, l.idBiblioteca, l.Autor, l.idCategoria, l.Editorial, l.numEjemplares, l.Estado, l.Idioma " +
                         "FROM Libro l WHERE l.Idioma = @idioma";
 
                     cmd.Parameters.AddWithValue("@idioma", idioma);
                 }
                 else if (string.IsNullOrEmpty(idioma)) // Seleccionado Categoría
                 {
-                    sql = "SELECT l.Id, l.Titulo, l.Foto, l.idBiblioteca, l.idAutor, l.idCategoria, l.idEditorial, l.numEjemplares, l.Estado " +
+                    sql = "SELECT l.Id, l.Titulo, l.Foto, l.idBiblioteca, l.Autor, l.idCategoria, l.Editorial, l.numEjemplares, l.Estado " +
                         "FROM Libro l INNER JOIN Categoria c ON c.Nombre = @nombreCategoria " +
                         "WHERE c.Id = l.idCategoria";
 
@@ -217,7 +205,7 @@ namespace BiblioConnect.Data
                 }
                 else // Seleccionado ambos
                 {
-                    sql = "SELECT l.Id, l.Titulo, l.Foto, l.idBiblioteca, l.idAutor, l.idCategoria, l.idEditorial, l.numEjemplares, l.Estado " +
+                    sql = "SELECT l.Id, l.Titulo, l.Foto, l.idBiblioteca, l.Autor, l.idCategoria, l.Editorial, l.numEjemplares, l.Estado " +
                         "FROM Libro l INNER JOIN Categoria c ON c.Nombre = @nombreCategoria " +
                         "WHERE c.Id = l.idCategoria AND l.Idioma = @idioma";
 
@@ -242,9 +230,9 @@ namespace BiblioConnect.Data
                             //Idioma = dr["Idioma"].ToString(),
                             Foto = dr["Foto"].ToString(),
                             idBiblioteca = Convert.ToInt32(dr["idBiblioteca"].ToString()),
-                            idAutor = Convert.ToInt32(dr["idAutor"].ToString()),
+                            Autor = dr["Autor"].ToString(),
                             idCategoria = Convert.ToInt32(dr["idCategoria"].ToString()),
-                            idEditorial = Convert.ToInt32(dr["idEditorial"].ToString()),
+                            Editorial = dr["Editorial"].ToString(),
                             numEjemplares = Convert.ToInt32(dr["numEjemplares"].ToString()),
                         });
                     }
@@ -260,9 +248,9 @@ namespace BiblioConnect.Data
             }
         }
 
-        public int Registrar(Libro objeto)
+        public bool Registrar(Libro objeto)
         {
-            int respuesta = 0;
+            bool respuesta = true;
             using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
             {
                 try
@@ -272,12 +260,13 @@ namespace BiblioConnect.Data
                     cmd.Parameters.AddWithValue("Foto", objeto.Foto);
                     cmd.Parameters.AddWithValue("Idioma", objeto.Idioma);
                     cmd.Parameters.AddWithValue("Estado", objeto.Estado);
-                    cmd.Parameters.AddWithValue("idAutor", objeto.idAutor);
+                    cmd.Parameters.AddWithValue("Autor", objeto.Autor);
                     cmd.Parameters.AddWithValue("idCategoria", objeto.idCategoria);
-                    cmd.Parameters.AddWithValue("idEditorial", objeto.idEditorial);
+                    cmd.Parameters.AddWithValue("Editorial", objeto.Editorial);
                     cmd.Parameters.AddWithValue("idBiblioteca", objeto.idBiblioteca);
                     cmd.Parameters.AddWithValue("Ubicacion", objeto.Ubicacion);
                     cmd.Parameters.AddWithValue("numEjemplares", objeto.numEjemplares);
+                    cmd.Parameters.AddWithValue("ISBN", objeto.ISBN);
                     cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -285,12 +274,12 @@ namespace BiblioConnect.Data
 
                     cmd.ExecuteNonQuery();
 
-                    respuesta = Convert.ToInt32(cmd.Parameters["Resultado"].Value);
+                    respuesta = Convert.ToBoolean(cmd.Parameters["Resultado"].Value);
 
                 }
                 catch (Exception ex)
                 {
-                    respuesta = 0;
+                    respuesta = false;
                 }
             }
             return respuesta;
@@ -308,9 +297,9 @@ namespace BiblioConnect.Data
                     cmd.Parameters.AddWithValue("Titulo", objeto.Titulo);
                     cmd.Parameters.AddWithValue("Foto", objeto.Foto);
                     cmd.Parameters.AddWithValue("Estado", objeto.Estado);
-                    cmd.Parameters.AddWithValue("idAutor", objeto.idAutor);
+                    cmd.Parameters.AddWithValue("idAutor", objeto.Autor);
                     cmd.Parameters.AddWithValue("idCategoria", objeto.idCategoria);
-                    cmd.Parameters.AddWithValue("idEditorial", objeto.idEditorial);
+                    cmd.Parameters.AddWithValue("idEditorial", objeto.Editorial);
                     cmd.Parameters.AddWithValue("Ubicacion", objeto.Ubicacion);
                     cmd.Parameters.AddWithValue("numEjemplares", objeto.numEjemplares);
                     cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;

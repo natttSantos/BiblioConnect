@@ -10,6 +10,10 @@
     max-width: 688px;
     width: 90%;
 }
+#registroLibroModal .modal-dialog {
+    max-width: 688px;
+    width: 90%;
+}
 /*TAMAÑO TEXTAREA*/
 #DescripcionBiblio {
     height: 140px;

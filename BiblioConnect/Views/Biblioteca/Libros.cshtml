@@ -11,6 +11,7 @@
     <link href="~/Content/datatables.min.css" rel="stylesheet" type="text/css" />
     @* DataTables estilo Boostrap 5 CSS *@
     <link href="~/DataTables-1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="~/CSS/Modal.css" />
 </head>
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
@@ -33,6 +34,7 @@
                             <tr>
                                 <th>Imagen</th>
                                 <th>Titulo</th>
+                                <th>ISBN</th>
                                 <th>Autor</th>
                                 <th>Categoria</th>
                                 <th>Editorial</th>
@@ -53,110 +55,147 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="FormModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+<div class="modal fade" id="registroLibroModal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable custom-modal">
         <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="exampleModalLabel">Libro</h5>
+            <div class="modal-header">
+                <h4 class="modal-title" id="registroModalLabel">Registro libro</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <input id="txtid" type="hidden" value="0" />
-                <form id="formNivel">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <img id="imglibro" height="192" width="190" class="border border-dark" />
-                            </div>
-                            <div class="form-group">
-                                <input class="form-control-file" type="file" id="filelibro" onchange="readURL(this);">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="txttitulo">Titulo</label>
-                                <input type="text" class="form-control required" id="txttitulo" name="Nombre" autocomplete="off">
-                            </div>
-                            <div class="form-group">
-                                <label for="cboautor">Autor</label>
-                                <select id="cboautor" class="form-control"></select>
-                            </div>
-                            <div class="form-group">
-                                <label for="cbocategoria">Categoria</label>
-                                <select id="cbocategoria" class="form-control"></select>
-                            </div>
-                            <div class="form-group">
-                                <label for="cboidioma">Idioma</label>
-                                <select id="cboidioma" class="form-control">
-                                    <option selected>Open this select menu</option>
-                                    <option value="1">Castellano</option>
-                                    <option value="2">Inglés</option>
-                                    <option value="3">Catalán</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+                <form action="#" name="formModal">
+                    <div class="container">
+                        <div id="registrar-lector">
+                            <div class="row">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-floating" id="titulo-field">
+                                            <input type="text" class="form-control" id="txttitulo" placeholder="Título">
+                                            <label>Título</label>
+                                            <span class="error type error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Introduce un título</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating" id="autor-field">
+                                            <input type="text" class="form-control" id="txtautor" placeholder="Nombre autor">
+                                            <label>Nombre autor</label>
+                                            <span class="error type error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Introduce el nombre de autor</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-floating" id="ISBN-field">
+                                            <input type="number" class="form-control" id="txtISBN" placeholder="ISBN" maxlength="13">
+                                            <label>ISBN</label>
+                                            <span class="error type error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Introduce un ISBN de 13 dígitos</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating" id="editorial-field">
+                                            <input type="text" class="form-control" id="txteditorial" placeholder="Editorial">
+                                            <label>Editorial</label>
+                                            <span class="error type error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Introduce una editorial</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-floating" id="categoria-field">
+                                            <select class="form-select" id="cbocategoria" aria-label="Floating label select example">
+                                                <option selected>Seleccione una opcion</option>
+                                            </select>
+                                            <label for="floatingSelect">Categoría</label>
+                                            <span class="error type error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Seleccione una categoría</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating" id="idioma-field">
+                                            <select class="form-select" id="cboidioma" aria-label="Floating label select example">
+                                                <option selected>Seleccione una opcion</option>
+                                                <option value="1">Castellano</option>
+                                                <option value="2">Inglés</option>
+                                                <option value="3">Catalán</option>
+                                            </select>
+                                            <label for="floatingSelect">Idioma</label>
+                                            <span class="error type error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Seleccione un idioma</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-floating" id="ejemplares-field">
+                                            <input type="number" class="form-control" id="txtejemplares" placeholder="Número de ejemplares">
+                                            <label>Número de ejemplares</label>
+                                            <span class="error type error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Introduce un número de ejemplares</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating" id="ubicacion-field">
+                                            <input type="text" class="form-control" id="txtubicacion" placeholder="Ubicación">
+                                            <label>Ubicación</label>
+                                            <span class="error type error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Introduce una ubicación</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
 
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="cboeditorial">Editorial</label>
-                                <select id="cboeditorial" class="form-control"></select>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="txtubicacion">Ubicacion</label>
-                                <input type="text" class="form-control required" id="txtubicacion" name="Nombre" autocomplete="off">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="txtejemplares">Ejemplares</label>
-                                <input type="text" class="form-control required" id="txtejemplares" name="Nombre" autocomplete="off">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="cboEstado">Estado:</label>
-                                <select id="cboEstado" class="form-control">
-                                    <option value="1">Activo</option>
-                                    <option value="0">No Activo</option>
-                                </select>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="imagen" id="imagen-field">
+                                            <label for="filelibro" class="form-label">Seleccione una imagen:</label>
+                                            <input class="form-control" type="file" id="filelibro" onchange="readURL(this, true)">
+                                            <span class="error type error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">No ha seleccionado ninguna imagen</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <img id="imglibro" class="border border-dark img-thumbnail" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row  d-flex justify-content-center align-items-center">
+                                    <div class="col-md-4">
+                                        <div class="form-floating button">
+                                            <input type="submit" class="btn-registrar" value="Registrar" onclick="Guardar()" />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="txtejemplares">ISBN</label>
-                                <input type="text" class="form-control required" id="txtISBN" autocomplete="off" maxlength="13">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <ul>
-                                <asp:ListView runat="server" ID="lvChips" OnItemDataBound="lvChips_ItemDataBound">
-                                    <ItemTemplate>
-                                        <li><span class="badge badge-primary"><%# Eval("TagText") %></span></li>
-                                    </ItemTemplate>
-                                </asp:ListView>
-                            </ul>
-                        </div>
-                    </div>
-
                 </form>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary" onclick="Guardar()">Guardar</button>
             </div>
         </div>
     </div>
 </div>
+
 
 @* JQquery, Popper.js, Boostrap.js *@
 <script src="~/Scripts/jquery-3.7.0.min.js"></script>
@@ -164,6 +203,7 @@
 <script src="~/Scripts/bootstrap.js"></script>
 @* DataTable JS *@
 <script src="~/Scripts//datatables.min.js" defer></script>
+<script src="~/Validate/RegistroLibro.js"></script>
 
 @section scripts{
 
@@ -203,39 +243,6 @@
                 }
             });
 
-            jQuery.ajax({
-                url: '@Url.Action("ListarAutor", "Biblioteca")',
-                type: "GET",
-                    data: { id: @(((Usuario)Session["Usuario"]).Id) },
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-                    $.each(data.data, function (index, value) {
-                        $("<option>").attr({ "value": value.Id }).text(value.Nombre).appendTo("#cboautor");
-                    });
-                },
-                error: function (error) {
-                    console.log(error)
-                }
-            });
-
-            jQuery.ajax({
-                url: '@Url.Action("ListarEditorial", "Biblioteca")',
-                type: "GET",
-                    data: { id: @(((Usuario)Session["Usuario"]).Id) },
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-                    $.each(data.data, function (index, value) {
-                        $("<option>").attr({ "value": value.Id }).text(value.Nombre).appendTo("#cboeditorial");
-                    });
-                },
-                error: function (error) {
-                    console.log(error)
-                }
-            });
-
-
             //LISTADO DE LIBROS
             tabladata = $('#tabla').DataTable({
                 responsive: true,
@@ -259,25 +266,8 @@
                         }
                     },
                     { "data": "Titulo" },
-                     {
-                        "data": "idAutor",
-                        "render": function(data, type, row) {
-                              $.ajax({
-                                url: '@Url.Action("ObtenerAutor", "Lector")',
-                                type: 'GET',
-                                data: { id: data },
-                                dataType: 'json',
-                                async: false,
-                                success: function(response) {
-                                  data = response.data.Nombre;
-                                },
-                                error: function(error) {
-                                  console.log(error);
-                                }
-                              });
-                          return data;
-                        }
-                      },
+                    { "data": "Autor" },
+                    { "data": "ISBN" },
                     {
                         "data": "idCategoria",
                         "render": function(data, type, row) {
@@ -297,25 +287,7 @@
                           return data;
                         }
                     },
-                    {
-                        "data": "idEditorial",
-                        "render": function(data, type, row) {
-                              $.ajax({
-                                url: '@Url.Action("ObtenerEditorial", "Lector")',
-                                type: 'GET',
-                                data: { id: data },
-                                dataType: 'json',
-                                async: false,
-                                success: function(response) {
-                                  data = response.data.Nombre;
-                                },
-                                error: function(error) {
-                                  console.log(error);
-                                }
-                              });
-                          return data;
-                        }
-                      },
+                    { "data": "Editorial" },
                     { "data": "Ubicacion" },
                     { "data": "numEjemplares" },
                     {
@@ -364,9 +336,10 @@
             $("#imglibro").attr({ "src": "" });
             $("#filelibro").val("");
             $("#txttitulo").val("");
-            $("#cboautor").val($("#cboautor option:first").val());
+            $("#txtautor").val("");
+            $("#txteditorial").val("");
             $("#cbocategoria").val($("#cbocategoria option:first").val());
-            $("#cboeditorial").val($("#cboeditorial option:first").val());
+            $("#cboidioma").val($("#cboidioma option:first").val());
             $("#txtubicacion").val("");
             $("#txtejemplares").val("");
             $("#cboEstado").val(1);
@@ -384,7 +357,7 @@
                 $("#cboEstado").val(json.Estado == true ? 1 : 0);
             }
 
-            $('#FormModal').modal('show');
+            $('#registroLibroModal').modal('show');
         }
 
         //ELIMINAR LIBROS
@@ -415,18 +388,20 @@
         });
 
         function Guardar() {
-
+            var IdBiblioteca = @(((Usuario)Session["Usuario"]).Id);
             var ImagenSeleccionada = ($("#filelibro"))[0].files[0];
 
             var objeto = {
                 Id: $("#txtid").val(),
                 Titulo: $("#txttitulo").val(),
-                idAutor: $("#cboautor option:selected").val(),
+                Autor: $("#txtautor").val(),
+                Editorial: $("#txteditorial").val(),
                 idCategoria: $("#cbocategoria option:selected").val(),
-                idEditorial: $("#cboeditorial option:selected").val(),
                 Ubicacion: $("#txtubicacion").val(),
                 numEjemplares: $("#txtejemplares").val(),
+                ISBN: $("#txtISBN").val(),
                 Idioma: $("#cboidioma option:selected").text(),
+                idBiblioteca: IdBiblioteca,
                 Estado: parseInt($("#cboEstado").val()) == 1 ? true : false,
             }
 
@@ -440,11 +415,10 @@
                 data: request,
                 processData: false,
                 contentType : false,
-                success: function (data) {
-
-                    if (data.resultado) {
+                success: function (resultado) {
+                    if (resultado) {
                         tabladata.ajax.reload();
-                        $('#FormModal').modal('hide');
+                        $('#registroLibroModal').modal('hide');
                     } else {
                         alert("No se pudo guardar los cambios")
                     }
@@ -452,32 +426,28 @@
                 error: function (error) {
                     console.log(error)
                 },
-                beforeSend: function () {
-
-                },
             });
-
         }
 
-        $.fn.inputFilter = function (inputFilter) {
-            return this.on("input keydown keyup mousedown mouseup select contextmenu drop", function () {
-                if (inputFilter(this.value)) {
-                    this.oldValue = this.value;
-                    this.oldSelectionStart = this.selectionStart;
-                    this.oldSelectionEnd = this.selectionEnd;
-                } else if (this.hasOwnProperty("oldValue")) {
-                    this.value = this.oldValue;
-                    this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
-                } else {
-                    this.value = "";
-                }
-            });
-        };
+        //$.fn.inputFilter = function (inputFilter) {
+        //    return this.on("input keydown keyup mousedown mouseup select contextmenu drop", function () {
+        //        if (inputFilter(this.value)) {
+        //            this.oldValue = this.value;
+        //            this.oldSelectionStart = this.selectionStart;
+        //            this.oldSelectionEnd = this.selectionEnd;
+        //        } else if (this.hasOwnProperty("oldValue")) {
+        //            this.value = this.oldValue;
+        //            this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+        //        } else {
+        //            this.value = "";
+        //        }
+        //    });
+        //};
 
-        //Permitir solo valores enteros
-        $("#txtejemplares").inputFilter(function (value) {
-            return /^-?\d*$/.test(value);
-        });
+        ////Permitir solo valores enteros
+        //$("#txtejemplares").inputFilter(function (value) {
+        //    return /^-?\d*$/.test(value);
+        //});
 
     </script>
 

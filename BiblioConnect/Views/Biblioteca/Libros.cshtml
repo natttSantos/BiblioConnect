@@ -12,36 +12,39 @@
     @* DataTables estilo Boostrap 5 CSS *@
     <link href="~/DataTables-1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="~/CSS/Modal.css" />
+    <link rel="stylesheet" type="text/css" href="~/CSS/DataTable.css" />
 </head>
-<!-- DataTales Example -->
+
 <div class="card shadow mb-4">
-    <div class="card-header py-3 bg-primary">
-        <h6 class="m-0 font-weight-bold text-white">Lista de libros</h6>
+    <div class="card-header">
+        <h6>Lista de libros</h6>
     </div>
     <div class="card-body">
         <div class="row">
             <div class="col-sm-12">
-                <button class="btn btn-success btn-sm" type="button" onclick="abrirModal(null)">Crear Nuevo</button>
+                <button class="btn btn-guardar btn-sm" type="button" onclick="abrirModal(null)" data-action="guardar">
+                    <i class="fas fa-plus"></i> Añadir libro
+                </button>
             </div>
         </div>
         <hr />
         <div class="row">
             <div class="col-sm-12">
-
                 <div class="table-responsive">
                     <table class="table table-bordered" id="tabla" style="width:100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>Imagen</th>
                                 <th>Titulo</th>
-                                <th>ISBN</th>
                                 <th>Autor</th>
-                                <th>Categoria</th>
+                                <th>ISBN</th>
                                 <th>Editorial</th>
-                                <th>Ubicacion</th>
+                                <th>Categoria</th>
+                                <th>Idioma</th>
                                 <th>Ejemplares</th>
+                                <th>Ubicación</th>
                                 <th>Estado</th>
-                                <th></th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                     </table>
@@ -183,7 +186,7 @@
                                 <div class="row  d-flex justify-content-center align-items-center">
                                     <div class="col-md-4">
                                         <div class="form-floating button">
-                                            <input type="submit" class="btn-registrar" value="Registrar" onclick="Guardar()" />
+                                            <input type="submit" class="btn-registrar" value="Registrar" />
                                         </div>
                                     </div>
                                 </div>
@@ -209,6 +212,7 @@
 
     <script>
         var tabladata;
+        var idLibroSelected = 0; 
 
         function readURL(input) {
             if (input.files && input.files[0]) {
@@ -262,12 +266,13 @@
                 "columns": [
                     {
                         "data": "Foto", render: function (data) {
-                            return '<img src=' + '"' +  data + '"' + 'width="70" height="100">'
+                            return '<img src=' + '"' +  data + '"' + 'width="64" height="90">'
                         }
                     },
                     { "data": "Titulo" },
                     { "data": "Autor" },
                     { "data": "ISBN" },
+                    { "data": "Editorial" },
                     {
                         "data": "idCategoria",
                         "render": function(data, type, row) {
@@ -287,9 +292,9 @@
                           return data;
                         }
                     },
-                    { "data": "Editorial" },
-                    { "data": "Ubicacion" },
+                    { "data": "Idioma" },
                     { "data": "numEjemplares" },
+                    { "data": "Ubicacion" },
                     {
                         "data": "Estado", "render": function (data) {
                             if (data) {
@@ -300,21 +305,29 @@
                         }
                     },
                     {
-                        "data": "Id", "render": function (data, type, row, meta) {
-
-                            return $("<button>").addClass("btn btn-primary btn-editar btn-sm").append(
-                                $("<i>").addClass("fas fa-pen")
-                            ).attr({ "data-informacion": JSON.stringify(row) })[0].outerHTML
-                            +
-                            $("<button>").addClass("btn btn-danger btn-eliminar btn-sm ml-2").append(
-                                $("<i>").addClass("fas fa-trash")
-                            ).attr({ "data-informacion": JSON.stringify(row) })[0].outerHTML;
-
+                        "data": "Id",
+                        "render": function (data, type, row, meta) {
+                            return $("<button>")
+                                .addClass("btn btn-primary btn-editar btn-sm")
+                                .html('<i class="fas fa-edit"></i>') // Agrega el ícono de editar (FontAwesome)
+                                .attr({
+                                    "data-action": "modificar", // Agregar el atributo data-action con el valor "editar"
+                                    "data-informacion": JSON.stringify(row)
+                                })[0].outerHTML +
+                                $("<button>")
+                                    .addClass("btn btn-danger btn-eliminar btn-sm ml-2")
+                                    .html('<i class="fas fa-trash"></i>') // Agrega el ícono de eliminar (FontAwesome)
+                                    .attr({
+                                        "data-action": "eliminar", // Agregar el atributo data-action con el valor "eliminar"
+                                        "data-informacion": JSON.stringify(row)
+                                    })[0].outerHTML;
                         },
                         "orderable": false,
                         "searchable": false,
                         "width": "90px"
+
                     }
+
 
                 ],
                 "language": {
@@ -323,19 +336,52 @@
             });
         });
 
-
-        //MODIFICAR LIBROS
         $(document).on('click', '.btn-editar', function (event) {
             var json = $(this).data("informacion")
-
+            idLibroSelected = json.Id; //SET VARIABEL GLOBAL DEL LIBRO
             abrirModal(json)
+            document.querySelector(".btn-guardar").dataset.action = "editar";
+        });
+        $(".btn-guardar").on("click", function (event) {
+            document.querySelector(".btn-guardar").dataset.action = "guardar"; 
         });
 
+
         function abrirModal(json) {
+            vaciarFormulario();
+            if (json != null) {
+                $("#txtid").val(json.Id);
+                $("#imglibro").attr({ "src": "data:image/" + json.extension + ";base64," + json.base64 });
+                $("#txttitulo").val(json.Titulo);
+                $("#txtISBN").val(json.ISBN);
+                $("#txtautor").val(json.Autor);
+                $("#txteditorial").val(json.Editorial);
+                $("#cboautor").val(json.idAutor);
+                $("#cbocategoria").val(json.idCategoria);
+                $("#cboidioma").val(getIDidioma(json.Idioma));
+                $("#txtubicacion").val(json.Ubicacion);
+                $("#txtejemplares").val(json.numEjemplares);
+/*                $("#cboEstado").val(json.Estado == true ? 1 : 0);*/
+            }
+            $('#registroLibroModal').modal('show');
+        }
+
+        function getIDidioma(idioma) {
+            if (idioma === "Castellano") {
+                return 1;
+            } if (idioma === "Inglés") {
+                return 2;
+            }
+            if (idioma == "Valenciano") {
+                return 3;
+            }
+        }
+        function vaciarFormulario() {
             $("#txtid").val(0);
             $("#imglibro").attr({ "src": "" });
             $("#filelibro").val("");
             $("#txttitulo").val("");
+            $("#txtISBN").val("");
             $("#txtautor").val("");
             $("#txteditorial").val("");
             $("#cbocategoria").val($("#cbocategoria option:first").val());
@@ -343,21 +389,28 @@
             $("#txtubicacion").val("");
             $("#txtejemplares").val("");
             $("#cboEstado").val(1);
-
-            if (json != null) {
-
-                $("#txtid").val(json.IdLibro);
-                $("#imglibro").attr({ "src": "data:image/" + json.extension + ";base64," + json.base64 });
-                $("#txttitulo").val(json.Titulo);
-                $("#cboautor").val(json.idAutor);
-                $("#cbocategoria").val(json.idCategoria);
-                $("#cboeditorial").val(json.idEditorial);
-                $("#txtubicacion").val(json.Ubicacion);
-                $("#txtejemplares").val(json.numEjemplares);
-                $("#cboEstado").val(json.Estado == true ? 1 : 0);
+        }
+        function obtenerDatosFormulario() {
+            var IdBiblioteca = @(((Usuario)Session["Usuario"]).Id);
+            var objeto = {
+                Id: idLibroSelected,
+                Titulo: $("#txttitulo").val(),
+                Autor: $("#txtautor").val(),
+                Editorial: $("#txteditorial").val(),
+                idCategoria: $("#cbocategoria option:selected").val(),
+                Ubicacion: $("#txtubicacion").val(),
+                numEjemplares: $("#txtejemplares").val(),
+                ISBN: $("#txtISBN").val(),
+                Idioma: $("#cboidioma option:selected").text(),
+                idBiblioteca: IdBiblioteca,
+                Estado: parseInt($("#cboEstado").val()) == 1 ? true : false,
             }
 
-            $('#registroLibroModal').modal('show');
+            var ImagenSeleccionada = ($("#filelibro"))[0].files[0];
+            var request = new FormData();
+            request.append("imagenArchivo", ImagenSeleccionada);
+            request.append("objeto", JSON.stringify(objeto));
+            return request;
         }
 
         //ELIMINAR LIBROS
@@ -388,26 +441,8 @@
         });
 
         function Guardar() {
-            var IdBiblioteca = @(((Usuario)Session["Usuario"]).Id);
-            var ImagenSeleccionada = ($("#filelibro"))[0].files[0];
-
-            var objeto = {
-                Id: $("#txtid").val(),
-                Titulo: $("#txttitulo").val(),
-                Autor: $("#txtautor").val(),
-                Editorial: $("#txteditorial").val(),
-                idCategoria: $("#cbocategoria option:selected").val(),
-                Ubicacion: $("#txtubicacion").val(),
-                numEjemplares: $("#txtejemplares").val(),
-                ISBN: $("#txtISBN").val(),
-                Idioma: $("#cboidioma option:selected").text(),
-                idBiblioteca: IdBiblioteca,
-                Estado: parseInt($("#cboEstado").val()) == 1 ? true : false,
-            }
-
-            var request = new FormData();
-            request.append("imagenArchivo", ImagenSeleccionada);
-            request.append("objeto", JSON.stringify(objeto));
+            console.log("guardar")
+            var request = obtenerDatosFormulario();
 
             jQuery.ajax({
                 url: '@Url.Action("GuardarLibro", "Biblioteca")',
@@ -428,26 +463,29 @@
                 },
             });
         }
+        function Modificar() {
+           console.log("modificar")
+            var request = obtenerDatosFormulario();
 
-        //$.fn.inputFilter = function (inputFilter) {
-        //    return this.on("input keydown keyup mousedown mouseup select contextmenu drop", function () {
-        //        if (inputFilter(this.value)) {
-        //            this.oldValue = this.value;
-        //            this.oldSelectionStart = this.selectionStart;
-        //            this.oldSelectionEnd = this.selectionEnd;
-        //        } else if (this.hasOwnProperty("oldValue")) {
-        //            this.value = this.oldValue;
-        //            this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
-        //        } else {
-        //            this.value = "";
-        //        }
-        //    });
-        //};
-
-        ////Permitir solo valores enteros
-        //$("#txtejemplares").inputFilter(function (value) {
-        //    return /^-?\d*$/.test(value);
-        //});
+            jQuery.ajax({
+                url: '@Url.Action("ModificarLibro", "Biblioteca")',
+                type: "POST",
+                data: request,
+                processData: false,
+                contentType : false,
+                success: function (resultado) {
+                    if (resultado) {
+                        tabladata.ajax.reload();
+                        $('#registroLibroModal').modal('hide');
+                    } else {
+                        alert("No se pudo modificar el libro")
+                    }
+                },
+                error: function (error) {
+                    console.log(error)
+                },
+            });
+        }
 
     </script>
 

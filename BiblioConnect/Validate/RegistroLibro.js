@@ -4,6 +4,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     //BIBLIOTECA
     registroModal.addEventListener("submit", function (e) {
+        const botonType = document.querySelector(".btn-guardar");
+        const action = botonType.dataset.action;
+
         e.preventDefault();
         const tituloValido = validarInput("titulo-field");
         const nombreValido = validarInput("autor-field");
@@ -17,11 +20,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (nombreValido && tituloValido && ISBNValido && EditorialValido && EjemplaresValido
             && UbicacionValido && CategoriaValido && IdiomaValido && ImagenValido) {
-            Guardar();
+            if (action === "editar") {
+                Modificar(); 
+            } else if (action === "guardar") {
+                Guardar();
+            }
         }
     });
 });
-
 
 function validarInput(field) {
     const nombreField = document.getElementById(field);

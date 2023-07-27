@@ -1,0 +1,138 @@
+﻿
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Poppins:wght@300;400;500;600&family=Roboto:wght@300&display=swap');
+/*.containerPerfil {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+.rowPerfil {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+.heading {
+    font-size: 28px;
+    margin-bottom: 15px; 
+    color: #5b3e7b;
+    font-weight: 600;
+    font-family: 'Merriweather', sans-serif;
+}
+
+.title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-family: 'Merriweather', serif;
+}
+
+#txtimagen {
+    width: 395px;
+    height: 370px;
+}
+
+.rowgrey {
+    background-color: #f5f5f5;
+}
+.datosTabla {
+    max-width: 70%;
+    margin: 0 auto;
+}
+.datosTabla .row {
+    padding: 15px 5px 15px 5px;
+    margin: 0;
+}
+
+    .datosTabla .row .col-md-4 {
+        display: flex;
+        align-items: center;
+    }
+
+        .datosTabla .row .col-md-4 i {
+            margin-right: 5px;
+        }
+
+    .datosTabla .row .col-md-8 {
+        display: flex;
+        flex-direction: column;
+
+    }
+
+.btn-editar {
+    display: block;
+    width: 200px; 
+    padding: 8px; 
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    background-color: #0a5483;
+    color: #fff;
+    margin: 0 auto; 
+    border: none;
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
+}
+    .btn-editar:hover {
+        background-color: #1d86ca;
+    }
+*/
+
+h6 {
+    font-size: 20px;
+    color: #fff;
+    font-weight: 700;
+    font-family: 'Roboto', sans-serif;
+}
+
+.card-header {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    background-color: #0a5483;
+    color: #fff;
+}
+
+/* Alinear el contenido del DataTable al centro */
+#tabla {
+    text-align: center;
+}
+    #tabla td {
+        font-size: 15px;
+        text-align: center;
+        vertical-align: middle; 
+    }
+
+/*BOTONES EDITAR Y ELIMINAR*/
+.btn-editar {
+    background-color: #0a5483;
+    color: #fff; 
+}
+
+.btn-eliminar {
+    background-color: #c83131; 
+    color: #fff; 
+}
+    .btn-editar:not(:last-child),
+    .btn-eliminar:not(:last-child) {
+        margin-right: 7px;
+    }
+
+/* Estilo para el botón "Crear Nuevo" */
+.btn-guardar {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 14px;
+    text-align: center;
+    text-decoration: none;
+    background-color: #fff; 
+    color: #0a5483; 
+    border: 2px solid #0a5483;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+    /* Estilo para el botón "Crear Nuevo" al pasar el cursor por encima */
+    .btn-guardar:hover {
+        background-color: #0a5483; 
+        color: #fff; 
+        border-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    }

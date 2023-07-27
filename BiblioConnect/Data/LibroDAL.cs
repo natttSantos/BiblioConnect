@@ -136,7 +136,7 @@ namespace BiblioConnect.Data
             {
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = oConexion;
-                cmd.CommandText = "SELECT l.Id, l.Titulo, l.Foto, l.idBiblioteca, l.Autor, l.idCategoria, l.Editorial, l.Ubicacion, l.numEjemplares, l.Estado " +
+                cmd.CommandText = "SELECT l.Id, l.Titulo, l.Foto, l.idBiblioteca, l.Autor, l.idCategoria, l.Editorial, l.Idioma, l.ISBN, l.Ubicacion, l.numEjemplares, l.Estado " +
                                   "FROM LIBRO l " +
                                   "INNER JOIN biblioteca b ON b.Id = l.idBiblioteca " +
                                   "INNER JOIN CATEGORIA c ON c.Id = l.idCategoria " +
@@ -155,7 +155,9 @@ namespace BiblioConnect.Data
                         listaLibros.Add(new Libro()
                         {
                             Id = Convert.ToInt32(dr["Id"].ToString()),
+                            Idioma = dr["Idioma"].ToString(),
                             Titulo = dr["Titulo"].ToString(),
+                            ISBN = dr["ISBN"].ToString(),
                             Foto = dr["Foto"].ToString(),
                             idBiblioteca = Convert.ToInt32(dr["idBiblioteca"].ToString()),
                             Autor = dr["Autor"].ToString(),
@@ -294,14 +296,18 @@ namespace BiblioConnect.Data
                 try
                 {
                     SqlCommand cmd = new SqlCommand("sp_ModificarLibro", oConexion);
+                    cmd.Parameters.AddWithValue("LibroId", objeto.Id); 
                     cmd.Parameters.AddWithValue("Titulo", objeto.Titulo);
                     cmd.Parameters.AddWithValue("Foto", objeto.Foto);
+                    cmd.Parameters.AddWithValue("Idioma", objeto.Idioma);
                     cmd.Parameters.AddWithValue("Estado", objeto.Estado);
-                    cmd.Parameters.AddWithValue("idAutor", objeto.Autor);
+                    cmd.Parameters.AddWithValue("Autor", objeto.Autor);
                     cmd.Parameters.AddWithValue("idCategoria", objeto.idCategoria);
-                    cmd.Parameters.AddWithValue("idEditorial", objeto.Editorial);
+                    cmd.Parameters.AddWithValue("Editorial", objeto.Editorial);
+                    cmd.Parameters.AddWithValue("idBiblioteca", objeto.idBiblioteca);
                     cmd.Parameters.AddWithValue("Ubicacion", objeto.Ubicacion);
                     cmd.Parameters.AddWithValue("numEjemplares", objeto.numEjemplares);
+                    cmd.Parameters.AddWithValue("ISBN", objeto.ISBN);
                     cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
                     cmd.CommandType = CommandType.StoredProcedure;
 

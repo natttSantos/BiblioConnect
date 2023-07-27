@@ -17,7 +17,7 @@ namespace BiblioConnect.Modelo
         public int idCategoria { get; set; }
         public int idBiblioteca { get; set; }
         public int numEjemplares { get; set; }
-        public int ISBN { get; set; }
+        public string ISBN { get; set; }
         public bool Estado { get; set; }
     }
 }

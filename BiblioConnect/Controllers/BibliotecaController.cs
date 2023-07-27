@@ -186,6 +186,21 @@ namespace BiblioConnect.Controllers
             respuesta = BibliotecaDAL.Instancia.Modificar(oBiblioteca); 
             return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
         }
+        [HttpPost]
+        public async Task<JsonResult> ModificarLibro(string objeto, HttpPostedFileBase imagenArchivo)
+        {
+            Stream image = imagenArchivo.InputStream;
+            string fileName = Path.GetFileName(imagenArchivo.FileName);
+            string urlImagen = await new Helpers().SetImageToFirebase(image, fileName, "Fotos_Libro");
+
+            Libro oLibro = new Libro();
+            oLibro = JsonConvert.DeserializeObject<Libro>(objeto);
+            oLibro.Foto = urlImagen;
+
+            bool respuesta = false;
+            respuesta = LibroDAL.Instancia.Modificar(oLibro);
+            return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
+        }
     }
     public class Response
     {

@@ -14,12 +14,28 @@
     max-width: 688px;
     width: 90%;
 }
+#registroEventoModal .modal-dialog {
+    max-width: 688px;
+    width: 90%;
+}
 /*TAMAÑO TEXTAREA*/
 #DescripcionBiblio {
     height: 140px;
     min-width: 100%;
 }
+#descripcionAutor {
+    height: 95px;
+    min-width: 100%;
+}
+#descripcionEvento {
+    height: 95px;
+    min-width: 100%;
+}
 
+.nombreAutor{
+    height: 100px;
+    min-width: 100%;
+}
 #imglector {
     max-width: 130px;
     max-height: 130px;
@@ -106,6 +122,9 @@
 }
 
 .invalid input {
+    border-color: #cb2323;
+}
+.invalid textarea {
     border-color: #cb2323;
 }
 

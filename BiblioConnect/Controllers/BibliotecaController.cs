@@ -164,6 +164,13 @@ namespace BiblioConnect.Controllers
             return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
+        public JsonResult EliminarEvento(int id)
+        {
+            bool respuesta = false;
+            respuesta = EventoDAL.Instancia.Eliminar(id);
+            return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
         public JsonResult EliminarNotificacion(Prestamo objeto)
         {
             bool respuesta = false;
@@ -199,6 +206,21 @@ namespace BiblioConnect.Controllers
 
             bool respuesta = false;
             respuesta = LibroDAL.Instancia.Modificar(oLibro);
+            return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public async Task<JsonResult> ModificarEvento(string objeto, HttpPostedFileBase imagenArchivo)
+        {
+            Stream image = imagenArchivo.InputStream;
+            string fileName = Path.GetFileName(imagenArchivo.FileName);
+            string urlImagen = await new Helpers().SetImageToFirebase(image, fileName, "Fotos_Eventos");
+
+            Evento oEvento = new Evento();
+            oEvento = JsonConvert.DeserializeObject<Evento>(objeto);
+            oEvento.Foto = urlImagen;
+
+            bool respuesta = false;
+            respuesta = EventoDAL.Instancia.Modificar(oEvento);
             return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
         }
     }

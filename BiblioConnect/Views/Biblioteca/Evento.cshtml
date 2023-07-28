@@ -5,23 +5,28 @@
 
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Boxicons CSS -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     @* Boostrap CSS *@
     <link href="~/Content/bootstrap.min.css" rel="stylesheet">
     @* DataTables CSS BÁSICO *@
     <link href="~/Content/datatables.min.css" rel="stylesheet" type="text/css" />
     @* DataTables estilo Boostrap 5 CSS *@
     <link href="~/DataTables-1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="~/CSS/Modal.css" />
+    <link rel="stylesheet" type="text/css" href="~/CSS/DataTable.css" />
 </head>
 
-<!-- DataTales Example -->
 <div class="card shadow mb-4">
-    <div class="card-header py-3 bg-primary">
-        <h6 class="m-0 font-weight-bold text-white">Lista de Eventos</h6>
+    <div class="card-header">
+        <h6>Lista de eventos</h6>
     </div>
     <div class="card-body">
         <div class="row">
             <div class="col-sm-12">
-                <button class="btn btn-success btn-sm" type="button" onclick="abrirModal(null)">Crear Nuevo</button>
+                <button class="btn btn-guardar btn-sm" type="button" onclick="abrirModal(null)" data-action="guardar">
+                    <i class="fas fa-plus"></i> Añadir evento
+                </button>
             </div>
         </div>
         <hr />
@@ -31,13 +36,13 @@
                     <table class="table table-bordered" id="tabla" style="width:100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>Imagen autor</th>
-                                <th>Nombre autor</th>
-                                <th>Tipo evento</th>
+                                <th>Imagen</th>
+                                <th>Autor</th>
+                                <th>Tipo</th>
                                 <th>Fecha realización</th>
                                 <th>Hora inicio</th>
                                 <th>Hora fin</th>
-                                <th></th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                     </table>
@@ -49,74 +54,135 @@
 </div>
 
 
-
 <!-- Modal -->
-<div class="modal" id="FormModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="registroEventoModal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable custom-modal">
         <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="exampleModalLabel">Evento</h5>
+            <div class="modal-header">
+                <h4 class="modal-title" id="registroModalLabel"></h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <input id="txtid" type="hidden" value="0" />
-                <form id="formNivel">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <img id="imgAutor" height="192" width="190" class="border border-dark" />
-                            </div>
-                            <div class="form-group">
-                                <input class="form-control-file" type="file" id="fileAutor" onchange="readURL(this);">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="nombreAutor">Nombre autor:</label>
-                                <input type="text" class="form-control required" id="nombreAutor" name="Nombre" autocomplete="off">
-                            </div>
-                            <div class="form-group">
-                                <label for="tipoEvento">Tipo evento:</label>
-                                <select id="tipoEvento" class="form-control">
-                                    <option selected>Seleccione un tipo de evento</option>
-                                    <option value="1">Conferencia</option>
-                                    <option value="2">Presentación libro</option>
-                                    <option value="3">Club de lectura</option>
-                                    <option value="4">Taller escritura</option>
-                                    <option value="5">Firma de libro</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="fechaRealizacion">Fecha:</label>
-                                <input type="date" placeholder="Fecha Evento" id="fechaRealizacion" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="hora">Hora Inicio:</label>
-                                <input type="time" placeholder="Hora" id="horaInicio" class="form-control" required>
-                                <label for="hora">Hora Fin:</label>
-                                <input type="time" placeholder="Hora" id="horaFin" class="form-control" required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="descripcionAutor">Descripción autor:</label>
-                                <input type="text" class="form-control required" id="descripcionAutor" autocomplete="off">
-                            </div>
-                            <div class="form-group">
-                                <label for="descripcionEvento">Descripción evento:</label>
-                                <input type="text" class="form-control required" id="descripcionEvento" autocomplete="off">
+                <form action="#" name="formModal">
+                    <div class="container">
+                        <div id="registrar-lector">
+                            <div class="row">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-floating" id="autor-field">
+                                            <input type="text" class="form-control nombreAutor" id="nombreAutor" placeholder="Nombre autor">
+                                            <label>Nombre autor</label>
+                                            <span class="error type error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Introduce un nombre de autor</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-floating" id="tipo-field">
+                                            <select class="form-select" id="tipoEvento" aria-label="Floating label select example">
+                                                <option selected>Seleccione una opcion</option>
+                                                <option value="1">Conferencia</option>
+                                                <option value="2">Presentación libro</option>
+                                                <option value="3">Club de lectura</option>
+                                                <option value="4">Taller escritura</option>
+                                                <option value="5">Firma de libro</option>
+                                            </select>
+                                            <label for="floatingSelect">Tipo de evento</label>
+                                            <span class="error type error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Seleccione un tipo de evento</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating" id="fecha-field">
+                                            <input type="date" placeholder="Fecha Evento" id="fechaRealizacion" class="form-control">
+                                            <label>Fecha</label>
+                                            <span class="error type error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Introduce un fecha</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-floating" id="horaInicio-field">
+                                            <input type="time" placeholder="Hora" id="horaInicio" class="form-control">
+                                            <label>Hora inicio</label>
+                                            <span class="error type error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Introduce una hora de inicio</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating" id="horaFin-field">
+                                            <input type="time" placeholder="Hora" id="horaFin" class="form-control">
+                                            <label>Hora fin</label>
+                                            <span class="error type error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Introduce una hora fin</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-floating" id="descripcionAutor-field">
+                                            <textarea class="form-control" id="descripcionAutor" placeholder="Descripcion" maxlength="500"></textarea>
+                                            <label for="DescripcionBiblio">Descripcion autor</label>
+                                            <span class="error email error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Introduce una descripción de autor</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-floating" id="descripcionEvento-field">
+                                            <textarea class="form-control" id="descripcionEvento" placeholder="Descripcion" maxlength="500"></textarea>
+                                            <label for="DescripcionBiblio">Descripcion evento</label>
+                                            <span class="error email error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">Introduce una descripción de evento</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="imagen" id="imagen-field">
+                                            <label for="filelibro" class="form-label">Seleccione una imagen:</label>
+                                            <input class="form-control" type="file" id="filelibro" onchange="readURL(this, true)">
+                                            <span class="error type error">
+                                                <i class='bx bx-error-circle error-icon'></i>
+                                                <p class="error-text">No ha seleccionado ninguna imagen</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <img id="imglibro" class="border border-dark img-thumbnail" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row  d-flex justify-content-center align-items-center">
+                                    <div class="col-md-4">
+                                        <div class="form-floating button">
+                                            <input type="submit" class="btn-registrar" value="Registrar" />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </form>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary" onclick="Guardar()">Guardar</button>
             </div>
         </div>
     </div>
@@ -126,12 +192,17 @@
 <script src="~/Scripts/jquery-3.7.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
 <script src="~/Scripts/bootstrap.js"></script>
+@* Libreria alert *@
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="~/Scripts/sweetAlert.js"></script>
 @* DataTable JS *@
 <script src="~/Scripts//datatables.min.js" defer></script>
 <script src="~/Scripts/Fechas.js"></script>
+<script src="~/Validate/RegistroEvento.js"></script>
 
 <script>
     var tabladata;
+    idEventoSelected = 0;
 
     function readURL(input) {
         if (input.files && input.files[0]) {
@@ -169,7 +240,7 @@
                 "columns": [
                     {
                         "data": "Foto", render: function (data) {
-                            return '<img src=' + '"' +  data + '"' + 'width="70" height="100">'
+                            return '<img src=' + '"' +  data + '"' + 'width="70" height="70">'
                         }
                     },
                     { "data": "NombreAutor" },
@@ -182,22 +253,29 @@
                     { "data": "HoraInicio" },
                     { "data": "HoraFin" },
                     {
-                        "data": "Id", "render": function (data, type, row, meta) {
-
-                            return $("<button>").addClass("btn btn-primary btn-editar btn-sm").append(
-                                $("<i>").addClass("fas fa-pen")
-                            ).attr({ "data-informacion": JSON.stringify(row) })[0].outerHTML
-                                +
-                                $("<button>").addClass("btn btn-danger btn-eliminar btn-sm ml-2").append(
-                                    $("<i>").addClass("fas fa-trash")
-                                ).attr({ "data-informacion": JSON.stringify(row) })[0].outerHTML;
-
+                        "data": "Id",
+                        "render": function (data, type, row, meta) {
+                            return $("<button>")
+                                .addClass("btn btn-primary btn-editar btn-sm")
+                                .html('<i class="fas fa-edit"></i>')
+                                .attr({
+                                    "data-action": "modificar",
+                                    "data-informacion": JSON.stringify(row)
+                                })[0].outerHTML +
+                                $("<button>")
+                                    .addClass("btn btn-danger btn-eliminar btn-sm ml-2")
+                                    .html('<i class="fas fa-trash"></i>')
+                                    .attr({
+                                        "data-action": "eliminar",
+                                        "data-informacion": JSON.stringify(row)
+                                    })[0].outerHTML;
                         },
                         "orderable": false,
                         "searchable": false,
                         "width": "90px"
+
                     }
-                     
+
                 ],
                 "language": {
                     "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
@@ -205,95 +283,139 @@
             });
         });
 
+    $(document).on('click', '.btn-editar', function (event) {
+        var json = $(this).data("informacion")
+        console.log(json)
+        idEventoSelected = json.Id; //SET VARIABEL GLOBAL DEL EVENTO
+        abrirModal(json)
+        document.querySelector(".btn-guardar").dataset.action = "editar";
+    });
+    $(".btn-guardar").on("click", function (event) {
+        document.querySelector(".btn-guardar").dataset.action = "guardar";
+    });
+    $(document).on('click', '.btn-eliminar', function (event) {
+        var json = $(this).data("informacion")
+        alertConfirm('¿Está seguro de eliminar el evento?',
+            'El evento se eliminará permanentemente').then(() => {
+                Eliminar(json.Id);
+            })
+    });
 
-
-        $(document).on('click', '.btn-editar', function (event) {
-            var json = $(this).data("informacion")
-            abrirModal(json)
-        });
-
-        function abrirModal(json) {
-            //$("#txtid").val(0);
-            //$("#imgAutor").attr({ "src": "" });
-            //$("#fileAutor").val("");
-            //$("#txtautor").val("");
-            //$("#cbotipo").val($("#cbotipo option:first").val());
-
-            //if (json != null) {
-
-            //    //$("#txtid").val(json.Id);
-            //    //$("#txtdescripcion").val(json.Nombre);
-            //    //$("#cboEstado").val(json.Estado == true ? 1 : 0);
-            //}
-
-            $('#FormModal').modal('show');
-        }
-
-        @*$(document).on('click', '.btn-eliminar', function (event) {
-            var json = $(this).data("informacion")
-
-            jQuery.ajax({
-                url: '@Url.Action("EliminarEditorial", "Biblioteca")',
-                type: "POST",
-                data: JSON.stringify({ id: json.Id}),
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-
-                    if (data.resultado) {
-                        tabladata.ajax.reload();
-                    } else {
-                        alert("No se pudo eliminar")
-                    }
-                },
-                error: function (error) {
-                    console.log(error)
-                },
-                beforeSend: function () {
-
-                },
-            });
-        });*@
-
-        function Guardar() {
-            var IdBiblioteca = @(((Usuario)Session["Usuario"]).Id);
-            var ImagenSeleccionada = ($("#fileAutor"))[0].files[0];
-
-            var objeto = {
-                NombreAutor: $("#nombreAutor").val(),
-                DescripcionEvento: $("#descripcionEvento").val(),
-                DescripcionAutor: $("#descripcionAutor").val(),
-                FechaRealizacion: $("#fechaRealizacion").val(),
-                HoraInicio: $("#horaInicio").val(),
-                HoraFin: $("#horaFin").val(),
-                Tipo: $("#tipoEvento option:selected").text(),
-                idBiblioteca: IdBiblioteca,
+    //DEVUELVE EL VALUE DEL SELECT
+    function getSelectedValue(selectedText) {
+        const selectElement = document.getElementById('tipoEvento');
+        for (const option of selectElement.options) {
+            if (option.text === selectedText) {
+                return option.value;
             }
-            var request = new FormData();
-            request.append("imagenArchivo", ImagenSeleccionada);
-            request.append("objeto", JSON.stringify(objeto));
-
-            jQuery.ajax({
-                url: '@Url.Action("GuardarEvento", "Biblioteca")',
-                type: "POST",
-                processData: false,
-                contentType: false,
-                data: request,
-                success: function (resultado) {
-                    if (resultado) {
-                        tabladata.ajax.reload();
-                        $('#FormModal').modal('hide');
-                    } else {
-                        alert("No se pudo guardar los cambios")
-                    }
-                },
-                error: function (error) {
-                    console.log(error)
-                },
-                beforeSend: function () {
-
-                },
-            });
         }
+        return null;
+    }
+
+    function vaciarFormulario() {
+        $("#imgAutor").attr({ "src": "" });
+        $("#nombreAutor").val("");
+        $("#fechaRealizacion").val("");
+        $("#horaInicio").val("");
+        $("#horaFin").val("");
+        $("#descripcionAutor").val("");
+        $("#descripcionEvento").val("");
+        $("#tipoEvento").val($("#tipoEvento option:first").val());
+    }
+
+    function obtenerDatosFormulario() {
+        var IdBiblioteca = @(((Usuario)Session["Usuario"]).Id);
+        console.log(idEventoSelected )
+        var objeto = {
+            Id: idEventoSelected,
+            idBiblioteca: IdBiblioteca,
+            NombreAutor: $("#nombreAutor").val(),
+            FechaRealizacion: $("#fechaRealizacion").val(),
+            HoraInicio: $("#horaInicio").val(),
+            HoraFin: $("#horaFin").val(),
+            DescripcionAutor: $("#descripcionAutor").val(),
+            DescripcionEvento: $("#descripcionEvento").val(),
+            Tipo: $("#tipoEvento option:selected").text(),
+        }
+        var ImagenSeleccionada = ($("#filelibro"))[0].files[0];
+        var request = new FormData();
+        request.append("imagenArchivo", ImagenSeleccionada);
+        request.append("objeto", JSON.stringify(objeto));
+        return request;
+    }
+
+    function abrirModal(json) {
+        vaciarFormulario();
+        if (json != null) { //EDITAR DATOS
+            $("#registroModalLabel").text("Editar evento"); //TÍTULO MODAL
+            $("#imglibro").attr({ "src": "data:image/" + json.extension + ";base64," + json.base64 });
+            $("#nombreAutor").val(json.NombreAutor);
+            $("#fechaRealizacion").val(getDateFormatCalendar(json.FechaRealizacion));
+            $("#horaInicio").val(json.HoraInicio);
+            $("#horaFin").val(json.HoraFin);
+            $("#descripcionAutor").val(json.DescripcionAutor);
+            $("#descripcionEvento").val(json.DescripcionEvento);
+            $("#tipoEvento").val(getSelectedValue(json.Tipo));
+        }
+        else {
+            $("#registroModalLabel").text("Registrar evento"); //TÍTULO MODAL
+        }
+        $('#registroEventoModal').modal('show');
+    }
+
+    //REFACTORIZACIÓN
+    function AccionEvento(urlAction) {
+        var request = obtenerDatosFormulario();
+        jQuery.ajax({
+            url: urlAction,
+            type: "POST",
+            processData: false,
+            contentType: false,
+            data: request,
+            success: function (resultado) {
+                if (resultado) {
+                    tabladata.ajax.reload();
+                    $('#registroEventoModal').modal('hide');
+                } else {
+                    alert("No se pudo guardar los cambios");
+                }
+            },
+            error: function (error) {
+                console.log(error);
+            },
+        });
+    }
+
+    function Guardar() {
+        console.log("guardar")
+        var guardarUrl = '@Url.Action("GuardarEvento", "Biblioteca")';
+        AccionEvento(guardarUrl);
+    }
+
+    function Modificar() {
+        console.log("modificar")
+        var modificarUrl = '@Url.Action("ModificarEvento", "Biblioteca")';
+        AccionEvento(modificarUrl);
+    }
+    function Eliminar(EventoId){
+        jQuery.ajax({
+        url: '@Url.Action("EliminarEvento", "Biblioteca")',
+        type: "POST",
+        data: JSON.stringify({ id: EventoId}),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (data) {
+
+            if (data.resultado) {
+                tabladata.ajax.reload();
+            } else {
+                alert("No se pudo eliminar")
+            }
+        },
+        error: function (error) {
+            console.log(error)
+        },
+        });
+    }
 
 </script>

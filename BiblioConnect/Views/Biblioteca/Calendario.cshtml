@@ -116,7 +116,6 @@
                     var tituloSelected = info.event._def.title;
 
                     getEvento(tituloSelected).then(function (evento) {
-                        console.log(evento)
                         document.getElementById('titulo').value = evento.Tipo + " con " + evento.NombreAutor,
                         document.getElementById('fechaInicio').value = getDateFormatCalendar(evento.FechaRealizacion);
                         document.getElementById('horaInicio').value = evento.HoraInicio;
@@ -125,7 +124,7 @@
                         document.getElementById('descripcion').value = evento.DescripcionEvento;
                         abrirModal();
                     })
-                },
+                }, firstDay: 1
             });
             calendar.render();
         })
@@ -142,33 +141,50 @@
                 modal.style.cssText = 'display: none';
             }, 500);
         }
-        function recuperarEventos() {
-            var listaEventos = [];
-            $.ajax({
-                url: "/Biblioteca/ListarEventoPorBiblio",
-                dataType: "json",
-                data: { id: @(((Usuario)Session["Usuario"]).Id) },
-                async: false,
-                success: function (data) {
-                    $.each(data.data, function (index, evento) {
-                        var nuevoEvento = {
-                            title: evento.Tipo + " con " + evento.NombreAutor,
-                            start: getDateFormatCalendar(evento.FechaRealizacion) + " " + evento.HoraInicio,
-                            end: getDateFormatCalendar(evento.FechaRealizacion) + " " + evento.HoraFin,
-                            descripcion: 'Este es otro evento de un solo día',
-                            color: 'yellow',
-                            textColor: 'red'
-                        };
-                        listaEventos.push(nuevoEvento);
-                    });
-                },
-                error: function () {
-                    console.log("Error al obtener los eventos.");
-                }
+function recuperarEventos() {
+    var listaEventos = [];
+    $.ajax({
+        url: "/Biblioteca/ListarEventoPorBiblio",
+        dataType: "json",
+        data: { id: @(((Usuario)Session["Usuario"]).Id) },
+        async: false,
+        success: function (data) {
+            $.each(data.data, function (index, evento) {
+                var backgroundColor = setBackgroundColor(evento);
+                var nuevoEvento = {
+                    title: evento.Tipo + " con " + evento.NombreAutor,
+                    start: getDateFormatCalendar(evento.FechaRealizacion) + " " + evento.HoraInicio,
+                    end: getDateFormatCalendar(evento.FechaRealizacion) + " " + evento.HoraFin,
+                    backgroundColor: backgroundColor,
+                    extendedProps: {
+                        eventoTipo: evento.Tipo // Almacenamos el tipo de evento en extendedProps
+                    }
+                };
+                listaEventos.push(nuevoEvento);
             });
-            return listaEventos;
+        },
+        error: function () {
+            console.log("Error al obtener los eventos.");
+        }
+    });
+    return listaEventos;
         }
 
+        function setBackgroundColor(evento) {
+            console.log(evento)
+            if (evento.Tipo === 'Presentación libro') {
+                backgroundColor = '#EE3520 ';
+            } if (evento.Tipo === 'Firma de libro') {
+                backgroundColor = '#277ab1';
+            } if (evento.Tipo === 'Conferencia') {
+                backgroundColor = '#C038BE ';
+            } if (evento.Tipo === 'Club de lectura') {
+                backgroundColor = 'green';
+            } if (evento.Tipo === 'Taller escritura') {
+                backgroundColor = '#F29908 ';
+            }
+            return backgroundColor; 
+        }
         function getEvento(titulo) {
             return new Promise(function (resolve, reject) {
                 $.ajax({

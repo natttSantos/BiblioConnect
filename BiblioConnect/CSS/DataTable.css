@@ -1,81 +1,5 @@
 ﻿
 @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Poppins:wght@300;400;500;600&family=Roboto:wght@300&display=swap');
-/*.containerPerfil {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 20px;
-}
-.rowPerfil {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-}
-.heading {
-    font-size: 28px;
-    margin-bottom: 15px; 
-    color: #5b3e7b;
-    font-weight: 600;
-    font-family: 'Merriweather', sans-serif;
-}
-
-.title {
-    text-align: center;
-    margin-bottom: 20px;
-    font-family: 'Merriweather', serif;
-}
-
-#txtimagen {
-    width: 395px;
-    height: 370px;
-}
-
-.rowgrey {
-    background-color: #f5f5f5;
-}
-.datosTabla {
-    max-width: 70%;
-    margin: 0 auto;
-}
-.datosTabla .row {
-    padding: 15px 5px 15px 5px;
-    margin: 0;
-}
-
-    .datosTabla .row .col-md-4 {
-        display: flex;
-        align-items: center;
-    }
-
-        .datosTabla .row .col-md-4 i {
-            margin-right: 5px;
-        }
-
-    .datosTabla .row .col-md-8 {
-        display: flex;
-        flex-direction: column;
-
-    }
-
-.btn-editar {
-    display: block;
-    width: 200px; 
-    padding: 8px; 
-    font-size: 16px;
-    text-align: center;
-    text-decoration: none;
-    background-color: #0a5483;
-    color: #fff;
-    margin: 0 auto; 
-    border: none;
-    border-radius: 20px;
-    transition: background-color 0.3s ease;
-}
-    .btn-editar:hover {
-        background-color: #1d86ca;
-    }
-*/
-
 h6 {
     font-size: 20px;
     color: #fff;
@@ -101,7 +25,7 @@ h6 {
     }
 
 /*BOTONES EDITAR Y ELIMINAR*/
-.btn-editar {
+.btn-editar, .btn-recogida, .btn-devolver {
     background-color: #0a5483;
     color: #fff; 
 }
@@ -135,4 +59,18 @@ h6 {
         color: #fff; 
         border-color: #fff;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    }
+
+/*COLORES TOGGLE*/
+input[type="radio"] {
+    display: none;
+}
+    input[type="radio"]:checked + .btn {
+        color: #fff;
+        background: #0a5483 !important;
+    }
+
+    input[type="radio"]:hover + .btn {
+        color: #fff;
+        background-color: #338ac2;
     }

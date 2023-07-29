@@ -276,9 +276,10 @@ namespace BiblioConnect.Data
         public Prestamo ObtenerUltimo(int Id)
         {
             Prestamo oPrestamo = new Prestamo();
-            string consultaSql = "SELECT MIN(p.FechaDevolConfirmada) AS UltimoPrestamo, p.EstadoEntregado " +
-                "FROM Prestamo p INNER JOIN Transaccion t ON t.Id = p.Id " +
-                "WHERE t.idLibro = @idLibro AND T.Estado = 'Devuelto' GROUP BY p.EstadoEntregado";
+            string consultaSql = "SELECT TOP 1 p.EstadoRecibido FROM Prestamo p " +
+                "INNER JOIN Transaccion t ON t.Id = p.Id " +
+                "WHERE t.idLibro = @idLibro AND T.Estado = 'Devuelto' " +
+                "ORDER BY p.FechaDevolConfirmada DESC; ";
 
             using (SqlConnection connection = new SqlConnection(Conexion.CN))
             {
@@ -289,8 +290,8 @@ namespace BiblioConnect.Data
                 SqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    oPrestamo.EstadoEntregado = reader["EstadoEntregado"].ToString();
-                    oPrestamo.FechaDevolConfirmada = Convert.ToDateTime(reader["UltimoPrestamo"].ToString(), new CultureInfo("es-PE"));
+                    oPrestamo.EstadoRecibido = reader["EstadoRecibido"].ToString();
+                    //oPrestamo.FechaDevolConfirmada = Convert.ToDateTime(reader["UltimoPrestamo"].ToString(), new CultureInfo("es-PE"));
                 }
                 connection.Close();
                 reader.Close();

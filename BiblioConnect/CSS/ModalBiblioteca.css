@@ -15,7 +15,7 @@
     width: 90%;
 }
 #registroEventoModal .modal-dialog {
-    max-width: 600px;
+    max-width: 688px;
     width: 90%;
 }
 /*TAMAÑO TEXTAREA*/
@@ -44,7 +44,7 @@
 }
 
 .modal-header {
-    background-color: #7F27A0;
+    background-color: 833809;
     color: #fff;
     border-bottom: none;
 }
@@ -176,25 +176,4 @@
 
 .show-hide:hover {
     color: #7F27A0;
-}
-
-
-/*ETIQUETAS RECOGIDA*/
-
-.recogidaTextBold {
-    font-weight: 700;
-    font-size: 17px;
-}
-.recogidaText {
-    font-size: 17px;
-}
-.devolucionTextBold {
-    font-weight: 600; 
-    margin-bottom: 3px; 
-    margin-left: 3px; 
-}
-
-
-#rowrecogida {
-    justify-content: flex-end; /* Alinea la fila hacia el extremo derecho */
 }

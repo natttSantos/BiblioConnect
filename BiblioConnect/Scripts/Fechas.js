@@ -54,3 +54,21 @@ function formatDateToReadable(fechaUnix) {
     const formattedDate = `${dayOfWeek}, ${dayOfMonth} de ${month} de ${date.getFullYear()}`;
     return formattedDate;
 }
+
+function getCurrentDate() {
+    var fechaActual = new Date();
+    var year = fechaActual.getFullYear();
+    var month = String(fechaActual.getMonth() + 1).padStart(2, "0");
+    var day = String(fechaActual.getDate()).padStart(2, "0");
+    var fechaFormateada = `${day}/${month}/${year}`;
+    return fechaFormateada;
+}
+function addDaysToCurrentDate(numDias) {
+    var fechaActual = new Date();
+    fechaActual.setDate(fechaActual.getDate() + numDias);
+    var year = fechaActual.getFullYear();
+    var month = String(fechaActual.getMonth() + 1).padStart(2, "0");
+    var day = String(fechaActual.getDate()).padStart(2, "0");
+    var fechaFormateada = `${day}/${month}/${year}`;
+    return fechaFormateada;
+}

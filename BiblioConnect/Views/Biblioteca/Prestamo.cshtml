@@ -12,9 +12,11 @@
     <link href="~/Content/datatables.min.css" rel="stylesheet" type="text/css" />
     @* DataTables estilo Boostrap 5 CSS *@
     <link href="~/DataTables-1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    <link href="~/CSS/Modal.css" rel="stylesheet" />
+    <link href="~/CSS/DataTable.css" rel="stylesheet" />
 </head>
 
-<div class="card shadow mb-4">
+@*<div class="card shadow mb-4">
     <div class="card-body">
         <div class="form-row d-flex align-items-end">
             <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
@@ -31,11 +33,11 @@
                 <label class="btn btn-outline-primary" for="btnradio4">Devuelto</label>
             </div>
         </div>
-    </div>
+    </div>*@
 
 
 
-    <div class="card shadow">
+@*<div class="card shadow">
 
         <div class="card-body">
             <div class="row">
@@ -61,110 +63,190 @@
             </div>
 
         </div>
-    </div>
+    </div>*@
 
-    <!-- Modal Recogida -->
-    <div class="modal fade" id="recogidamodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title">Recogida </h5>
+<div class="card shadow mb-4">
+    <div class="card-header">
+        <h6>Lista de préstamos</h6>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-row d-flex align-items-end">
+                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" value="En espera" checked>
+                        <label class="btn btn-outline-primary" for="btnradio1">En espera</label>
+
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" value="Pendiente recogida">
+                        <label class="btn btn-outline-primary" for="btnradio2">Pendiente recogida</label>
+
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" value="Pendiente devolución">
+                        <label class="btn btn-outline-primary" for="btnradio3">Pendiente devolución</label>
+
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off" value="Devuelto">
+                        <label class="btn btn-outline-primary" for="btnradio4">Devuelto</label>
+                    </div>
                 </div>
-                <div class="modal-body">
+            </div>
+        </div>
+
+
+        <hr />
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="tabla" style="width:100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Estado</th>
+                                <th>Título</th>
+                                <th>Nombre</th>
+                                <th>Apellidos</th>
+                                <th>Dni</th>
+                                <th>Fecha devolución</th>
+                                <th>Fecha confirmada</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal Recogida -->
+<div class="modal fade" id="recogidamodal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable custom-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="registroModalLabel">Recogida libro</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row" id="rowrecogida">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="recogidaTextBold">Recogida del libro</label>
+                                <label class="recogidaText" id="nombreLibro"></label>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="recogidaTextBold">Lector asignado</label>
+                                <label class="recogidaText" id="nombreLector"></label>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <label class="recogidaTextBold">Fecha de entrega</label>
+                                <label class="recogidaText" id="fechaEntrega"></label>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="recogidaTextBold">Fecha devolución</label>
+                                <label class="recogidaText" id="fechaDevol"></label>
+                            </div>
+                        </div>
+                        <div class="row d-flex justify-content-center align-items-center">
+                            <div class="col-md-4">
+                                <div class="form-floating button">
+                                    <input type="submit" id="btnAsignar" class="btn-registrar" value="Asignar" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Devolucion-->
+<div class="modal fade" id="devolvermodal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable custom-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="registroModalLabel">Devolución libro</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
                     <div class="row">
                         <div class="row">
-                            <div class="col">
-                                <label for="message-text" class="col-form-label">Recogida del libro:</label>
-                                <label for="message-text" id="nombreLibro" class="col-form-label"></label>
+                            <div class="col-md-12">
+                                <label for="message-text" class="devolucionTextBold">Estado del libro entregado:</label>
+                                <textarea class="form-control" id="txtestadolibro" disabled="disabled" style="height: 70px; min-width: 100%;"></textarea>
                             </div>
                         </div>
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <label for="message-text" class="devolucionTextBold">Estado del libro recibido:</label>
+                                <textarea class="form-control" id="txtestadolibrorecibido" style="height: 70px; min-width: 100%;"></textarea>
+                            </div>
+                        </div>
+                        <div class="row d-flex justify-content-center align-items-center">
+                            <div class="col-md-4">
+                                <div class="form-floating button">
+                                    <input type="submit" id="btnGuardar" class="btn-registrar" value="Devolver" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="detallemodal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable custom-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="registroModalLabel">Devolución libro</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
                         <div class="row">
-                            <div class="col">
-                                <label for="message-text" class="col-form-label">Lector asignado:</label>
-                                <label for="message-text" id="nombreLector" class="col-form-label"></label>
+                            <div class="col-md-12">
+                                <label for="message-text" class="devolucionTextBold">Estado del libro entregado:</label>
+                                <textarea class="form-control" id="txtviewestadolibroentregado" disabled="disabled" style="height: 70px; min-width: 100%;"></textarea>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col">
-                                <label for="message-text" class="col-form-label">Fecha entrega:</label>
-                                <label for="message-text" id="fechaEntrega" class="col-form-label"></label>
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <label for="message-text" class="devolucionTextBold">Estado del libro recibido:</label>
+                                <textarea class="form-control" id="txtviewestadolibrorecibido" disabled="disabled" style="height: 70px; min-width: 100%;"></textarea>
                             </div>
-                            <div class="col">
-                                <label for="message-text" class="col-form-label">Fecha devolución:</label>
-                                <label for="message-text" id="fechaDevol" class="col-form-label"></label>
+                        </div>
+                        <div class="row d-flex justify-content-center align-items-center">
+                            <div class="col-md-4">
+                                <div class="form-floating button">                          
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" id="btnAsignar">Asignar</button>
-                </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Modal Devolucion-->
-    <div class="modal fade" id="devolvermodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title">Devolución</h5>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="message-text" class="col-form-label">Estado del libro entregado:</label>
-                        <textarea class="form-control" id="txtestadolibro" disabled="disabled"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="message-text" class="col-form-label">Estado del libro recibido:</label>
-                        <textarea class="form-control" id="txtestadolibrorecibido"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" id="btnGuardar">Guardar</button>
-                </div>
-            </div>
-        </div>
-    </div>
+@* JQquery, Popper.js, Boostrap.js *@
+<script src="~/Scripts/jquery-3.7.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+<script src="~/Scripts/bootstrap.js"></script>
+@* Libreria alert *@
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="~/Scripts/sweetAlert.js"></script>
+@* DataTable JS *@
+<script src="~/Scripts//datatables.min.js" defer></script>
+<script src="~/Scripts/Fechas.js"></script>
 
-    <!-- Modal -->
-    <div class="modal fade" id="detallemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title">Detalle Devolución</h5>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="message-text" class="col-form-label">Estado del libro entregado:</label>
-                        <textarea class="form-control" id="txtviewestadolibroentregado" disabled="disabled"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="message-text" class="col-form-label">Estado del libro recibido:</label>
-                        <textarea class="form-control" id="txtviewestadolibrorecibido" disabled></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    @* JQquery, Popper.js, Boostrap.js *@
-    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
-    <script src="~/Scripts/bootstrap.js"></script>
-    @* Libreria alert *@
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="~/Scripts/sweetAlert.js"></script>
-    @* DataTable JS *@
-    <script src="~/Scripts//datatables.min.js" defer></script>
-    <script src="~/Scripts/Fechas.js"></script>
-
-    <script>
+<script>
         var tabladata;
 
         $(document).ready(function () {
@@ -208,12 +290,15 @@
 
 
 
-        $(document).on('click', '.btn-recogida', function (event) {
+    $(document).on('click', '.btn-recogida', function (event) {
+
             var json = $(this).data("informacion")  //JSON DEL ROW SELECTED
             $("#nombreLibro").text(json.Titulo);
-            $("#nombreLector").text(json.Nombre + " " + json.Apellidos);
+        $("#nombreLector").text(json.Nombre + " " + json.Apellidos);
+        $("#fechaEntrega").text(getCurrentDate());
+        $("#fechaDevol").text(addDaysToCurrentDate(21));
             $("#btnAsignar").data("idprestamo", json.Id); //jQuery para asignar un atributo de datos llamado "data-informacion" a un elemento.
-
+        $("#btnAsignar").data("idLibro", json.idLibro);
             $("#recogidamodal").modal("show");
 
 
@@ -221,6 +306,7 @@
 
         $(document).on('click', '.btn-devolver', function (event) {
             var json = $(this).data("informacion")  //JSON DEL ROW SELECTED
+            console.log(json)
             $("#txtestadolibro").val(json.EstadoEntregado);
             $("#btnGuardar").data("idprestamo", json.Id); //jQuery para asignar un atributo de datos llamado "data-informacion" a un elemento.
             $("#btnGuardar").data("idLibro", json.idLibro);
@@ -269,11 +355,10 @@
                 Id: $(this).data("idprestamo"),
                 Duracion: 21
             }
-
-            registroPrestamo(oPrestamo);
+            var idLibro = $(this).data("idLibro");
+            registroPrestamo(oPrestamo, idLibro);
         })
 
-    // Función para obtener el estado seleccionado del botón de radio
     function obtenerEstadoSeleccionado() {
         const selectedValue = document.querySelector('input[name="btnradio"]:checked').value;
         return selectedValue;
@@ -307,10 +392,10 @@
                         }
                     }
                 },
-                { "data": "Dni" },
+                { "data": "Titulo" },
                 { "data": "Nombre" },
                 { "data": "Apellidos" },
-                { "data": "Titulo" },
+                { "data": "Dni" },
                 {
                     "data": "FechaDevolucion", render: function (data) {
                         if (data != null) {
@@ -351,6 +436,7 @@
         });
     }
 
+        //PENDIENTE RECOGIDA
         function registrarPendienteRecogida(idLibro) {
             return new Promise(function (resolve, reject) {
                 var oNotificacion;
@@ -358,7 +444,7 @@
                     url: '/Lector/ObtenerUltimaReserva',
                     type: 'GET',
                     data: { id: idLibro },
-                    success: function (data) {                       
+                    success: function (data) {
                         var prestamoPendienteRecogida = data.data;
                         $.ajax({
                             url: '/Lector/RegistrarPendienteRecogida',
@@ -380,24 +466,27 @@
                         });
                     },
                     error: function (error) {
-                        console.log("Error al obtener los datos del autor:", error);                  
+                        console.log("Error al obtener los datos del autor:", error);
                     },
                 });
             });
-        }
-        function registroPrestamo(oPrestamo) {
+    }
+        //PENDIENTE PENDIENTE DEVOLUCION (RECOGIDA-DEVOL)
+    function registroPrestamo(oPrestamo, idLibro) {
             $.ajax({
                 url: "/Lector/ObtenerUltimoPrestamo",
                 type: "GET",
-                data: { id: oPrestamo.Id },
+                data: { id: idLibro },
                 success: function (data) {
                     var prestamoAntiguo = data.data;
                     //Primer préstamo para el libro
-                    if (prestamoAntiguo.EstadoEntregado == null) {
+                    if (prestamoAntiguo.EstadoRecibido == null) {
+                        console.log("primer préstamo del libro")
                         oPrestamo.EstadoEntregado = "Libro en perfectas condiciones";
                         //Hay préstamos antiguos
                     } else {
-                        oPrestamo.EstadoEntregado = prestamoAntiguo.EstadoEntregado;
+                        console.log("ha habiado más préstamos!!")
+                        oPrestamo.EstadoEntregado = prestamoAntiguo.EstadoRecibido;
                     }
                     $.ajax({
                         url: '/Lector/RegistrarPrestamo',
@@ -420,7 +509,6 @@
             });
         }
         function enviarNotificacion(oNotificacion) {
-            console.log(oNotificacion)
             return new Promise(function (resolve, reject) {
                 $.ajax({
                     url: '/Biblioteca/EnviarNotificacion',
@@ -446,15 +534,15 @@
                     $.ajax({
                         url: '/Biblioteca/EliminarNotificacion',
                         type: 'POST',
-                        data: prestamo, 
+                        data: prestamo,
                         error: function (error) {
                             console.log('Error al eliminar notificacion', error);
                         },
                     });
                 }, error: function (error) {
-                    console.log('Error al obtener identificadores prestamo', error); 
+                    console.log('Error al obtener identificadores prestamo', error);
                 }
 
             })
         }
-    </script>
+</script>

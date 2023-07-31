@@ -1,0 +1,23 @@
+﻿
+
+.custom-card {
+    font-size: 16px;
+    color: #1e7fbd; 
+    font-weight: 500; /* Negrita */
+    text-transform: uppercase; /* Mayúsculas */
+    margin-bottom: 0.5rem; /* Margen inferior */
+}
+.custom-cardRed {
+    font-size: 16px;
+    color: #cb3333;
+    font-weight: 500; /* Negrita */
+    text-transform: uppercase; /* Mayúsculas */
+    margin-bottom: 0.5rem; /* Margen inferior */
+}
+.custom-cardGreen {
+    font-size: 16px;
+    color: #2cae63;
+    font-weight: 500; /* Negrita */
+    text-transform: uppercase; /* Mayúsculas */
+    margin-bottom: 0.5rem; /* Margen inferior */
+}

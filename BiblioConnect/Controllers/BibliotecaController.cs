@@ -80,7 +80,7 @@ namespace BiblioConnect.Controllers
                 List<Object> reservas = ReservaDAL.Instancia.Listar(id, estado);
                 List<Object> prestamos = PrestamoDAL.Instancia.Listar(id, estado);
 
-                oLista.AddRange(reservas); // Add all elements from 'reservas' to 'oLista'
+                oLista.AddRange(reservas); 
                 oLista.AddRange(prestamos);
             }
             if(!estado.Equals("En espera") && !estado.Equals("Todos")) { 

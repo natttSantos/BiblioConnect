@@ -10,6 +10,7 @@
     <link href="~/Content/datatables.min.css" rel="stylesheet" />
     @* DataTables estilo Boostrap 5 CSS *@
     <link href="~/DataTables-1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    <link href="~/CSS/Dashboard.css" rel="stylesheet" />
 </head>
 
 <!-- Page Heading -->
@@ -24,7 +25,7 @@
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                        <div class="custom-card">
                             Total Libros
                         </div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800" id="div_libros">0</div>
@@ -42,7 +43,7 @@
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                        <div class="custom-card">
                             Total eventos
                         </div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800" id="div_eventos">0</div>
@@ -60,8 +61,8 @@
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                            Préstamos Registrados
+                        <div class="custom-cardRed">
+                            Préstamos Pendientes
                         </div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800" id="div_prestamos">0</div>
                     </div>
@@ -78,10 +79,10 @@
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                        <div class="custom-cardGreen">
                             Reservas registradas
                         </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="div_pendientes">0</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="div_reservas">0</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-list-ol fa-2x text-black-50"></i>
@@ -128,6 +129,32 @@
                         if (data.data != null) {
                             $("#div_eventos").text(data.data.length)
                         }
+                    },
+                    error: function (error) {
+                        console.log(error)
+                    },
+                  });
+                jQuery.ajax({
+                    url: '@Url.Action("ListarPrestamosBiblio", "Biblioteca")',
+                    type: "GET",
+                    data: { id: IdBiblioteca, estado: "Todos" },
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        var items = data.data;
+                        var prestamosCount = 0;
+                        var reservasCount = 0;
+
+                        items.forEach(function (item) {
+                            if (item.Estado !== "En espera" && item.Estado !== "Devuelto") {
+                                prestamosCount++;
+                            } if (item.Estado === "En espera") {
+                                reservasCount++;
+                            }
+                        });
+
+                        $("#div_prestamos").text(prestamosCount);
+                        $("#div_reservas").text(reservasCount);
                     },
                     error: function (error) {
                         console.log(error)

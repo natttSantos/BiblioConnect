@@ -16,55 +16,6 @@
     <link href="~/CSS/DataTable.css" rel="stylesheet" />
 </head>
 
-@*<div class="card shadow mb-4">
-    <div class="card-body">
-        <div class="form-row d-flex align-items-end">
-            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" value="En espera" checked>
-                <label class="btn btn-outline-primary" for="btnradio1">En espera</label>
-
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" value="Pendiente recogida">
-                <label class="btn btn-outline-primary" for="btnradio2">Pendiente recogida</label>
-
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" value="Pendiente devolución">
-                <label class="btn btn-outline-primary" for="btnradio3">Pendiente devolución</label>
-
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off" value="Devuelto">
-                <label class="btn btn-outline-primary" for="btnradio4">Devuelto</label>
-            </div>
-        </div>
-    </div>*@
-
-
-
-@*<div class="card shadow">
-
-        <div class="card-body">
-            <div class="row">
-                <div class="col-sm-12">
-
-                    <div class="table-responsive">
-                        <table class="table table-bordered" id="tabla" style="width:100%" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>Estado Prestamo</th>
-                                    <th>Dni</th>
-                                    <th>Nombre</th>
-                                    <th>Apellidos</th>
-                                    <th>Titulo</th>
-                                    <th>Fecha Devolucion</th>
-                                    <th>Fecha Devolucion Confirmada</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>*@
-
 <div class="card shadow mb-4">
     <div class="card-header">
         <h6>Lista de préstamos</h6>
@@ -74,17 +25,21 @@
             <div class="col-sm-12">
                 <div class="form-row d-flex align-items-end">
                     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                        <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" value="En espera" checked>
-                        <label class="btn btn-outline-primary" for="btnradio1">En espera</label>
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" value="Todos" checked>
+                        <label class="btn btn-outline-primary" for="btnradio1">Todos</label>
 
-                        <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" value="Pendiente recogida">
-                        <label class="btn btn-outline-primary" for="btnradio2">Pendiente recogida</label>
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" value="En espera">
+                        <label class="btn btn-outline-primary" for="btnradio2">En espera</label>
 
-                        <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" value="Pendiente devolución">
-                        <label class="btn btn-outline-primary" for="btnradio3">Pendiente devolución</label>
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" value="Pendiente recogida">
+                        <label class="btn btn-outline-primary" for="btnradio3">Pendiente recogida</label>
 
-                        <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off" value="Devuelto">
-                        <label class="btn btn-outline-primary" for="btnradio4">Devuelto</label>
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off" value="Pendiente devolución">
+                        <label class="btn btn-outline-primary" for="btnradio4">Pendiente devolución</label>
+
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off" value="Devuelto">
+                        <label class="btn btn-outline-primary" for="btnradio5">Devuelto</label>
+
                     </div>
                 </div>
             </div>
@@ -288,21 +243,16 @@
             });
         });
 
-
-
     $(document).on('click', '.btn-recogida', function (event) {
-
-            var json = $(this).data("informacion")  //JSON DEL ROW SELECTED
-            $("#nombreLibro").text(json.Titulo);
+        var json = $(this).data("informacion")  //JSON DEL ROW SELECTED
+        $("#nombreLibro").text(json.Titulo);
         $("#nombreLector").text(json.Nombre + " " + json.Apellidos);
         $("#fechaEntrega").text(getCurrentDate());
         $("#fechaDevol").text(addDaysToCurrentDate(21));
-            $("#btnAsignar").data("idprestamo", json.Id); //jQuery para asignar un atributo de datos llamado "data-informacion" a un elemento.
+        $("#btnAsignar").data("idprestamo", json.Id); //jQuery para asignar un atributo de datos llamado "data-informacion" a un elemento.
         $("#btnAsignar").data("idLibro", json.idLibro);
-            $("#recogidamodal").modal("show");
-
-
-        });
+        $("#recogidamodal").modal("show");
+    });
 
         $(document).on('click', '.btn-devolver', function (event) {
             var json = $(this).data("informacion")  //JSON DEL ROW SELECTED
@@ -310,17 +260,13 @@
             $("#txtestadolibro").val(json.EstadoEntregado);
             $("#btnGuardar").data("idprestamo", json.Id); //jQuery para asignar un atributo de datos llamado "data-informacion" a un elemento.
             $("#btnGuardar").data("idLibro", json.idLibro);
-
             $("#devolvermodal").modal("show");
-
-
         });
 
         $(document).on('click', '.btn-detalle', function (event) {
             var json = $(this).data("informacion")
             $("#txtviewestadolibroentregado").val(json.EstadoEntregado);
             $("#txtviewestadolibrorecibido").val(json.EstadoRecibido);
-
             $("#detallemodal").modal("show");
         });
 
@@ -412,6 +358,11 @@
                 },
                 {
                     "data": "Estado", "render": function (data, type, row, meta) {
+                        if (data == "Todos") {
+                            return $("<button>").addClass("btn btn-primary btn-todos btn-sm").append(
+                                $("<i>").addClass("fas fa-car")
+                            ).attr({ "data-informacion": JSON.stringify(row) })[0].outerHTML;
+                        }
                         if (data == "Pendiente recogida") {
                             return $("<button>").addClass("btn btn-primary btn-recogida btn-sm").append(
                                 $("<i>").addClass("fas fa-car")

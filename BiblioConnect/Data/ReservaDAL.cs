@@ -127,13 +127,19 @@ namespace BiblioConnect.Data
         {
             using (SqlConnection connection = new SqlConnection(Conexion.CN))
             {
-                SqlCommand cmd = new SqlCommand("select t.Id, t.Estado, r.FechaReserva, l.Titulo, lec.Dni, lec.Apellidos, u.Nombre " +
+                string sql = "select t.Id, t.Estado, r.FechaReserva, l.Titulo, lec.Dni, lec.Apellidos, u.Nombre " +
                     "from Reserva r inner join Transaccion t on t.Id = r.Id " +
                     "inner join Biblioteca b on b.Id = t.idBiblioteca " +
                     "inner join Lector lec on lec.Id = t.idLector " +
                     "inner join Libro l on l.Id = t.idLibro " +
                     "inner join Usuario u on u.Id = lec.Id " +
-                    "where b.Id = @idBiblioteca AND T.Estado = @estado", connection);
+                    "where b.Id = @idBiblioteca";
+
+                if (!estado.Equals("Todos"))
+                {
+                    sql += " AND T.Estado = @estado";
+                }
+                SqlCommand cmd = new SqlCommand(sql, connection);
 
                 cmd.Parameters.AddWithValue("@idBiblioteca", idBiblioteca);
                 cmd.Parameters.AddWithValue("@estado", estado);

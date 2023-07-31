@@ -75,7 +75,17 @@ namespace BiblioConnect.Controllers
             {
                 oLista = ReservaDAL.Instancia.Listar(id, estado);
             }
-            else { oLista = PrestamoDAL.Instancia.Listar(id, estado); }
+            if (estado.Equals("Todos"))
+            {
+                List<Object> reservas = ReservaDAL.Instancia.Listar(id, estado);
+                List<Object> prestamos = PrestamoDAL.Instancia.Listar(id, estado);
+
+                oLista.AddRange(reservas); // Add all elements from 'reservas' to 'oLista'
+                oLista.AddRange(prestamos);
+            }
+            if(!estado.Equals("En espera") && !estado.Equals("Todos")) { 
+                oLista = PrestamoDAL.Instancia.Listar(id, estado); 
+            }
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]

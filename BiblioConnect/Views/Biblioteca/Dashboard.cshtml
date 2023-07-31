@@ -1,7 +1,7 @@
 ﻿
 @{ ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml"; }
-
+@using BiblioConnect.Modelo
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     @* Boostrap CSS *@
@@ -45,7 +45,7 @@
                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                             Total eventos
                         </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="div_lectores">0</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="div_eventos">0</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-users fa-2x text-black-50"></i>
@@ -61,7 +61,7 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                            Prestamos Registrados
+                            Préstamos Registrados
                         </div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800" id="div_prestamos">0</div>
                     </div>
@@ -79,7 +79,7 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                            Prestamos Pendientes
+                            Reservas registradas
                         </div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800" id="div_pendientes">0</div>
                     </div>
@@ -98,106 +98,44 @@
 @* DataTable JS *@
 <script src="~/Scripts//datatables.min.js"></script>
 
-@*@section scripts{
-        <script>
+@section scripts{
+    <script>
 
             $(document).ready(function () {
-
+                var IdBiblioteca = @(((Usuario)Session["Usuario"]).Id);
                 jQuery.ajax({
-                    url: '@Url.Action("ListarLibro", "Biblioteca")',
+                    url: '@Url.Action("ListarLibroPorBiblio", "Biblioteca")',
                     type: "GET",
-                    data: null,
+                    data: { id: IdBiblioteca },
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
                     success: function (data) {
-
                         if (data.data != null) {
                             $("#div_libros").text(data.data.length)
-
-                        } else {
-                            $("#div_libros").text("0");
                         }
                     },
                     error: function (error) {
                         console.log(error)
                     },
-                    beforeSend: function () {
-
-                    },
                 });
-
-                jQuery.ajax({
-                    url: '@Url.Action("ListarPersona", "Biblioteca")',
+                  jQuery.ajax({
+                    url: '@Url.Action("ListarEventoPorBiblio", "Biblioteca")',
                     type: "GET",
-                    data: null,
+                    data: { id: IdBiblioteca },
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
                     success: function (data) {
                         if (data.data != null) {
-                            var a = data.data.filter(item => item.oTipoPersona.IdTipoPersona == 3)
-                            $("#div_lectores").text(a.length)
-
-                        } else {
-                            $("#div_lectores").text("0");
+                            $("#div_eventos").text(data.data.length)
                         }
                     },
                     error: function (error) {
                         console.log(error)
-                    },
-                    beforeSend: function () {
-
-                    },
-                });
-
-                jQuery.ajax({
-                    url: '@Url.Action("Listar", "Prestamo")' + "?idestadoprestamo=0&idpersona=0",
-                    type: "GET",
-                    data: null,
-                    dataType: "json",
-                    contentType: "application/json; charset=utf-8",
-                    success: function (data) {
-
-                        if (data.data != null) {
-                            $("#div_prestamos").text(data.data.length)
-
-                        } else {
-                            $("#div_prestamos").text("0");
-                        }
-                    },
-                    error: function (error) {
-                        console.log(error)
-                    },
-                    beforeSend: function () {
-
-                    },
-                });
-
-                jQuery.ajax({
-                    url: '@Url.Action("Listar", "Prestamo")' + "?idestadoprestamo=0&idpersona=0",
-                    type: "GET",
-                    data: null,
-                    dataType: "json",
-                    contentType: "application/json; charset=utf-8",
-                    success: function (data) {
-
-                        if (data.data != null) {
-                            var a = data.data.filter(item => item.oEstadoPrestamo.IdEstadoPrestamo == 1)
-                            $("#div_pendientes").text(a.length)
-
-                        } else {
-                            $("#div_pendientes").text("0");
-                        }
-                    },
-                    error: function (error) {
-                        console.log(error)
-                    },
-                    beforeSend: function () {
-
                     },
                 });
 
             })
 
 
-        </script>
-    }*@
+    </script>
+}

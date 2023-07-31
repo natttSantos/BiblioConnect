@@ -136,10 +136,10 @@
                                 <span id="notificationCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notificationsDropdown">
-                                <ul id="notificationList" class="list-unstyled"></ul>
-                                <a class="dropdown-item" href="#">
+                                <ul id="notificationList" ></ul>
+                                @*<a class="dropdown-item" href="#">
                                     No hay más notificaciones
-                                </a>
+                                </a>*@
                             </div>
                         </li>
                     </ul>
@@ -172,7 +172,7 @@
     <script src="~/Scripts/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/next-sidebar@1/assets/js/next-sidebar.min.js"></script>
     <script src="~/Scripts/Fechas.js"></script>
-    @*<script src="~/Scripts/MostrarNotificaciones.js"></script> PENDIENTE!!*@
+    <script src="~/Scripts/MostrarNotificaciones.js"></script> 
     <script>
         //Cambiar ACTIVE DEL NAVBAR
         document.addEventListener('DOMContentLoaded', () => {
@@ -187,7 +187,7 @@
 
         $(document).ready(function () {
             var idLector = @(((Usuario)Session["Usuario"]).Id);
-            //ListarNotificaciones(idLector) PENDIENTE
+            ListarNotificaciones(idLector) 
             $("#spinner").hide(); // Ocultar el spinner al cargar la página
         })
         // Mostrar el spinner al hacer una petición AJAX

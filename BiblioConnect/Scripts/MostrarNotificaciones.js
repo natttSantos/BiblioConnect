@@ -19,13 +19,13 @@ function ListarNotificaciones(idLector) {
                 var mediaBody = $("<div>").addClass("media-body").appendTo(mediaDiv);
 
                 var libro = await obtenerImagenLibro(notification.idLibro);
-                var image = $("<img>").attr("src", libro.Foto).addClass("mr-3").attr("alt", "Avatar").appendTo(mediaDiv);
+                var image = $("<img>").attr("src", libro.Foto).addClass("mr-3 mt-3").attr("alt", "Avatar").appendTo(mediaDiv);
 
                 var biblioteca = await getBiblioteca(notification.idBiblioteca);
-                $("<h5>").addClass("mt-0").text(biblioteca.Nombre).appendTo(mediaBody);
+                $("<h6>").addClass("mt-3").text(biblioteca.Nombre).appendTo(mediaBody);
 
-                $("<p>").text('El libro "' + libro.Titulo + '" ya esta disponible puede ir a recogerlo hoy mismo.').appendTo(mediaBody);
-                $("<small>").text(getDate(notification.FechaEnvio)).appendTo(mediaBody);
+                $("<p>").text('El libro "' + libro.Titulo + '" ya esta disponible puede ir a recogerlo hoy mismo.').addClass("descripcionNotificacion").appendTo(mediaBody);
+                $("<p>").text(getDate(notification.FechaEnvio)).addClass("fecha").appendTo(mediaBody);
             });
             actualizarNumeroNotificaciones(numeroNotificaciones);
         },

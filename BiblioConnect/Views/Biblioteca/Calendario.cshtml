@@ -11,70 +11,36 @@
 
     <link rel="stylesheet" href="~/FullCalendar/main.css">
     <link rel="stylesheet" href="~/CSS/Calendario.css">
+    <link rel="stylesheet" href="~/CSS/Modal.css">
 </head>
 <body>
-    <!-- contenedor para renderizar el calendario: -->
     <div id="calendar"></div>
 
-    <!-- Modal -->
-    <div class="modal" id="modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable custom-modal">
             <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="exampleModalLabel">Análisis evento</h5>
+                <div class="modal-header">
+                    <h4 class="modal-title" id="registroModalLabel">Análisis del evento</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="cerrar"></button>
                 </div>
                 <div class="modal-body">
                     <input id="txtid" type="hidden" value="0" />
-                    <form id="formNivel">
-                        <div class="row">
-                            <div class="col-md-12">
-                                @*<h2 id="tituloEntrada">Análisis evento</h2>*@
-                                <input type="text" id="titulo" readonly>
-                            </div>
-                        </div>
+                    <div class="row justify-content-center">
+                            <label id="titulo" class="tituloEvento"></label>                       
+                    </div>
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Fecha Inicio:</label>
-                                <input type="text" id="fechaInicio" readonly>
-                            </div>
-                            <div class="col-md-6">
-                                <label>Hora Inicio:</label>
-                                <input type="text" id="horaInicio" readonly>
-                            </div>
+                    <div class="row justify-content-center mt-3">
+                            <label id="fecha"></label>
+                    </div>
+                    <div class="row justify-content-center">
+                            <lsolabel id="hora"></lsolabel>
+                    </div>
+                    <div class="row mt-3 mb-4">
+                        <div class="col-md-12 col-12">
+                            <label>Descripción del evento:</label>
+                            <textarea class="form-control" id="descripcionEvento" placeholder="Descripción del evento"></textarea>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Fecha Fin:</label>
-                                <input type="text" id="fechaFin" readonly>
-                            </div>
-                            <div class="col-md-6">
-                                <label>Hora Fin:</label>
-                                <input type="text" id="horaFin" readonly>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12 col-12">
-                                <textarea id="descripcion" placeholder="Descripción del evento"></textarea>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label for="color">Color de la tarjeta:</label>
-                                <input type="color" id="color" name="color" value="#00C217">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="color">Color de la tarjeta:</label>
-                                <input type="color" id="textColor" name="textColor" value="#0018CC">
-                            </div>
-                        </div>
-
-                    </form>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cerrar">Cerrar</button>
-                    <button type="button" class="btn btn-primary" id="guardar">Guardar</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -88,7 +54,7 @@
     @* CALENDARIO *@
     <script src="~/FullCalendar/main.js"></script>
     <script src="~/FullCalendar/es.js"></script>
-    <script src="~/Scripts/Fechas.js"></script>
+    <script src="~/Scripts/Fechas.js" charset="UTF-8"></script>
 
     <script>
         $(document).ready(function () {
@@ -116,12 +82,10 @@
                     var tituloSelected = info.event._def.title;
 
                     getEvento(tituloSelected).then(function (evento) {
-                        document.getElementById('titulo').value = evento.Tipo + " con " + evento.NombreAutor,
-                        document.getElementById('fechaInicio').value = getDateFormatCalendar(evento.FechaRealizacion);
-                        document.getElementById('horaInicio').value = evento.HoraInicio;
-                        document.getElementById('fechaFin').value = getDateFormatCalendar(evento.FechaRealizacion);
-                        document.getElementById('horaFin').value = evento.HoraFin;
-                        document.getElementById('descripcion').value = evento.DescripcionEvento;
+                        document.getElementById('titulo').innerText = evento.Tipo + " con " + evento.NombreAutor;
+                        $("#fecha").html('<i class="far fa-calendar-alt"></i> ' + formatDateToReadable(evento.FechaRealizacion));
+                        $("#hora").html('<i class="far fa-clock"></i>' + " "+ evento.HoraInicio + "-" + evento.HoraFin);
+                        document.getElementById('descripcionEvento').value = evento.DescripcionEvento;
                         abrirModal();
                     })
                 }, firstDay: 1
@@ -183,7 +147,7 @@ function recuperarEventos() {
             } if (evento.Tipo === 'Taller escritura') {
                 backgroundColor = '#F29908 ';
             }
-            return backgroundColor; 
+            return backgroundColor;
         }
         function getEvento(titulo) {
             return new Promise(function (resolve, reject) {

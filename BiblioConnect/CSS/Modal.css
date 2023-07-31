@@ -18,6 +18,10 @@
     max-width: 600px;
     width: 90%;
 }
+#modal .modal-dialog { /*modal del calendario*/
+    max-width: 500px;
+    width: 100%;
+}
 /*TAMAÑO TEXTAREA*/
 #DescripcionBiblio {
     height: 140px;
@@ -197,4 +201,26 @@
 
 #rowrecogida {
     justify-content: flex-end; /* Alinea la fila hacia el extremo derecho */
+}
+
+/*ETIQUETAS CALENDARIO*/
+.tituloEvento {
+    font-weight: 700;
+    font-size: 20px;
+    text-align: center;
+    font-family: 'Open Sans', serif;
+}
+
+#fecha {
+    font-size: 17px;
+    font-weight: 400;
+    font-family: 'Merriweather', serif;
+    text-align: center;
+}
+
+#hora {
+    font-size: 18px;
+    font-weight: 400;
+    font-family: 'Merriweather', serif;
+    text-align: center;
 }

@@ -73,8 +73,12 @@
         color: #4eac6a;
     }
 .icono-biblioteca {
-    margin-right: 5px; 
-    font-size: 18px; 
+    color: #336c40; 
+    margin-right: 5px;
+    font-size: 18px;
+}
+.date {
+    color: #000000;
 }
 
 

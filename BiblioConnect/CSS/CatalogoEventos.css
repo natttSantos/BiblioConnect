@@ -35,6 +35,10 @@ img {
     font-family: 'Roboto', serif;
     text-align: justify;
 }
+i {
+    color: #5b3e7b;
+    font-size: 13px;
+}
 
 .container {
     max-width: 1400px; 

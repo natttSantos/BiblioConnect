@@ -349,6 +349,7 @@
     <Content Include="Content\jquery-ui.structure.css" />
     <Content Include="Content\jquery-ui.theme.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="CSS\Inicio.css" />
     <Content Include="CSS\Dashboard.css" />
     <Content Include="CSS\DataTable.css" />
     <Content Include="CSS\ModalBiblioteca.css" />
@@ -436,12 +437,19 @@
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-reboot.min.css.map" />
+    <Content Include="images\books.jpg" />
+    <Content Include="images\filtros.png" />
     <Content Include="images\fondo.png" />
+    <Content Include="images\funcionalidadApp.png" />
+    <Content Include="images\geolocalizacion.png" />
     <Content Include="images\image1.jpg" />
     <Content Include="images\imagenfondo.jpg" />
+    <Content Include="images\library.jpg" />
     <Content Include="images\logo.png" />
     <Content Include="images\LogoAppWeb.png" />
     <Content Include="images\LogoAppWebBlanco.png" />
+    <Content Include="images\presentacionLibro.jpg" />
+    <Content Include="images\reseña.jpg" />
     <Content Include="Scripts\MostrarNotificaciones.js" />
     <Content Include="Scripts\Fechas.js" />
     <Content Include="CSS\sidebar.min.css" />

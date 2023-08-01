@@ -27,6 +27,12 @@ function ListarNotificaciones(idLector) {
                 $("<p>").text('El libro "' + libro.Titulo + '" ya esta disponible puede ir a recogerlo hoy mismo.').addClass("descripcionNotificacion").appendTo(mediaBody);
                 $("<p>").text(getDate(notification.FechaEnvio)).addClass("fecha").appendTo(mediaBody);
             });
+            if (numeroNotificaciones === 0) {
+                var listItem = $("<li>").addClass("dropdown-item").appendTo(notificationList);
+                var mediaDiv = $("<div>").addClass("media").appendTo(listItem);
+                var mediaBody = $("<div>").addClass("media-body").appendTo(mediaDiv);
+                $("<p>").text("No hay notificaciones pendientes").addClass("descripcionNotificacion").appendTo(mediaBody);
+            }
             actualizarNumeroNotificaciones(numeroNotificaciones);
         },
         error: function (error) {

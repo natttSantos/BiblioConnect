@@ -1,0 +1,68 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Poppins:wght@300;400;500;600&family=Roboto:wght@300&display=swap');
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+/*IMPORTANTE ROW*/
+.row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+}
+h1 {
+    font-size: 60px;
+    color: #5b3e7b;
+    font-weight: 800;
+    font-family: Roboto, serif;
+}
+h6 {
+    font-size: 18px;
+    font-weight: 600;
+    font-family: 'Open Sans', serif;
+}
+h4 {
+    text-align: center;
+    margin-top: 20px;
+    font-family: 'Merriweather', serif;
+}
+
+.pregunta {
+    font-family: 'Poppins', serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #5b3e7b; 
+}
+.respuesta {
+    font-family: 'Poppins', serif;
+    font-size: 13px;
+    font-weight: 300;
+}
+
+/*ENLACE PERFIL BIBLIOTECA*/
+.icono-biblioteca {
+    margin-right: 5px;
+    font-size: 18px;
+}
+
+/*IMAGENES*/
+.imgFuncion {
+    width: 380px;
+    height: 280px;
+    outline: 1px solid rgba(0, 0, 0, 0.1); 
+    border-radius: 8px;
+}
+.imgFiltro {
+    width: 200px;
+    height: 200px;
+    outline: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+.imgSinBorde {
+    width: 380px;
+    height: 280px;
+}
+
+

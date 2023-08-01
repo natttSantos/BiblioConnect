@@ -2,6 +2,124 @@
 @{
     ViewBag.Title = "Inicio";
 }
+@using BiblioConnect.Modelo
 
-<h2>Inicio</h2>
 
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    @* Boostrap CSS *@
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet">
+    @* CSS DE MAPAS *@
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <link rel="stylesheet" type="text/css" href="~/CSS/Inicio.css" />
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="row">
+                <i class="fas fa-book"></i>
+                <h1>BiblioConnect</h1>
+            </div>
+            <div class="row">
+                <p>
+                    Bienvenido a BiblioConnect, la aplicación que te conectará con las bibliotecas de la Comunidad Valenciana
+                    directamente desdde tu dispositivo. ¡Descubre libros, eventos y mucho más, todo en un mismo lugar!
+                </p>
+            </div>
+            <div class="row">
+                <div class="col-md-5">
+                    <img src="~/images/geolocalizacion.png" class="imgSinBorde" />
+                </div>
+                <div class="col-md-7">
+                    <h6 class="info-title">Geolocalización para encontrar libros cercanos</h6>
+                    <p class="info-value">BiblioConnect utiliza la geolocalización para mostrarte los libros en papel disponibles más cercanos a ti</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7">
+                    <h6 class="info-title">Reserva libros no disponibles y recibe notificaciones</h6>
+                    <p class="info-value">Si el libro que deseas no está disponible, resérvalo y recibe notificaciones cuando esté listo para recoger ¡No pierdas la oportunidad de leer ese libro que tanto quieres!</p>
+                </div>
+                <div class="col-md-5">
+                    <img src="~/images/books.jpg" class="imgFuncion" />
+                </div>
+            </div>
+            <div class="row justify-content-start">
+                <div class="col-md-3">
+                    <img src="~/images/filtros.png" class="imgFiltro" />
+                </div>
+                <div class="col-md-6">
+                    <h6 class="info-title">Filtrado avanzado </h6>
+                    <p class="info-value">
+                        Encuentra fácilmente libros por género, autor o título
+                        utilizando nuestro avanzado sistema de filtrado.
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7">
+                    <h6 class="info-title">Asiste a eventos literarios organizados por las bibliotecas</h6>
+                    <p class="info-value">No te pierdas ni un solo evento literario en tu zona. Consulta fechas y ubicaciones de eventos gratuitos organizados por bibliotecas de la Comunidad Valenciana. ¡Únete a actividades gratuitas como clubes de lectura, firmas de libros, presentaciones de autores y mucho más!</p>
+                </div>
+                <div class="col-md-5">
+                    <img src="~/images/presentacionLibro.jpg" class="imgFuncion" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5">
+                    <img src="~/images/reseña.jpg" class="imgSinBorde" />
+                </div>
+                <div class="col-md-7">
+                    <h6 class="info-title">Reseñas de libros</h6>
+                    <p class="info-value">
+                        Las reseñas en BiblioConnect te permiten leer y escribir opiniones sobre los libros que te interesan. Conoce lo que otros piensan antes de tomar la decisión.
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <h4>Preguntas frecuentes</h4>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <p class="pregunta">
+                        ¿Es necesario tener una cuenta?
+                    </p>
+                    <p class="respuesta">
+                        Sí, para utilizar BiblioConnect es necesario registrarse y crear una cuenta con la plataforma.
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <p class="pregunta">
+                        ¿Qué tipos de libros puedo encontrar?
+                    </p>
+                    <p class="respuesta">
+                        Puedes encontrar una amplia variedad de libros, desde ficción hasta libros educativos y más.
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <p class="pregunta">
+                        ¿Cómo me notificarán cuando esté disponible un libro reservado?
+                    </p>
+                    <p class="respuesta">
+                        Recibirás notificaciones en tu cuenta de la aplicación cuando un libro reservado esté disponible.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+@* JQquery, Popper.js, Boostrap.js *@
+<script src="~/Scripts/jquery-3.7.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+<script src="~/Scripts/bootstrap.js"></script>
+@* Libreria alert *@
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="~/Scripts/sweetAlert.js"></script>
+@* JS DE MAPAS *@
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+@* FECHAS *@
+<script src="~/Scripts/Fechas.js"></script>

@@ -67,10 +67,17 @@ nav ul {
                 transition: .2s;
             }
 
-i {
+/*ICONOS*/
+.iconoUser {
     color: #ffffff;
-    font-size: 16px;
+    font-size: 27px;
 }
+.iconoNotificacion {
+    color: #ffffff;
+    font-size: 18px;
+}
+
+
 .checkbtn {
     font-size: 30px;
     color: #ffffff;

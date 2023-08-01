@@ -1,68 +1,98 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Poppins:wght@300;400;500;600&family=Roboto:wght@300&display=swap');
 
-/* Estilos generales */
-.dropdown-item {
-    padding: 0.25rem 1rem; /* Ajusta el padding vertical y horizontal según tus preferencias */
-    max-height: 115px; /* Ajusta la altura máxima según tus preferencias */
+body {
+    font-family: "Roboto", sans-serif;
+    background: #EFF1F3;
+    min-height: 100vh;
+    position: relative;
 }
 
-.media {
+.section-50 {
+    padding: 50px 0;
+}
+
+.m-b-50 {
+    margin-bottom: 50px;
+}
+
+.dark-link {
+    color: #333;
+}
+
+.heading-line {
+    position: relative;
+    padding-bottom: 5px;
+}
+
+.heading-line:after {
+    content: "";
+    height: 4px;
+    width: 75px;
+    background-color: #29B6F6;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.notification-ui_dd-content {
+    margin-bottom: 30px;
+}
+
+.notification-list {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    align-items: flex-start;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    padding: 20px;
+    margin-bottom: 7px;
+    background: #fff;
+    -webkit-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
 }
 
-.media-body {
-    margin-left: 0.5rem;
+.notification-list--unread {
+    border-left: 2px solid #29B6F6;
 }
 
-/* Estilos específicos para el sistema de notificaciones */
-#notificationCount {
-    font-size: 0.8rem;
+.notification-list .notification-list_content {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
 }
 
-#notificationList {
-    padding: 0;
-    margin: 0;
-    list-style-type: none;
+.notification-list .notification-list_content .notification-list_img img {
+    height: 55px;
+    width: 55px;
+    border-radius: 50px;
+    margin-right: 20px;
 }
 
-    #notificationList li {
-        border-bottom: 1px solid #dee2e6;
-        padding: 0.1rem 1rem;
-    }
-
-        #notificationList li:last-child {
-            border-bottom: none;
-        }
-
-    #notificationList img {
-        width: 50px;
-        height: 50px;
-        object-fit: cover;
-        border-radius: 50%;
-        margin-right: 1rem;
-    }
-.dropdown-item:hover,
-.dropdown-item:focus {
-    background-color: #f8f9fa;
-    color: #212529;
+.notification-list .notification-list_content .notification-list_detail p {
+    margin-bottom: 10px;
+    line-height: 1.2;
 }
 
-.dropdown-item.active {
-    background-color: #e9ecef;
-    color: #212529;
+.notification-list .notification-list_feature-img img {
+    height: 48px;
+    width: 48px;
+    border-radius: 5px;
+    margin-left: 20px;
 }
-
+.titulo {
+    font-family: 'Open Sans', serif;
+    font-size: 14px;
+    font-weight: 600;
+}
 .descripcionNotificacion {
     font-family: 'Open Sans', serif;
     font-size: 13px;
     font-weight: 400;
-    margin-top: -25px; 
 }
 .fecha {
     font-family: 'Open Sans', serif;
     font-size: 12px;
     font-weight: 400;
     color: #808080;
-    margin-top: -60px;
 }

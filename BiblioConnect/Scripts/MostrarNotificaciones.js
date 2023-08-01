@@ -5,7 +5,7 @@ function actualizarNumeroNotificaciones(numero) {
 }
 
 function ListarNotificaciones(idLector) {
-    var notificationList = $("#notificationList");
+    var notificationList = $("#notification-ui_dd-content");
     var numeroNotificaciones = 0;
     $.ajax({
         url: "/Biblioteca/ListarNotificacionPorLector",
@@ -14,18 +14,20 @@ function ListarNotificaciones(idLector) {
         success: function (data) {
             $.each(data.data, async function (index, notification) {
                 numeroNotificaciones++;
-                var listItem = $("<li>").addClass("dropdown-item").appendTo(notificationList);
-                var mediaDiv = $("<div>").addClass("media").appendTo(listItem);
-                var mediaBody = $("<div>").addClass("media-body").appendTo(mediaDiv);
+                var listItem = $("<div>").addClass("notification-list notification-list--unread").appendTo(notificationList);
+                var listItemContent = $("<div>").addClass("notification-list_content").appendTo(listItem);
+                var listItemImage = $("<div>").addClass("notification-list_img").appendTo(listItemContent);
+                var listItemDetail = $("<div>").addClass("notification-list_detail").appendTo(listItemContent);
 
                 var libro = await obtenerImagenLibro(notification.idLibro);
-                var image = $("<img>").attr("src", libro.Foto).addClass("mr-3 mt-3").attr("alt", "Avatar").appendTo(mediaDiv);
+                var image = $("<img>").attr("src", libro.Foto).attr("alt", "Avatar").appendTo(listItemImage);
 
                 var biblioteca = await getBiblioteca(notification.idBiblioteca);
-                $("<h6>").addClass("mt-3").text(biblioteca.Nombre).appendTo(mediaBody);
+                $("<p>").text(biblioteca.Nombre).addClass("titulo").appendTo(listItemDetail);
 
-                $("<p>").text('El libro "' + libro.Titulo + '" ya esta disponible puede ir a recogerlo hoy mismo.').addClass("descripcionNotificacion").appendTo(mediaBody);
-                $("<p>").text(getDate(notification.FechaEnvio)).addClass("fecha").appendTo(mediaBody);
+                $("<p>").text('El libro "' + libro.Titulo + '" ya esta disponible puede ir a recogerlo hoy mismo.').addClass("descripcionNotificacion").appendTo(listItemDetail);
+                $("<p>").text(getDate(notification.FechaEnvio)).addClass("fecha").appendTo(listItemDetail);
+
             });
             if (numeroNotificaciones === 0) {
                 var listItem = $("<li>").addClass("dropdown-item").appendTo(notificationList);
@@ -33,6 +35,23 @@ function ListarNotificaciones(idLector) {
                 var mediaBody = $("<div>").addClass("media-body").appendTo(mediaDiv);
                 $("<p>").text("No hay notificaciones pendientes").addClass("descripcionNotificacion").appendTo(mediaBody);
             }
+            actualizarNumeroNotificaciones(numeroNotificaciones);
+        },
+        error: function (error) {
+            console.log("Error al obtener las notificaciones:", error);
+        }
+    });
+}
+function ContarNotificaciones(idLector) {
+    var numeroNotificaciones = 0;
+    $.ajax({
+        url: "/Biblioteca/ListarNotificacionPorLector",
+        type: "GET",
+        data: { id: idLector },
+        success: function (data) {
+            $.each(data.data, async function (index, notification) {
+                numeroNotificaciones++;              
+            });
             actualizarNumeroNotificaciones(numeroNotificaciones);
         },
         error: function (error) {

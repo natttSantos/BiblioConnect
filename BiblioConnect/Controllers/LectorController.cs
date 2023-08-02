@@ -23,7 +23,7 @@ namespace BiblioConnect.Controllers
         {
             return View();
         }
-        public ActionResult Reservas()
+        public ActionResult Prestamos()
         {
             return View();
         }
@@ -174,6 +174,19 @@ namespace BiblioConnect.Controllers
         {
             List<Reseña> oLista = new List<Reseña>();
             oLista = ReseñaDAL.Instancia.Listar(id);
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult ListarPrestamosLector(int id)
+        {
+            List<Object> oLista = new List<Object>();
+            List<Object> reservas = ReservaDAL.Instancia.ListarPorLector(id);
+            List<Object> prestamos = PrestamoDAL.Instancia.ListarPorLector(id);
+
+            //oLista.AddRange(reservas);
+            oLista.AddRange(prestamos);
+            oLista.AddRange(reservas);
+
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
         }
     }

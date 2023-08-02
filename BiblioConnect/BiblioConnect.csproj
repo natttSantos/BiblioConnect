@@ -349,6 +349,7 @@
     <Content Include="Content\jquery-ui.structure.css" />
     <Content Include="Content\jquery-ui.theme.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="CSS\MisReservas.css" />
     <Content Include="CSS\Inicio.css" />
     <Content Include="CSS\Dashboard.css" />
     <Content Include="CSS\DataTable.css" />
@@ -521,6 +522,7 @@
     <Content Include="Views\Biblioteca\Calendario.cshtml" />
     <Content Include="Views\Lector\Notificaciones.cshtml" />
     <Content Include="Views\Lector\Perfil.cshtml" />
+    <Content Include="Views\Lector\Prestamos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

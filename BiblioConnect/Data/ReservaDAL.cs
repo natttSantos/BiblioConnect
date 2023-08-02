@@ -177,6 +177,47 @@ namespace BiblioConnect.Data
                 return listaDatos;
             }
         }
+        public List<object> ListarPorLector(int idLector)
+        {
+            using (SqlConnection connection = new SqlConnection(Conexion.CN))
+            {
+                string sql = "select t.Estado, l.Foto, l.Titulo, l.Autor from Reserva r inner " +
+                    "join Transaccion t on t.Id = r.Id inner join Biblioteca b on b.Id = t.idBiblioteca " +
+                    "inner join Lector lec on lec.Id = t.idLector " +
+                    "inner join Libro l on l.Id = t.idLibro inner " +
+                    "join Usuario u on u.Id = lec.Id where lec.Id = @idLector";
+
+                SqlCommand cmd = new SqlCommand(sql, connection);
+
+                cmd.Parameters.AddWithValue("@idLector", idLector);
+
+                DataTable dataTable = new DataTable();
+                connection.Open();
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                {
+                    adapter.Fill(dataTable);
+                }
+
+                List<object> listaDatos = new List<object>();
+
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    // Crear un objeto anónimo con los datos de cada fila y agregarlo a la lista
+                    var datos = new
+                    {
+                        Titulo = Convert.ToString(row["Titulo"]),
+                        Autor = Convert.ToString(row["Autor"]),
+                        Estado = Convert.ToString(row["Estado"]),
+                        Foto = Convert.ToString(row["Foto"]),
+                    };
+
+                    listaDatos.Add(datos);
+                }
+
+                return listaDatos;
+            }
+        }
         //public bool Modificar(Categoria oCategoria)
         //{
         //    bool respuesta = true;

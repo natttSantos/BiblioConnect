@@ -1,0 +1,72 @@
+﻿
+@{
+    ViewBag.Title = "Reservas";
+}
+@using BiblioConnect.Modelo
+<head>
+    <title>Login Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="~/CSS/MisReservas.css" rel="stylesheet" />
+    @* Boostrap CSS *@
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <div id="reserva-container" class="reserva-container">
+        <h4 id="TituloPagina">Mis préstamos</h4>
+    </div>
+</body>
+
+<script src="~/Scripts/jquery-3.7.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+<script src="~/Scripts/bootstrap.js"></script>
+@* Libreria alert *@
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="~/Scripts/sweetAlert.js"></script>
+@* Carga Script js API Paises*@
+<script src="~/Scripts/Fechas.js"></script>
+<script>
+    $(document).ready(function () {
+        var idLector =  @(((Usuario)Session["Usuario"]).Id);
+        var reservasContainer = $("#reserva-container");
+        $.ajax({
+            url: "/Lector/ListarPrestamosLector",
+            type: "GET",
+            data: { id: idLector },
+            success: function (data) {
+                $.each(data.data, function (index, reserva) {
+                    var reservaItem = $("<div>").addClass("reserva-item").appendTo(reservasContainer);
+                    var reservaInfo = $("<div>").addClass("reserva-info").appendTo(reservaItem);
+                    var reservaImage = $("<div>").addClass("reserva-image").appendTo(reservaItem);
+
+                    $("<p>").text(reserva.Titulo).addClass("titulo").appendTo(reservaInfo);
+                    $("<p>").text(reserva.Autor).addClass("autor").appendTo(reservaInfo);
+                    $("<img>").attr("src", reserva.Foto).attr("alt", "Feature image").appendTo(reservaImage);
+
+                    if (reserva.Estado === "Devuelto") {
+                        $("<p>").text("Entregado: " + formatDateToReadable(reserva.FechaEntrega)).appendTo(reservaInfo);
+                        $("<p>").text(reserva.Estado).addClass("devuelto").appendTo(reservaInfo);
+                    }
+                    if (reserva.Estado === "En espera") {
+                        $("<p>").text(reserva.Estado).addClass("pendiente").appendTo(reservaInfo);
+                        $("<p>").text("*El libro todavía no está disponible, cuando lo esté será notificado para su recogida.").addClass("mensaje").appendTo(reservaInfo);
+                    }
+                    if (reserva.Estado === "Pendiente devolución") {
+                        $("<p>").text("Entregado: " + formatDateToReadable(reserva.FechaEntrega)).appendTo(reservaInfo);
+                        $("<p>").text(reserva.Estado + " (" + formatDateToReadable(reserva.FechaDevolucion) + ")").addClass("pendiente").appendTo(reservaInfo);
+                    }
+
+                    if (reserva.Estado === "Pendiente recogida") {
+                        $("<p>").text(reserva.Estado).addClass("pendiente").appendTo(reservaInfo);
+                        $("<p>").text("*El libro ya está disponible para ser recogido en la biblioteca.").addClass("mensaje").appendTo(reservaInfo);
+                    }
+                });
+            },
+            error: function (error) {
+                console.log("Error al obtener los datos del libro:", error);
+            }
+        });
+    })
+</script>
+

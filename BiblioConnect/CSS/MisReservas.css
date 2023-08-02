@@ -1,0 +1,78 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Poppins:wght@300;400;500;600&family=Roboto:wght@300&display=swap');
+
+
+#TituloPagina {
+    font-size: 30px;
+    color: #5b3e7b;
+    font-weight: 700;
+    font-family: 'Roboto', sans-serif;
+    margin-bottom: 30px; 
+}
+
+.reserva-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.reserva-item {
+    display: flex;
+    flex-direction: row;
+    background-color: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.reserva-info {
+    flex: 1;
+    padding: 20px;
+    order: 2;
+}
+
+.reserva-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.reserva-info p {
+    margin: 5px 0;
+}
+
+.reserva-image img {
+    width: 150px;
+    height: 200px;
+    display: block;
+    border-radius: 8px 8px 0 0;
+    order: 1;
+}
+
+.titulo {
+    font-family: 'Open Sans', serif;
+    font-size: 18px;
+    font-weight: 600;
+}
+.autor {
+    font-family: 'Open Sans', serif;
+    font-size: 13px;
+    font-weight: 400;
+}
+.devuelto {
+    font-family: 'Poppins', serif;
+    font-size: 14px;
+    color: #8b55a8;
+    font-weight: 600;
+}
+.pendiente {
+    font-family: 'Poppins', serif;
+    font-size: 14px;
+    color: #ff0000;
+    font-weight: 600;
+}
+.mensaje {
+    font-size: 13px;
+    margin-left: 10px !important;
+    font-weight: 600;
+}

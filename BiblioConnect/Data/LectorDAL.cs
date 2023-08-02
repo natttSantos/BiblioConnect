@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 
@@ -74,10 +75,48 @@ namespace BiblioConnect.Data
             }
             return registrado;
         }
+        public bool Modificar(Lector oLector)
+        {
+            bool registrado = true;
+            using (SqlConnection oConexion = new SqlConnection(Conexion.CN))
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand("sp_ModificarLector", oConexion);
+                    cmd.Parameters.AddWithValue("Nombre", oLector.Nombre);
+                    cmd.Parameters.AddWithValue("Id", oLector.Id);
+                    cmd.Parameters.AddWithValue("Apellidos", oLector.Apellidos);
+                    cmd.Parameters.AddWithValue("Dni", oLector.Dni);
+                    cmd.Parameters.AddWithValue("Email", oLector.Email);
+                    cmd.Parameters.AddWithValue("Telefono", oLector.Telefono);
+                    cmd.Parameters.AddWithValue("FechaNacimiento", oLector.FechaNacimiento);
+                    cmd.Parameters.AddWithValue("Contraseña", oLector.Contraseña);
+                    cmd.Parameters.AddWithValue("Calle", oLector.Calle);
+                    cmd.Parameters.AddWithValue("Estado", oLector.Estado);
+                    cmd.Parameters.AddWithValue("CodPostal", oLector.CodPostal);
+                    cmd.Parameters.AddWithValue("Foto", oLector.Foto);
+                    cmd.Parameters.AddWithValue("Ciudad", oLector.Ciudad);
+                    cmd.Parameters.Add("Resultado", SqlDbType.Bit).Direction = ParameterDirection.Output;
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    oConexion.Open();
+
+                    cmd.ExecuteNonQuery();
+
+                    registrado = Convert.ToBoolean(cmd.Parameters["Resultado"].Value);
+
+                }
+                catch (Exception ex)
+                {
+                    registrado = false;
+                }
+            }
+            return registrado;
+        }
         public Lector Obtener(int Id)
         {
             Lector lector = new Lector();
-            string consultaSql = "select u.Nombre, u.Foto " +
+            string consultaSql = "select u.Nombre, u.Foto, u.Email, u.Telefono, u.Calle, u.Ciudad, u.CodPostal, u.Estado, l.Dni, l.FechaNacimiento, l.Apellidos, u.Contraseña " +
                 "from Lector l inner join Usuario u on l.Id = u.Id " +
                 "where l.Id = @idLector";
 
@@ -92,6 +131,16 @@ namespace BiblioConnect.Data
                 {
                     lector.Nombre = reader["Nombre"].ToString();
                     lector.Foto = reader["Foto"].ToString();
+                    lector.Email = reader["Email"].ToString();
+                    lector.Telefono = reader["Telefono"].ToString();
+                    lector.Contraseña = reader["Contraseña"].ToString();
+                    lector.Calle = reader["Calle"].ToString();
+                    lector.Ciudad = reader["Ciudad"].ToString();
+                    lector.CodPostal = reader["CodPostal"].ToString();
+                    lector.Estado = reader["Estado"].ToString();
+                    lector.Dni = reader["Dni"].ToString();
+                    lector.FechaNacimiento = Convert.ToDateTime(reader["FechaNacimiento"].ToString(), new CultureInfo("es-PE"));
+                    lector.Apellidos = reader["Apellidos"].ToString();
                 }
                 connection.Close();
                 reader.Close();

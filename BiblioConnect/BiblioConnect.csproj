@@ -520,6 +520,7 @@
     <Content Include="Views\Lector\DetallesEvento.cshtml" />
     <Content Include="Views\Biblioteca\Calendario.cshtml" />
     <Content Include="Views\Lector\Notificaciones.cshtml" />
+    <Content Include="Views\Lector\Perfil.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -16,13 +16,15 @@ function ListarNotificaciones(idLector) {
                 numeroNotificaciones++;
                 var listItem = $("<div>").addClass("notification-list notification-list--unread").appendTo(notificationList);
                 var listItemContent = $("<div>").addClass("notification-list_content").appendTo(listItem);
+                var listFeatureImage = $("<div>").addClass("notification-list_feature-img").appendTo(listItem);
                 var listItemImage = $("<div>").addClass("notification-list_img").appendTo(listItemContent);
                 var listItemDetail = $("<div>").addClass("notification-list_detail").appendTo(listItemContent);
 
                 var libro = await obtenerImagenLibro(notification.idLibro);
-                var image = $("<img>").attr("src", libro.Foto).attr("alt", "Avatar").appendTo(listItemImage);
+                var image = $("<img>").attr("src", libro.Foto).attr("alt", "Feature image").appendTo(listItemImage);
 
                 var biblioteca = await getBiblioteca(notification.idBiblioteca);
+                var imageBiblio = $("<img>").attr("src", biblioteca.Foto).attr("alt", "Avatar").appendTo(listFeatureImage);
                 $("<p>").text(biblioteca.Nombre).addClass("titulo").appendTo(listItemDetail);
 
                 $("<p>").text('El libro "' + libro.Titulo + '" ya esta disponible puede ir a recogerlo hoy mismo.').addClass("descripcionNotificacion").appendTo(listItemDetail);
@@ -30,10 +32,10 @@ function ListarNotificaciones(idLector) {
 
             });
             if (numeroNotificaciones === 0) {
-                var listItem = $("<li>").addClass("dropdown-item").appendTo(notificationList);
-                var mediaDiv = $("<div>").addClass("media").appendTo(listItem);
-                var mediaBody = $("<div>").addClass("media-body").appendTo(mediaDiv);
-                $("<p>").text("No hay notificaciones pendientes").addClass("descripcionNotificacion").appendTo(mediaBody);
+                var listItem = $("<div>").addClass("notification-list").appendTo(notificationList);
+                var listItemContent = $("<div>").addClass("notification-list_content").appendTo(listItem);
+                var listItemDetail = $("<div>").addClass("notification-list_detail").appendTo(listItemContent);
+                $("<p>").text("No hay notificaciones pendientes").addClass("descripcionNotificacion").appendTo(listItemDetail);
             }
             actualizarNumeroNotificaciones(numeroNotificaciones);
         },

@@ -27,6 +27,10 @@ namespace BiblioConnect.Controllers
         {
             return View();
         }
+        public ActionResult Perfil()
+        {
+            return View();
+        }
         public ActionResult Notificaciones()
         {
             return View();

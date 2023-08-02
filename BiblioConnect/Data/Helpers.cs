@@ -40,6 +40,12 @@ namespace BiblioConnect.Data
             var downloadURL = await task;
             return downloadURL;
         }
+        //public async Task<string> GetURLImage(HttpPostedFileBase imagenArchivo)
+        //{
+        //    Stream image = imagenArchivo.InputStream;
+        //    string fileName = Path.GetFileName(imagenArchivo.FileName);
+        //    string urlImagen = await new Helpers().SetImageToFirebase(image, fileName, "Fotos_Libro");
+        //}
 
     }
 }

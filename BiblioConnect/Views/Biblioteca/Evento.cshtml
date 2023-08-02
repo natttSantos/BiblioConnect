@@ -168,7 +168,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <img id="imglibro" class="border border-dark img-thumbnail" />
+                                            <img id="imgAutor" class="border border-dark img-thumbnail" />
                                         </div>
                                     </div>
                                 </div>
@@ -211,8 +211,6 @@
             reader.onload = function (e) {
                 $('#imgAutor')
                     .attr('src', e.target.result)
-                    .width(190)
-                    .height(192);
             };
 
             reader.readAsDataURL(input.files[0]);
@@ -285,7 +283,6 @@
 
     $(document).on('click', '.btn-editar', function (event) {
         var json = $(this).data("informacion")
-        console.log(json)
         idEventoSelected = json.Id; //SET VARIABEL GLOBAL DEL EVENTO
         abrirModal(json)
         document.querySelector(".btn-guardar").dataset.action = "editar";
@@ -325,7 +322,6 @@
 
     function obtenerDatosFormulario() {
         var IdBiblioteca = @(((Usuario)Session["Usuario"]).Id);
-        console.log(idEventoSelected )
         var objeto = {
             Id: idEventoSelected,
             idBiblioteca: IdBiblioteca,
@@ -338,6 +334,10 @@
             Tipo: $("#tipoEvento option:selected").text(),
         }
         var ImagenSeleccionada = ($("#filelibro"))[0].files[0];
+        if (typeof ImagenSeleccionada === 'undefined') {
+            objeto.Foto = $("#imgAutor").attr("src");
+        }
+
         var request = new FormData();
         request.append("imagenArchivo", ImagenSeleccionada);
         request.append("objeto", JSON.stringify(objeto));
@@ -348,7 +348,7 @@
         vaciarFormulario();
         if (json != null) { //EDITAR DATOS
             $("#registroModalLabel").text("Editar evento"); //TÍTULO MODAL
-            $("#imglibro").attr({ "src": "data:image/" + json.extension + ";base64," + json.base64 });
+            $("#imgAutor").attr({ "src": json.Foto });
             $("#nombreAutor").val(json.NombreAutor);
             $("#fechaRealizacion").val(getDateFormatCalendar(json.FechaRealizacion));
             $("#horaInicio").val(json.HoraInicio);
@@ -387,13 +387,11 @@
     }
 
     function Guardar() {
-        console.log("guardar")
         var guardarUrl = '@Url.Action("GuardarEvento", "Biblioteca")';
         AccionEvento(guardarUrl);
     }
 
     function Modificar() {
-        console.log("modificar")
         var modificarUrl = '@Url.Action("ModificarEvento", "Biblioteca")';
         AccionEvento(modificarUrl);
     }

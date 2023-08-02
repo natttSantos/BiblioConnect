@@ -206,14 +206,17 @@ namespace BiblioConnect.Controllers
         [HttpPost]
         public async Task<JsonResult> ModificarLibro(string objeto, HttpPostedFileBase imagenArchivo)
         {
-            Stream image = imagenArchivo.InputStream;
-            string fileName = Path.GetFileName(imagenArchivo.FileName);
-            string urlImagen = await new Helpers().SetImageToFirebase(image, fileName, "Fotos_Libro");
-
             Libro oLibro = new Libro();
             oLibro = JsonConvert.DeserializeObject<Libro>(objeto);
-            oLibro.Foto = urlImagen;
 
+            //IMAGEN FIREBASE
+            if (imagenArchivo != null)
+            {
+                Stream image = imagenArchivo.InputStream;
+                string fileName = Path.GetFileName(imagenArchivo.FileName);
+                string urlImagen = await new Helpers().SetImageToFirebase(image, fileName, "Fotos_Libro");
+                oLibro.Foto = urlImagen;
+            }
             bool respuesta = false;
             respuesta = LibroDAL.Instancia.Modificar(oLibro);
             return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
@@ -221,14 +224,16 @@ namespace BiblioConnect.Controllers
         [HttpPost]
         public async Task<JsonResult> ModificarEvento(string objeto, HttpPostedFileBase imagenArchivo)
         {
-            Stream image = imagenArchivo.InputStream;
-            string fileName = Path.GetFileName(imagenArchivo.FileName);
-            string urlImagen = await new Helpers().SetImageToFirebase(image, fileName, "Fotos_Eventos");
-
             Evento oEvento = new Evento();
             oEvento = JsonConvert.DeserializeObject<Evento>(objeto);
-            oEvento.Foto = urlImagen;
 
+            if (imagenArchivo != null)
+            {
+                Stream image = imagenArchivo.InputStream;
+                string fileName = Path.GetFileName(imagenArchivo.FileName);
+                string urlImagen = await new Helpers().SetImageToFirebase(image, fileName, "Fotos_Eventos");
+                oEvento.Foto = urlImagen;
+            }
             bool respuesta = false;
             respuesta = EventoDAL.Instancia.Modificar(oEvento);
             return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);

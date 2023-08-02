@@ -30,12 +30,14 @@
     $(document).ready(function () {
         var idLector =  @(((Usuario)Session["Usuario"]).Id);
         var reservasContainer = $("#reserva-container");
+        var numeroPrestamos = 0; 
         $.ajax({
             url: "/Lector/ListarPrestamosLector",
             type: "GET",
             data: { id: idLector },
             success: function (data) {
                 $.each(data.data, function (index, reserva) {
+                    numeroPrestamos++; 
                     var reservaItem = $("<div>").addClass("reserva-item").appendTo(reservasContainer);
                     var reservaInfo = $("<div>").addClass("reserva-info").appendTo(reservaItem);
                     var reservaImage = $("<div>").addClass("reserva-image").appendTo(reservaItem);
@@ -62,6 +64,10 @@
                         $("<p>").text("*El libro ya está disponible para ser recogido en la biblioteca.").addClass("mensaje").appendTo(reservaInfo);
                     }
                 });
+
+                if (numeroPrestamos == 0) {
+                    $("<p>").text("Todavía no ha realizado ningún préstamo de libro. ").appendTo(reservasContainer);
+                }
             },
             error: function (error) {
                 console.log("Error al obtener los datos del libro:", error);

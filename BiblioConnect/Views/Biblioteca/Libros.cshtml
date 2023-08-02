@@ -224,8 +224,6 @@
                 reader.onload = function (e) {
                     $('#imglibro')
                         .attr('src', e.target.result)
-                        .width(190)
-                        .height(192);
                 };
 
                 reader.readAsDataURL(input.files[0]);
@@ -364,7 +362,7 @@
             if (json != null) { //EDITAR DATOS
                 $("#registroModalLabel").text("Editar libro"); //TÍTULO MODAL
                 $("#txtid").val(json.Id);
-                $("#imglibro").attr({ "src": "data:image/" + json.extension + ";base64," + json.base64 });
+                $("#imglibro").attr({ "src": json.Foto });
                 $("#txttitulo").val(json.Titulo);
                 $("#txtISBN").val(json.ISBN);
                 $("#txtautor").val(json.Autor);
@@ -420,8 +418,11 @@
                 idBiblioteca: IdBiblioteca,
                 Estado: parseInt($("#cboEstado").val()) == 1 ? true : false,
             }
-
             var ImagenSeleccionada = ($("#filelibro"))[0].files[0];
+            if (typeof ImagenSeleccionada === 'undefined') {
+                objeto.Foto = $("#imglibro").attr("src");
+            }
+
             var request = new FormData();
             request.append("imagenArchivo", ImagenSeleccionada);
             request.append("objeto", JSON.stringify(objeto));
@@ -451,53 +452,6 @@
                 },
             });
         }
-        function Guardar() {
-            console.log("guardar")
-            var request = obtenerDatosFormulario();
-
-            jQuery.ajax({
-                url: '@Url.Action("GuardarLibro", "Biblioteca")',
-                type: "POST",
-                data: request,
-                processData: false,
-                contentType : false,
-                success: function (resultado) {
-                    if (resultado) {
-                        tabladata.ajax.reload();
-                        $('#registroLibroModal').modal('hide');
-                    } else {
-                        alert("No se pudo guardar los cambios")
-                    }
-                },
-                error: function (error) {
-                    console.log(error)
-                },
-            });
-        }
-        function Modificar() {
-           console.log("modificar")
-            var request = obtenerDatosFormulario();
-
-            jQuery.ajax({
-                url: '@Url.Action("ModificarLibro", "Biblioteca")',
-                type: "POST",
-                data: request,
-                processData: false,
-                contentType : false,
-                success: function (resultado) {
-                    if (resultado) {
-                        tabladata.ajax.reload();
-                        $('#registroLibroModal').modal('hide');
-                    } else {
-                        alert("No se pudo modificar el libro")
-                    }
-                },
-                error: function (error) {
-                    console.log(error)
-                },
-            });
-        }
-
     //REFACTORIZACIÓN
     function AccionLibro(urlAction) {
         var request = obtenerDatosFormulario();

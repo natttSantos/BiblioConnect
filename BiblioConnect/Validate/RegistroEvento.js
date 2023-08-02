@@ -61,11 +61,12 @@ function validarSelect(field) {
         return true;
     }
 }
+
 function validarImagen(field) {
     const imagenField = document.getElementById(field);
-    const imagenInput = imagenField.querySelector(".form-control");
+    const imgSrc = $("#imgAutor").attr("src");
 
-    if (imagenInput.value.trim() === "") {
+    if (imgSrc.trim() === "") {
         imagenField.classList.add("invalid");
         return false;
     } else {

@@ -40,11 +40,21 @@
     height: 100px;
     min-width: 100%;
 }
+
+/*IMAGENES*/
 #imglector {
     max-width: 130px;
     max-height: 130px;
     width: auto;
     height: auto;
+}
+#imglibro {
+    width: 100px;
+    height: 150px;
+}
+#imgAutor {
+    width: 120px;
+    height: 122px;
 }
 
 .modal-header {

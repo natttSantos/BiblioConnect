@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const estadoValido = validarEstado("estado-field");
             const ciudadValido = validarCiudad("ciudad-field");
             const fechaValido = validarFecha("fecha-field");
-            const imagenValido = validarImagen("imagen-field");
+            const imagenValido = validarImagen("imagen-field", "#imglector");
 
             if (nombreValido && emailValido && apellidosValido && calleValido && codPostalValido && passValido
                 && dniValido && tlfValido && estadoValido && ciudadValido && fechaValido && imagenValido) {
@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const tlfValido = validarTlf("tlfBiblio-field");
         const estadoValido = validarEstado("estadoBiblio-field");
         const ciudadValido = validarCiudad("ciudadBiblio-field");
-        const imagenValido = validarImagen("imagenBiblio-field");
+        const imagenValido = validarImagen("imagenBiblio-field", "#imgBiblio");
 
         if (nombreValido && emailValido && calleValido && codPostalValido && passValido
             && tlfValido && estadoValido && ciudadValido && imagenValido && descripcionValido) {
@@ -218,11 +218,11 @@ function validarPassword(fieldpass, fieldconfirm) {
         return true;
     }
 }
-function validarImagen(field) {
+function validarImagen(field, imgId) {
     const imagenField = document.getElementById(field);
-    const imagenInput = imagenField.querySelector(".form-control");
+    const imgSrc = $(imgId).attr("src");
 
-    if (imagenInput.value.trim() === "") {
+    if (imgSrc.trim() === "") {
         imagenField.classList.add("invalid");
         return false;
     } else {

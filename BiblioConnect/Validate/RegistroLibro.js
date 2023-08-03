@@ -65,7 +65,6 @@ function validarSelect(field) {
 function validarImagen(field) {
     const imagenField = document.getElementById(field);
     const imgSrc = $("#imglibro").attr("src");
-    console.log("entra")
 
     if (imgSrc.trim() === "") {
         imagenField.classList.add("invalid");

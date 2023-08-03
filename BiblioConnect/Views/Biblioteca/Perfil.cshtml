@@ -217,7 +217,7 @@
                                         <div class="col-md-6">
                                             <div class="imagen" id="imagenBiblio-field">
                                                 <label for="filelibro" class="form-label">Seleccione una imagen:</label>
-                                                <input class="form-control" type="file" id="filelibroBiblio" onchange="readURL(this, true)">
+                                                <input class="form-control" type="file" id="fileBiblio" onchange="readURL(this, true)">
                                                 <span class="error email error">
                                                     <i class='bx bx-error-circle error-icon'></i>
                                                     <p class="error-text">No ha seleccionado ninguna imagen</p>
@@ -226,7 +226,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <img id="imglectorBiblio" class="border border-dark img-thumbnail" />
+                                                <img id="imgBiblio" class="border border-dark img-thumbnail" />
                                             </div>
                                         </div>
                                     </div>
@@ -258,6 +258,18 @@
     <script src="~/Scripts/API_paises.js"></script>
     <script src="~/Validate/RegistroUsuario.js"></script>
     <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#imgBiblio')
+                        .attr('src', e.target.result)
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
         $(document).ready(function () {
             cargarDatosBiblio();
         });
@@ -292,8 +304,7 @@
                 }
             });
         }
-     function openEditarPerfilModal(id) {
-        insertarCiudadesSelect();
+     async function  openEditarPerfilModal(id) {
         var Id = @ViewBag.IdBiblioteca;
         $.ajax({
             url: "/Biblioteca/ObtenerBiblio",
@@ -301,16 +312,20 @@
             data: { id: Id },
             success: function (data) {
                 var biblio = data.data;
+                console.log(biblio)
+                $("#imgBiblio").attr({ "src": biblio.Foto });
                 $("#NombreBiblio").val(biblio.Nombre);
                 $("#EmailBiblio").val(biblio.Email);
                 $("#TelefonoBiblio").val(biblio.Telefono);
                 $("#EstadoBiblio").val(biblio.Estado);
-                $("#CiudadBiblio").val(biblio.Ciudad);
                 $("#CalleBiblio").val(biblio.Calle);
                 $("#CodPostalBiblio").val(biblio.CodPostal);
                 $("#ContraseñaBiblio").val(biblio.Contraseña);
                 $("#confirmarContraseñaBiblio").val(biblio.Contraseña);
                 $("#DescripcionBiblio").val(biblio.Descripcion);
+
+                setCiudad(biblio.Ciudad); //Guardar valor select de la ciudad
+                insertarCiudadesSelect("#EstadoBiblio", "#CiudadBiblio");
 
                 // Open the modal
                 $("#registroBiblioModal").modal("show");
@@ -322,8 +337,6 @@
     }
 
         function GuardarBiblioteca() {
-            var ImagenSeleccionada = ($("#filelibroBiblio"))[0].files[0];
-            console.log(@ViewBag.IdBiblioteca)
             var objeto = {
                 Nombre: $("#NombreBiblio").val(),
                 Email: $("#EmailBiblio").val(),
@@ -337,7 +350,10 @@
                 Pais: $("#PaisBiblio").find("option:selected").text(),
                 Id: @ViewBag.IdBiblioteca,
             }
-            console.log(objeto)
+            var ImagenSeleccionada = ($("#fileBiblio"))[0].files[0];
+            if (typeof ImagenSeleccionada === 'undefined') {
+                objeto.Foto = $("#imgBiblio").attr("src");
+            }
             var request = new FormData();
             request.append("imagenArchivo", ImagenSeleccionada);
             request.append("objeto", JSON.stringify(objeto));
@@ -350,7 +366,7 @@
                 contentType : false,
                 success: function (data) {
                     if (data.resultado) {
-                        alertSuccess('¡Enhorabuena!', 'Acabas de actualizar una biblioteca').then(() => {
+                        alertSuccess('¡Enhorabuena!', 'Acabas de actualizar tu biblioteca').then(() => {
                             $('#registroBiblioModal').modal('hide');
                             location.reload();
                         })

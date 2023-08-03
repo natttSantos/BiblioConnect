@@ -190,19 +190,37 @@ namespace BiblioConnect.Controllers
         [HttpPost]
         public async Task<JsonResult> ModificarBiblioteca(string objeto, HttpPostedFileBase imagenArchivo)
         {
-            //Get url de la imagen subida a Firebase
-            Stream image = imagenArchivo.InputStream;
-            string fileName = Path.GetFileName(imagenArchivo.FileName);
-            string urlImagen = await new Helpers().SetImageToFirebase(image, fileName, "Fotos_Bibliotecas");
-
             Biblioteca oBiblioteca = new Biblioteca();
             oBiblioteca = JsonConvert.DeserializeObject<Biblioteca>(objeto);
-            oBiblioteca.Foto = urlImagen;
-
+            if (imagenArchivo != null)
+            {
+                Stream image = imagenArchivo.InputStream;
+                string fileName = Path.GetFileName(imagenArchivo.FileName);
+                string urlImagen = await new Helpers().SetImageToFirebase(image, fileName, "Fotos_Bibliotecas");
+                oBiblioteca.Foto = urlImagen;
+            }
             bool respuesta; 
             respuesta = BibliotecaDAL.Instancia.Modificar(oBiblioteca); 
             return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
         }
+        [HttpPost]
+        public async Task<JsonResult> ModificarLector(string objeto, HttpPostedFileBase imagenArchivo)
+        {
+            Lector oLector = new Lector();
+            oLector = JsonConvert.DeserializeObject<Lector>(objeto);
+
+            if (imagenArchivo != null)
+            {
+                Stream image = imagenArchivo.InputStream;
+                string fileName = Path.GetFileName(imagenArchivo.FileName);
+                string urlImagen = await new Helpers().SetImageToFirebase(image, fileName, "Fotos_Lectores");
+                oLector.Foto = urlImagen;
+            }
+            bool respuesta = false;
+            respuesta = LectorDAL.Instancia.Modificar(oLector);
+            return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
         public async Task<JsonResult> ModificarLibro(string objeto, HttpPostedFileBase imagenArchivo)
         {

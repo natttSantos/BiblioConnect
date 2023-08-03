@@ -228,7 +228,7 @@
                                     <div class="col-md-6">
                                         <div class="imagen" id="imagen-field">
                                             <label for="filelibro" class="form-label">Seleccione una imagen:</label>
-                                            <input class="form-control" type="file" id="filelibro" onchange="readURL(this, false)">
+                                            <input class="form-control" type="file" id="filelector" onchange="readURL(this, false)">
                                             <span class="error email error">
                                                 <i class='bx bx-error-circle error-icon'></i>
                                                 <p class="error-text">No ha seleccionado ninguna imagen</p>
@@ -269,6 +269,16 @@
     <script src="~/Scripts/API_paises.js"></script>
     <script src="~/Validate/RegistroUsuario.js"></script>
     <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#imglector')
+                        .attr('src', e.target.result)
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
         $(document).ready(function () {
             cargarDatosLector();
         });
@@ -313,12 +323,12 @@
                 data: { id: Id },
                 success: function (data) {
                     var lector = data.data;
+                    $("#imglector").attr({ "src": lector.Foto });
                     $("#Nombre").val(lector.Nombre);
                     $("#Apellidos").val(lector.Apellidos);
                     $("#Email").val(lector.Email);
                     $("#Telefono").val(lector.Telefono);
                     $("#Estado").val(lector.Estado);
-                    $("#Ciudad").val(lector.Ciudad);
                     $("#Calle").val(lector.Calle);
                     $("#CodPostal").val(lector.CodPostal);
                     $("#FechaNacimiento").val(getDateFormatCalendar(lector.FechaNacimiento));
@@ -326,6 +336,8 @@
                     $("#confirmarContraseña").val(lector.Contraseña);
                     $("#Dni").val(lector.Dni);
 
+                    setCiudad(lector.Ciudad); //Guardar valor select de la ciudad
+                    insertarCiudadesSelect("#Estado", "#Ciudad");
                     // Open the modal
                     $("#registroModal").modal("show");
                 },
@@ -337,7 +349,6 @@
 
         function GuardarLector() {
             var idLector =  @(((Usuario)Session["Usuario"]).Id);
-            var ImagenSeleccionada = ($("#filelibro"))[0].files[0];
             var objeto = {
                 Nombre: $("#Nombre").val(),
                 Apellidos: $("#Apellidos").val(),
@@ -352,13 +363,17 @@
                 Ciudad: $("#Ciudad").find("option:selected").text(),
                 Id: idLector,
             }
-            console.log(objeto)
+            var ImagenSeleccionada = ($("#filelector"))[0].files[0];
+            if (typeof ImagenSeleccionada === 'undefined') {
+                objeto.Foto = $("#imglector").attr("src");
+            }
+
             var request = new FormData();
             request.append("imagenArchivo", ImagenSeleccionada);
             request.append("objeto", JSON.stringify(objeto));
 
             jQuery.ajax({
-                url: '@Url.Action("ModificarLector", "Acceso")',
+                url: '@Url.Action("ModificarLector", "Biblioteca")',
                 type: "POST",
                 data: request,
                 processData: false,

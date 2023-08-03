@@ -96,7 +96,8 @@
 
 #FotoLibro {
     width: 220px;
-    height: 320px;
+    height: 335px;
+    margin-left: -10px; 
 }
 
 #FotoAutor {

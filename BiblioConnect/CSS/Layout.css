@@ -67,10 +67,24 @@ nav ul {
                 transition: .2s;
             }
 
+
+.logout {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+    .logout .title {
+        display: none;
+    }
+.sidebar:hover .logout .title {
+    display: inline;
+}
+
+
 /*ICONOS*/
 .iconoUser {
     color: #ffffff;
-    font-size: 27px;
+    font-size: 23px;
 }
 .iconoNotificacion {
     color: #ffffff;
@@ -102,6 +116,12 @@ nav ul {
     margin-left: 3px;
     width: 25px;
     border-radius: 50%;
+}
+
+.logout{
+    position: absolute; 
+    left: 0; 
+    bottom: 0; 
 }
 
 

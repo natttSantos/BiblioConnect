@@ -122,6 +122,12 @@ namespace BiblioConnect.Controllers
                 }
             }
         }
+        public ActionResult Logout()
+        {
+            Session.Clear(); // Elimina todas las variables almacenadas en la sesión.
+            Session.Abandon(); // Finaliza la sesión actual.
+            return RedirectToAction("Login", "Acceso");
+        }
         [HttpPost]
         public static string ConvertirSha256(string texto)
         {

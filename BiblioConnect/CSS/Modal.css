@@ -18,6 +18,10 @@
     max-width: 600px;
     width: 90%;
 }
+#modalReseña .modal-dialog {
+    max-width: 600px;
+    width: 90%;
+}
 #modal .modal-dialog { /*modal del calendario*/
     max-width: 500px;
     width: 100%;
@@ -34,6 +38,10 @@
 #descripcionEvento {
     height: 130px;
     min-width: 100%;
+}
+#descripcionReseña {
+    height: 140px;
+    min-width: 80%;
 }
 
 .nombreAutor{

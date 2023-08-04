@@ -32,12 +32,12 @@
                                 <a class="sidebar-link text-decoration-none" href="#">
                                     <div class="d-flex align-items-center flex-nowrap">
                                         <div class="logo-sm">
-                                            <div class="logo d-flex align-items-center justify-content-center">
-                                                <img src="~/images/LogoAppWeb.png">
-                                            </div>
+                                                <div class="logo d-flex align-items-center justify-content-center">
+                                                        <img src="~/images/iconoBiblio.png">
+                                                </div>
                                         </div>
                                         <div class="logo-text d-flex align-items-center justify-content-center">
-                                            <img src="~/images/LogoAppWeb.png">
+                                            <img src="~/images/logoIconoBiblio.png">
                                         </div>
                                     </div>
                                 </a>
@@ -101,7 +101,7 @@
                                 </a>
                             </li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link" id="btn-logout" style="margin-top: 290px;">
+                                <a class="nav-link" id="btn-logout" style="margin-top: 310px;">
                                     <span class="icon-holder">
                                         <i class="fas fa-sign-out-alt"></i>
                                     </span>
@@ -122,10 +122,12 @@
                     <label for="check" class="checkbtn">
                         <i class="fas fa-bars"></i>
                     </label>
-                    <a href="#" class="enlaceLogo">
-                        <img src="~/images/LogoAppWebBlanco.png" alt="" class="logo" />
-                    </a>
+                    @*<div class="enlaceLogo">
+            <img src="~/images/logoBCprueba.png" alt="" class="logo" />
+        </div>*@
+
                     <ul>
+                       <a id="navbar-brand">BiblioConnect</a>
                         <li>
                             <a class="active" href="/Lector/Inicio">Inicio</a>
                         </li>
@@ -148,7 +150,7 @@
                             <a class="nav-link" href="/Lector/Perfil">
                                 <i class="fas fa-user-circle iconoUser"></i>
                                 @*@{ String nombre = oUsuario.Nombre; }
-                                    <span class="ms-2" style="color:#ffffff">@nombre</span>*@
+                    <span class="ms-2" style="color:#ffffff">@nombre</span>*@
                             </a>
                         </li>
                         <li class="nav-item">

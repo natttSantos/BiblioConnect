@@ -53,14 +53,14 @@ input {
 }
 
 .btn-login {
-    margin: 8px 0 2px;
+    margin: 8px 0 2px; 
     display: block;
     width: 100%;
     padding: 10px;
     font-size: 16px;
     text-align: center;
     text-decoration: none;
-    background-color: #7F27A0;
+    background-color: #5b3e7b;
     color: #fff;
     border: none;
     border-radius: 20px;
@@ -80,6 +80,11 @@ input {
     color: #706f70; 
 }
 
+.logoLogin {
+    height: 200px; 
+    width: 220px; 
+    margin-bottom: -10px; 
+}
 
 
 /* Estilos para dispositivos móviles */

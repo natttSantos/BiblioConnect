@@ -21,7 +21,7 @@
     <div class="containerLogin" id="LoginFormulario">
         <div class="image"></div>
         <div class="login-form">
-            <img src="~/images/LogoAppWeb.png" />
+            <img src="~/images/logo.png" class="logoLogin"/>
             <form action="@Url.Action("Login", "Acceso")" method="post" class="formLogin">
                 <div class="row">
                     @if (ViewData["Mensaje"] != null)
@@ -65,21 +65,22 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col">
+                    <div class="row d-flex justify-content-center align-items-center">
+                        <div class="col-md-10">
                             <input type="submit" class="btn-login" value="Iniciar sesión" />
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col">
+                    <div class="row  d-flex justify-content-center align-items-center">
+                        <div class="col-md-10">
                             <a href="#" class="btn-login" data-bs-toggle="modal" data-bs-target="#registroModal">Regístrame</a>
                         </div>
                     </div>
                 </div>
             </form>
-            <div class="card-footer">
+            <div class="card-footer mt-5">
+                <p style="font-weight: 500">¿Tienes una biblioteca y quieres darla de alta? ¡Es tu momento!</p>
                 <div class="d-flex justify-content-center links">
-                    ¿Tienes una Biblioteca y quieres darla de alta? <a href="#" data-bs-toggle="modal" data-bs-target="#registroBiblioModal">Dar de alta Biblioteca</a>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#registroBiblioModal">Dar de alta Biblioteca</a>
                 </div>
             </div>
         </div>

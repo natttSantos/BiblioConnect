@@ -441,14 +441,12 @@
     <Content Include="images\books.jpg" />
     <Content Include="images\filtros.png" />
     <Content Include="images\fondo.png" />
-    <Content Include="images\funcionalidadApp.png" />
     <Content Include="images\geolocalizacion.png" />
-    <Content Include="images\image1.jpg" />
+    <Content Include="images\iconoBiblio.png" />
     <Content Include="images\imagenfondo.jpg" />
     <Content Include="images\library.jpg" />
     <Content Include="images\logo.png" />
-    <Content Include="images\LogoAppWeb.png" />
-    <Content Include="images\LogoAppWebBlanco.png" />
+    <Content Include="images\logoIconoBiblio.png" />
     <Content Include="images\presentacionLibro.jpg" />
     <Content Include="images\reseña.jpg" />
     <Content Include="Scripts\MostrarNotificaciones.js" />

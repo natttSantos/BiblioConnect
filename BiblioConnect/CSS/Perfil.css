@@ -19,9 +19,11 @@
     font-family: 'Merriweather', sans-serif;
 }
 
-.title {
+.titulo{
     text-align: center;
     margin-bottom: 20px;
+    font-size: 20px; 
+    font-weight: 400; 
     font-family: 'Merriweather', serif;
 }
 

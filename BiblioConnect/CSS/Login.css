@@ -15,7 +15,7 @@
     flex: 50%;
     background-size: cover;
     background-position: center;
-    background-image: url('../images/imagenfondo.jpg');
+    background-image: url('../images/imagenpersona2.jpg');
 }
 
 .login-form {
@@ -70,6 +70,26 @@ input {
     .btn-login:hover {
         background-color: #A389AD;
     }
+
+.btn-altaBiblio {
+    margin: 8px 0 2px;
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    background-color: #fff; /* Fondo blanco */
+    color: #5b3e7b; /* Letra negra */
+    border: 2px solid #5b3e7b; /* Borde de color #5b3e7b */
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-altaBiblio:hover {
+    background-color: #cebfd3;
+    color: #fff; /* Cambia el color del texto en el hover */
+}
 
 /*ICONOS*/
 #icon {

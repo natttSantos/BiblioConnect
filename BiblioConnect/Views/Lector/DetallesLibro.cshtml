@@ -225,28 +225,26 @@
             });
         });
 
-    function EnviarReseña() {
-        var oReseña = {
-            Descripcion: $("#descripcionReseña").val(),
-            Puntuacion: $("input[name='puntuacion']:checked").val(),
-            idLibro: @Model,
-            idLector: @(((Usuario)Session["Usuario"]).Id)
-        }
-        $.ajax({
-            url: "/Lector/RegistrarReseña",
-            type: "POST",
-            data: oReseña,
-            success: function (data) {
-                alertSuccess('¡Enhorabuena!', 'Acabas de escribir una reseña.').then(() => {
-                    window.location.reload();
-                })
-            },
-            error: function (error) {
-                console.log("Error al obtener los datos del prestamo:", error);
-                reject(error);
-            }
-        });
+function EnviarReseña() {
+    var oReseña = {
+        Descripcion: $("#descripcionReseña").val(),
+        Puntuacion: $("input[name='puntuacion']:checked").val(),
+        idLibro: @Model,
+        idLector: @(((Usuario)Session["Usuario"]).Id),
     }
+    $.ajax({
+        url: "/Lector/RegistrarReseña",
+        type: "POST",
+        data: oReseña,
+        success: function (data) {
+            alertSuccess('¡Enhorabuena!', 'Acabas de escribir una reseña.').then(() => { window.location.reload();})
+        },
+        error: function (error) {
+            console.log("Error al obtener los datos del prestamo:", error);
+            reject(error);
+        }
+    });
+}
 function getReseñas() {
     var idLibro = @Model;
     var numReseñas = 0;
@@ -256,7 +254,7 @@ function getReseñas() {
         type: "GET",
         data: { id: idLibro },
         success: function (data) {
-            $("#reseñas-list").empty(); // Eliminar contenido previo
+            $("#reseñas-list").empty(); 
             $.each(data.data, function (index, reseña) {
                 mostrarInfoReseña(reseña);
                 numReseñas++;

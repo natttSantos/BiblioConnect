@@ -96,7 +96,6 @@ namespace BiblioConnect.Data
 
                 SqlCommand cmd = new SqlCommand(query, oConexion);
                 cmd.CommandType = CommandType.Text;
-
                 try
                 {
                     oConexion.Open();

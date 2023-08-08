@@ -353,7 +353,6 @@
     <Content Include="CSS\Inicio.css" />
     <Content Include="CSS\Dashboard.css" />
     <Content Include="CSS\DataTable.css" />
-    <Content Include="CSS\ModalBiblioteca.css" />
     <Content Include="CSS\Perfil.css" />
     <Content Include="CSS\Filtrado.css" />
     <Content Include="CSS\Modal.css" />
@@ -444,6 +443,9 @@
     <Content Include="images\geolocalizacion.png" />
     <Content Include="images\iconoBiblio.png" />
     <Content Include="images\imagenfondo.jpg" />
+    <Content Include="images\imagenPersona.jpg" />
+    <Content Include="images\imagenPersona1.jpg" />
+    <Content Include="images\imagenpersona2.jpg" />
     <Content Include="images\library.jpg" />
     <Content Include="images\logo.png" />
     <Content Include="images\logoIconoBiblio.png" />

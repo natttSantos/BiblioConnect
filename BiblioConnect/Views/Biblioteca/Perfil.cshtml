@@ -19,7 +19,7 @@
     <div class="containerPerfil">
         <div class="row">
             <div class="row">
-                <h4 class="heading" id="txtnombre"></h4>
+                <h4 class="headingBiblio" id="txtnombre"></h4>
                 <div class="col-md-4">
                     <img id="txtimagen" src="#" alt="Imagen">
                 </div>
@@ -69,15 +69,21 @@
                     <h3 class="titulo">Ubicación</h3>
                     <div id="map"></div>
                 </div>
-                <div class="row rowPerfil">
-                    <div class="col">
-                        <div class="col">
-                            <a href="#" class="btn-editar" onclick="openEditarPerfilModal(@ViewBag.IdBiblioteca)">
-                                <i class="fas fa-edit"></i> Editar perfil
-                            </a>
+                @{ Usuario oUsuario = Session["Usuario"] as Usuario;
+                    String tipoUsuario = oUsuario.TipoUsuario;
+                    int Id = oUsuario.Id;
+                    if (tipoUsuario.Equals("biblioteca"))
+                    {
+                        <div class="row rowPerfil">
+                            <div class="col">
+                                <div class="col">
+                                    <a href="#" class="btn-editar" onclick="openEditarPerfilModal(@ViewBag.IdBiblioteca)">
+                                        <i class="fas fa-edit"></i> Editar perfil
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    } }
             </div>
         </div>
     </div>
@@ -233,7 +239,7 @@
                                     <div class="row d-flex justify-content-center align-items-center">
                                         <div class="col-md-4">
                                             <div class="form-floating button">
-                                                <input type="submit" class="btn-registrar" value="Guardar cambios" />
+                                                <input type="submit" class="btn-registrar" value="Guardar" />
                                             </div>
                                         </div>
                                     </div>

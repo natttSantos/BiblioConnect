@@ -67,7 +67,7 @@
             </div>
             <div class="modal-body">
                 <form action="#" name="formModal">
-                    <div class="container">
+                    <div class="containerModal">
                         <div id="registrar-lector">
                             <div class="row">
                                 <div class="row">
@@ -186,7 +186,7 @@
                                 <div class="row  d-flex justify-content-center align-items-center">
                                     <div class="col-md-4">
                                         <div class="form-floating button">
-                                            <input type="submit" class="btn-registrar" value="Registrar" />
+                                            <input type="submit" class="btn-registrar" value="Registrar" id="btn-modal"/>
                                         </div>
                                     </div>
                                 </div>
@@ -361,6 +361,7 @@
             vaciarFormulario();
             if (json != null) { //EDITAR DATOS
                 $("#registroModalLabel").text("Editar libro"); //TÍTULO MODAL
+                $("#btn-modal").val("Guardar"); //TÍTULO MODAL
                 $("#txtid").val(json.Id);
                 $("#imglibro").attr({ "src": json.Foto });
                 $("#txttitulo").val(json.Titulo);
@@ -373,6 +374,7 @@
                 $("#txtubicacion").val(json.Ubicacion);
                 $("#txtejemplares").val(json.numEjemplares);
             } else {
+                $("#btn-modal").val("Registrar"); //TÍTULO MODAL
                 $("#registroModalLabel").text("Registrar libro"); //TÍTULO MODAL
             }
             $('#registroLibroModal').modal('show');

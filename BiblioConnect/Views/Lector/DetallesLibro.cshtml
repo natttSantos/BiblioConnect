@@ -12,6 +12,7 @@
     @* CSS DE MAPAS *@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <link rel="stylesheet" type="text/css" href="~/CSS/Detalles.css" />
+    <link rel="stylesheet" type="text/css" href="~/CSS/Mapa.css" />
     <link rel="stylesheet" href="~/CSS/Modal.css">
 
 </head>
@@ -24,17 +25,18 @@
                     <img id="FotoLibro" src="#" alt="Imagen">
                 </div>
                 <div class="col-md-6 tituloDescripcion">
-                    <h3 id="Titulo" class="titulo-obra"></h3>
+                    <h3 id="Titulo" class="titulo-libro"></h3>
                     <h6 id="Autor" class="autor"></h6>
                     <p id="descripcionLibro"></p>
                     <a id="toggleDescripcion" href="#" class="purple-link">Mostrar más</a>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 align-right">
                     <div class="card">
                         <div class="card-body">
-                            <h6 id="Biblioteca"></h6>
                             <p class="card-text" id="txtCard"></p>
-                            <button class="btn-prestamo" id="btnTransaccion"></button>
+                            <div class="button-container">
+                                <button class="btn-prestamo btn-centered" id="btnTransaccion"></button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -70,6 +72,13 @@
                 </div>
             </div>
             <div class="row">
+                <div class="col-md-12">
+                    <h5 class="title">Ubicación biblioteca</h5>
+                    <h6 id="Biblioteca"></h6>
+                    <div id="map"></div>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-md-7 infoReseñas">
                     <h5 class="title">Reseñas de los lectores</h5>
                     <div id="infoReseñas">
@@ -98,7 +107,7 @@
     <div class="modal fade" id="modalReseña" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable custom-modal">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header naranjaHeader">
                     <h4 class="modal-title" id="registroModalLabel">Escribir reseña</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="cerrar"></button>
                 </div>
@@ -123,7 +132,7 @@
                     <div class="row  d-flex justify-content-center align-items-center">
                         <div class="col-md-4">
                             <div class="form-floating button">
-                                <input type="submit" class="btn-registrar" onclick="EnviarReseña()" value="Enviar" />
+                                <input type="submit" class="btn-registrarNaranja" onclick="EnviarReseña()" value="Enviar" />
                             </div>
                         </div>
                     </div>
@@ -146,6 +155,8 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 @* FECHAS *@
 <script src="~/Scripts/Fechas.js"></script>
+<script src="~/Scripts/API_mapa.js"></script>
+<script src="~/Scripts/MostrarNotificaciones.js"></script>
 
 <script>
     $(document).ready(function () {
@@ -178,7 +189,7 @@
 
                     getDescripcionLibro(Titulo)
                     getDescripcionAutor(libro.Autor);
-                    getBiblioteca(IdBiblioteca),
+                    mostrarMapaBiblioteca(libro);
                     tipoTransaccion(oReserva)
                     getCategoria(libro.idCategoria);
                     getReseñas();
@@ -298,7 +309,7 @@ function getReseñas() {
         const mediaRedondeada = Math.round(media * 10) / 10; // Redondear media
         const estrellas = generarEstrellas(mediaRedondeada);
 
-        $("#num-reseñas").text(numReseñas + " opiniones de lectores");
+        $("#num-reseñas").text("(" + numReseñas + " opiniones de lectores" + ")");
         $("#estrellas-media").html(estrellas);
         if (numReseñas > 0) {
             $("#media-reseñas").text(mediaRedondeada + "/5");
@@ -369,12 +380,18 @@ function getReseñas() {
             });
         }
 
-        function registroPendienteRecogida(oPrestamo) {
+    function registroPendienteRecogida(prestamoPendienteRecogida) {
             $.ajax({
                 url: '/Lector/RegistrarPendienteRecogida',
                 type: 'POST',
-                data: oPrestamo,
+                data: prestamoPendienteRecogida,
                 success: function (data) {
+                    oNotificacion = {
+                        idBiblioteca: prestamoPendienteRecogida.idBiblioteca,
+                        idLector: prestamoPendienteRecogida.idLector,
+                        idLibro: prestamoPendienteRecogida.idLibro
+                    }
+                    enviarNotificacion(oNotificacion);
                     alertSuccess('¡Enhorabuena!', 'Acabas de realizar un préstamo con éxito. Ya puedes ir a recogerlo a la biblioteca.').then(() => {
                         location.reload(); //Recarga la página actual cuando se pulsa OK
                     })
@@ -457,23 +474,38 @@ function getReseñas() {
                 }
             });
         }
-        function getBiblioteca(idBiblioteca) {
-            $.ajax({
+    async function getBiblioteca(idBiblioteca) {
+        try {
+            const data = await $.ajax({
                 url: "/Lector/ObtenerBiblio",
                 type: "GET",
                 data: { id: idBiblioteca },
-                success: function (data) {
-                    var biblioteca = data.data;
-                    $("#Biblioteca").text(biblioteca.Nombre);
-                    $("#btnBiblioteca").attr("data-idbiblioteca", idBiblioteca);
-                    $("#btnTransaccion").attr("data-idbiblioteca", idBiblioteca);
-                },
-                error: function (error) {
-                    console.log("Error al obtener los datos de la Biblioteca:", error);
-                }
             });
+            return data.data;
+        } catch (error) {
+            console.log("Error al obtener los datos de la Biblioteca:", error);
+            throw error;
         }
-
+    }
+    async function mostrarMapaBiblioteca(libro) {
+        try {
+            const biblio = await getBiblioteca(libro.idBiblioteca);
+            const coordinatesLibro = await getLatLong(biblio.Calle, biblio.Ciudad, biblio.Estado, biblio.Pais, biblio.CodPostal);
+            const lat = coordinatesLibro[0];
+            const lon = coordinatesLibro[1];
+            mostrarMapa(lat, lon);
+            // Crear el enlace con el icono de biblioteca
+            const bibliotecaContainer = $("#Biblioteca");
+            const bibliotecaIcon = $("<i>").addClass("fas fa-book icono-biblioteca");
+            const bibliotecaLink = $("<a>")
+                .attr("href", "/Biblioteca/Perfil?id=" + libro.idBiblioteca)
+                .text(biblio.Nombre)
+                .prepend(bibliotecaIcon);
+            bibliotecaContainer.empty().append(bibliotecaLink);
+        } catch (error) {
+            console.log("Error:", error);
+        }
+    }
     function getLector(idLector) {
         return new Promise((resolve, reject) => {
         $.ajax({

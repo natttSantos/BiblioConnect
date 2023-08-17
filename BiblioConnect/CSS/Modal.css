@@ -1,23 +1,44 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 
+body {
+    font-family: 'Open Sans', sans-serif;
+}
 
+.modal-content, .form-select, .form-control, .form-label {
+    font-size: 14px;
+}
+
+.form-label {
+    font-size: 13px;
+}
+
+.modal-title {
+    font-size: 18px;
+}
 /*MODAL*/
-#registroModal .modal-dialog {
-    max-width: 670px;
-    width: 90%;
+.modal-content {
+    padding: 0; /* Elimina el padding del contenido para que ocupe todo el ancho */
 }
-#registroBiblioModal .modal-dialog {
-    max-width: 688px;
-    width: 90%;
+
+.containerModal {
+    margin: 0; /* Elimina el margen del contenedor */
+    max-width: 100%; /* Permite que el contenedor ocupe todo el ancho disponible */
+    width: 100%;
 }
-#registroLibroModal .modal-dialog {
-    max-width: 688px;
-    width: 90%;
+
+.row {
+    margin-right: 0; /* Elimina el margen derecho de las filas */
+    margin-left: 0; /* Elimina el margen izquierdo de las filas */
 }
+#registroModal .modal-dialog, 
+#registroBiblioModal .modal-dialog,
+#registroLibroModal .modal-dialog,
 #registroEventoModal .modal-dialog {
-    max-width: 600px;
+    max-width: 648px;
     width: 90%;
 }
+
+
 #modalReseña .modal-dialog {
     max-width: 600px;
     width: 90%;
@@ -41,7 +62,7 @@
 }
 #descripcionReseña {
     height: 140px;
-    min-width: 80%;
+    min-width: 100%;
 }
 
 .nombreAutor{
@@ -66,13 +87,81 @@
     width: 260px;
     height: 190px;
 }
-
+.button {
+    margin: 25px 0 6px;
+}
 
 .modal-header {
-    background-color: #7F27A0;
+    background-color: #0a5483;
     color: #fff;
     border-bottom: none;
 }
+.moradoHeader {
+    background-color: #5b3e7b;
+    color: #fff;
+    border-bottom: none;
+}
+.naranjaHeader {
+    background-color: #ed9921;
+    color: #fff;
+    border-bottom: none;
+}
+.btn-registrar {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    background-color: #0a5483;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-registrar:hover {
+        background-color: #1d86ca;
+    }
+
+.btn-registrarMorado {
+    margin: 8px 0 2px;
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    background-color: #5b3e7b;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-registrarMorado:hover {
+        background-color: #A389AD;
+    }
+.btn-registrarNaranja {
+    display: block;
+    width: 150px; /* Cambia el ancho del botón según tus necesidades */
+    padding: 8px; /* Ajusta el padding según tus necesidades */
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    background-color: #ed9921;
+    color: #fff;
+    margin: 0 auto; /* Centra el botón horizontalmente */
+    border: none;
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-registrarNaranja:hover {
+        background-color: #fddd56;
+    }
+/*END BIBLIOTECA VS LECTOR*/
+
 
 .modal-body {
     background-color: #f8f9fa;
@@ -114,7 +203,7 @@
 
     .modal-content .btn-close:hover::after,
     .modal-content .btn-close:hover::before {
-        background-color: #7F27A0;
+        background-color: #cb2323;
     }
 
 
@@ -166,30 +255,6 @@
     font-family: 'Poppins', sans-serif;
 }
 
-
-/*BUTTON*/
-.button {
-    margin: 25px 0 6px;
-}
-
-.btn-registrar {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    text-align: center;
-    text-decoration: none;
-    background-color: #7F27A0;
-    color: #fff;
-    border: none;
-    border-radius: 20px;
-    transition: background-color 0.3s ease;
-}
-
-.btn-registrar:hover {
-    background-color: #A389AD;
-}
-
 /*SHOW AND HIDE PASSWORD*/
 .show-hide {
     position: absolute;
@@ -228,21 +293,18 @@
 /*ETIQUETAS CALENDARIO*/
 .tituloEvento {
     font-weight: 700;
-    font-size: 20px;
+    font-size: 18px;
     text-align: center;
-    font-family: 'Open Sans', serif;
 }
 
 #fecha {
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 400;
-    font-family: 'Merriweather', serif;
     text-align: center;
 }
 
 #hora {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 400;
-    font-family: 'Merriweather', serif;
     text-align: center;
 }

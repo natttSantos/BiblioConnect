@@ -64,8 +64,7 @@
             </div>
             <div class="modal-body">
                 <form action="#" name="formModal">
-                    <div class="container">
-                        <div id="registrar-lector">
+                    <div class="containerModal">
                             <div class="row">
                                 <div class="row">
                                     <div class="col-md-12">
@@ -175,13 +174,12 @@
                                 <div class="row  d-flex justify-content-center align-items-center">
                                     <div class="col-md-4">
                                         <div class="form-floating button">
-                                            <input type="submit" class="btn-registrar" value="Registrar" />
+                                            <input type="submit" class="btn-registrar" value="Registrar" id="btn-modal"/>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                 </form>
             </div>
         </div>
@@ -347,7 +345,8 @@
     function abrirModal(json) {
         vaciarFormulario();
         if (json != null) { //EDITAR DATOS
-            $("#registroModalLabel").text("Editar evento"); //TÍTULO MODAL
+            $("#registroModalLabel").text("Editar evento"); 
+            $("#btn-modal").val("Guardar"); 
             $("#imgAutor").attr({ "src": json.Foto });
             $("#nombreAutor").val(json.NombreAutor);
             $("#fechaRealizacion").val(getDateFormatCalendar(json.FechaRealizacion));
@@ -358,6 +357,7 @@
             $("#tipoEvento").val(getSelectedValue(json.Tipo));
         }
         else {
+            $("#btn-modal").val("Registrar"); 
             $("#registroModalLabel").text("Registrar evento"); //TÍTULO MODAL
         }
         $('#registroEventoModal').modal('show');

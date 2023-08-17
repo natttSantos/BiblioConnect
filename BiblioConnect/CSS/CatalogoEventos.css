@@ -10,30 +10,26 @@ img {
     font-size: 18px;
     font-weight: 600;
     color: #5b3e7b;
-    font-family: 'Merriweather', serif;
 }
 
 .nombreAutor {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     color: #808080;
-    font-family: 'Poppins', serif;
 }
 .Fecha {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
-    font-family: 'Poppins', serif;
 }
 .Hora {
-    font-size: 20px;
+    font-size: 17px;
     font-weight: 700;
-    font-family: 'Merriweather', serif;
 }
 .descripcion {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
-    font-family: 'Roboto', serif;
     text-align: justify;
+    font-family: 'Roboto', sans-serif;
 }
 i {
     color: #5b3e7b;

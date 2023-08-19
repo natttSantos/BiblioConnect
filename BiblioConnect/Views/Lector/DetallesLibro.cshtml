@@ -20,11 +20,11 @@
 <body>
     <div class="container">
         <div class="row">
-            <div class="row">
+            <div class="row row-start">
                 <div class="col-md-3">
                     <img id="FotoLibro" src="#" alt="Imagen">
                 </div>
-                <div class="col-md-6 tituloDescripcion">
+                <div class="col-md-6">
                     <h3 id="Titulo" class="titulo-libro"></h3>
                     <h6 id="Autor" class="autor"></h6>
                     <p id="descripcionLibro"></p>
@@ -381,15 +381,16 @@ function getReseñas() {
         }
 
     function registroPendienteRecogida(prestamoPendienteRecogida) {
+        console.log(prestamoPendienteRecogida)
             $.ajax({
                 url: '/Lector/RegistrarPendienteRecogida',
                 type: 'POST',
                 data: prestamoPendienteRecogida,
                 success: function (data) {
                     oNotificacion = {
-                        idBiblioteca: prestamoPendienteRecogida.idBiblioteca,
-                        idLector: prestamoPendienteRecogida.idLector,
-                        idLibro: prestamoPendienteRecogida.idLibro
+                        idBiblioteca: prestamoPendienteRecogida.IdBiblioteca,
+                        idLector: prestamoPendienteRecogida.IdLector,
+                        idLibro: prestamoPendienteRecogida.IdLibro
                     }
                     enviarNotificacion(oNotificacion);
                     alertSuccess('¡Enhorabuena!', 'Acabas de realizar un préstamo con éxito. Ya puedes ir a recogerlo a la biblioteca.').then(() => {
@@ -557,6 +558,7 @@ function getReseñas() {
                     $("#toggleDescripcion").click(function (event) {
                         event.preventDefault();
                         var currentContent = $("#descripcionLibro").text();
+
                         if (currentContent === fullContent) {
                             var shortenedContent = words.slice(0, maxWords).join(" ");
                             $("#descripcionLibro").text(shortenedContent + "...");

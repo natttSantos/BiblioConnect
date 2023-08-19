@@ -83,10 +83,11 @@ body {
     width: 170px;
     height: 150px;
 }
-#imgBiblio{
-    width: 260px;
-    height: 190px;
+#imgBiblio {
+    width: 170px;
+    height: 150px;
 }
+
 .button {
     margin: 25px 0 6px;
 }
@@ -173,38 +174,39 @@ body {
     right: 10px;
     width: 30px;
     height: 30px;
-    background-color: #7F27A0;
+    background-color: transparent; /* Cambio el color de fondo a transparente */
     border: none;
     outline: none;
     cursor: pointer;
     color: #fff;
 }
 
-.modal-content .btn-close::after,
-.modal-content .btn-close::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 18px;
-    height: 2px;
-    background-color: #fff;
-    transform: translate(-50%, -50%) rotate(45deg);
-}
-
-.modal-content .btn-close::after {
-    transform: translate(-50%, -50%) rotate(-45deg);
-}
-
-.modal-content .btn-close:hover {
-    background-color: #e9ecef;
-    color: #7F27A0;
-}
-
-    .modal-content .btn-close:hover::after,
-    .modal-content .btn-close:hover::before {
-        background-color: #cb2323;
+    .modal-content .btn-close::after,
+    .modal-content .btn-close::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 18px;
+        height: 2px;
+        background-color: #fff;
+        transform: translate(-50%, -50%) rotate(45deg);
     }
+
+    .modal-content .btn-close::after {
+        transform: translate(-50%, -50%) rotate(-45deg);
+    }
+
+    .modal-content .btn-close:hover {
+        background-color: #c4c6c7;
+        color: #7F27A0;
+    }
+
+        .modal-content .btn-close:hover::after,
+        .modal-content .btn-close:hover::before {
+            background-color: #000;
+        }
+
 
 
 /*VALIDATIONS*/
@@ -235,7 +237,8 @@ body {
     display: flex;
 }
 
-.invalid input {
+.invalid 
+{
     border-color: #cb2323;
 }
 .invalid textarea {

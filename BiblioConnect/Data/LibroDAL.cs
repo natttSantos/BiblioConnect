@@ -62,9 +62,7 @@ namespace BiblioConnect.Data
         public List<int> ListarId(string nombre)
         {
             List<int> listaIDLibros = new List<int>();
-            string consultaSql = "SELECT l.Id FROM Autor a inner join Libro l on a.Id = l.idAutor WHERE a.Nombre LIKE @nombreFiltro UNION ALL " +
-                "SELECT l.Id FROM Editorial e inner join Libro l on e.Id = l.idAutor WHERE e.Nombre LIKE @nombreFiltro UNION ALL " +
-                "SELECT l.Id FROM Libro l WHERE l.Titulo LIKE @nombreFiltro";
+            string consultaSql = "SELECT l.Id FROM Libro l WHERE l.Titulo LIKE @nombreFiltro or l.Autor LIKE @nombreFiltro OR l.Editorial LIKE @nombreFiltro";
 
             using (SqlConnection connection = new SqlConnection(Conexion.CN))
             {

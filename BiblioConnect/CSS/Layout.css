@@ -1,6 +1,40 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500&family=Merriweather:wght@300;400;700&family=Poppins:wght@300;400;500;600&family=Roboto:wght@300&display=swap');
 
+/*SPINNER*/
 .spinner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff; /* Fondo blanco mientras se carga */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+    .spinner .loader {
+        border: 8px solid rgba(0, 0, 0, 0.2); /* Borde del loader */
+        border-top: 8px solid #5b3e7b; /* Color del loader */
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        animation: spin 1s linear infinite; /* Animación de rotación */
+    }
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/*SPINNER 2*/
+/*.spinner {
     position: fixed;
     top: 0;
     left: 0;
@@ -13,10 +47,13 @@
     z-index: 9999;
 }
 
-.spinner i {
-    font-size: 3rem;
-    color: #ffffff;
-}
+    .spinner i {
+        font-size: 3rem;
+        color: #ffffff;
+    }*/
+
+
+
 
 /*NAVBAR*/
 * {
@@ -31,7 +68,6 @@ nav {
     height: 80px;
     width: 100%;
     margin-top: -55px;
-    z-index: 99999; /* Ajusta el z-index para que esté en un nivel superior */
 }
 
 /*.enlaceLogo {
@@ -55,6 +91,7 @@ nav {
     line-height: inherit;
     color: #ffffff;
     margin-right: 480px;
+
     font-family: 'EB Garamond', serif;
     font-size: 30px; 
 }
@@ -108,21 +145,6 @@ nav ul {
     font-size: 18px;
 }
 
-
-.checkbtn {
-    font-size: 30px;
-    color: #ffffff;
-    float: right;
-    line-height: 80px;
-    margin-right: 40px;
-    cursor: pointer;
-    display: none; /*se oculta, solo se verá en el móvil*/
-}
-
-#check {
-    display: none;
-}
-
 #notificationCount {
     text-align: center;
     color: #ffffff;
@@ -135,15 +157,10 @@ nav ul {
     border-radius: 50%;
 }
 
-.logout{
-    position: absolute; 
-    left: 0; 
-    bottom: 0; 
-}
 
 
 /*RESPONSIVE TABLET*/
-@media (max-width: 952px) {
+/*@media (max-width: 952px) {
     .enlaceLogo {
         padding-left: 20px;
     }
@@ -151,13 +168,13 @@ nav ul {
     nav ul li a {
         font-size: 16px;
     }
-}
+}*/
 
 /*RESPONSIVE MÓVIL*/
-@media (max-width: 858px) {
+/*@media (max-width: 858px) {
     .checkbtn {
-        display: block; /*se muestra*/
-    }
+        display: block;*/ /*se muestra*/
+    /*}
 
     ul {
         position: fixed;
@@ -184,10 +201,11 @@ nav ul {
     li a:hover {
         background: none;
         color: purple;
-    }
+    }*/
     /*solo cuando el check este marcado aparezca*/
-    #check:checked ~ ul {
+    /*#check:checked ~ ul {
         left: 0;
         margin-top: -20px;
     }
-}
+}*/
+

@@ -26,108 +26,101 @@
         if (tipoUsuario.Equals("biblioteca"))
         {
             <div class="sidebar">
-                    <div class="sidebar-inner">
-                        <div class="sidebar-logo">
-                            <div class="d-flex align-items-center flex-nowrap">
-                                <a class="sidebar-link text-decoration-none" href="#">
-                                    <div class="d-flex align-items-center flex-nowrap">
-                                        <div class="logo-sm">
-                                                <div class="logo d-flex align-items-center justify-content-center">
-                                                        <img src="~/images/iconoBiblio.png">
-                                                </div>
-                                        </div>
-                                        <div class="logo-text d-flex align-items-center justify-content-center">
-                                            <img src="~/images/logoIconoBiblio.png">
+                <div class="sidebar-inner">
+                    <div class="sidebar-logo">
+                        <div class="d-flex align-items-center flex-nowrap">
+                            <a class="sidebar-link text-decoration-none" href="#">
+                                <div class="d-flex align-items-center flex-nowrap">
+                                    <div class="logo-sm">
+                                        <div class="logo d-flex align-items-center justify-content-center">
+                                            <img src="~/images/iconoBiblio.png">
                                         </div>
                                     </div>
-                                </a>
-                                <div class="">
-                                    <div class="mobile-toggle sidebar-toggle">
-                                        <a href="#" class="text-decoration-none">
-                                            <i class="far fa-times-circle"></i>
-                                        </a>
+                                    <div class="logo-text d-flex align-items-center justify-content-center">
+                                        <img src="~/images/logoIconoBiblio.png">
                                     </div>
+                                </div>
+                            </a>
+                            <div class="">
+                                <div class="mobile-toggle sidebar-toggle">
+                                    <a href="#" class="text-decoration-none">
+                                        <i class="far fa-times-circle"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
-
-                        <ul class="sidebar-menu scrollable position-relative">
-                            <li class="nav-item dropdown">
-                                <a class="nav-link" href="/Biblioteca/Dashboard">
-                                    <span class="icon-holder">
-                                        <i class="fas fa-chart-bar"></i>
-                                    </span>
-                                    <span class="title">Dashboard</span>
-                                </a>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link" href="/Biblioteca/Perfil?id=@Id">
-                                    <span class="icon-holder">
-                                        <i class="fas fa-user"></i>
-                                    </span>
-                                    <span class="title">Perfil</span>
-                                </a>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link" href="/Biblioteca/Calendario">
-                                    <span class="icon-holder">
-                                        <i class="far fa-calendar-alt"></i>
-                                    </span>
-                                    <span class="title">Calendario</span>
-                                </a>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link" href="/Biblioteca/Libros">
-                                    <span class="icon-holder">
-                                        <i class="fas fa-book"></i>
-                                    </span>
-                                    <span class="title">Libro</span>
-                                </a>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link" href="/Biblioteca/Evento">
-                                    <span class="icon-holder">
-                                        <i class="fas fa-person-booth"></i>
-                                    </span>
-                                    <span class="title">Evento</span>
-                                </a>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link" href="/Biblioteca/Prestamo">
-                                    <span class="icon-holder">
-                                        <i class="fas fa-american-sign-language-interpreting"></i>
-                                    </span>
-                                    <span class="title">Préstamos</span>
-                                </a>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link" id="btn-logout" style="margin-top: 310px;">
-                                    <span class="icon-holder">
-                                        <i class="fas fa-sign-out-alt"></i>
-                                    </span>
-                                    <span class="title">Cerrar sesión</span>
-                                </a>
-                            </li>
-                        </ul>
                     </div>
+
+                    <ul class="sidebar-menu scrollable position-relative">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" href="/Biblioteca/Dashboard">
+                                <span class="icon-holder">
+                                    <i class="fas fa-chart-bar"></i>
+                                </span>
+                                <span class="title">Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" href="/Biblioteca/Perfil?id=@Id">
+                                <span class="icon-holder">
+                                    <i class="fas fa-user"></i>
+                                </span>
+                                <span class="title">Perfil</span>
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" href="/Biblioteca/Calendario">
+                                <span class="icon-holder">
+                                    <i class="far fa-calendar-alt"></i>
+                                </span>
+                                <span class="title">Calendario</span>
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" href="/Biblioteca/Libros">
+                                <span class="icon-holder">
+                                    <i class="fas fa-book"></i>
+                                </span>
+                                <span class="title">Libro</span>
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" href="/Biblioteca/Evento">
+                                <span class="icon-holder">
+                                    <i class="fas fa-person-booth"></i>
+                                </span>
+                                <span class="title">Evento</span>
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" href="/Biblioteca/Prestamo">
+                                <span class="icon-holder">
+                                    <i class="fas fa-american-sign-language-interpreting"></i>
+                                </span>
+                                <span class="title">Préstamos</span>
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" id="btn-logout" style="margin-top: 310px;">
+                                <span class="icon-holder">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                </span>
+                                <span class="title">Cerrar sesión</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         }
 
         @* LECTOR NAVRBAR *@
         else
         {
+
             <nav>
                 <div>
-                    <input type="checkbox" id="check">
-                    <label for="check" class="checkbtn">
-                        <i class="fas fa-bars"></i>
-                    </label>
-                    @*<div class="enlaceLogo">
-            <img src="~/images/logoBCprueba.png" alt="" class="logo" />
-        </div>*@
-
                     <ul>
-                       <a id="navbar-brand">BiblioConnect</a>
+                        <a id="navbar-brand">BiblioConnect</a>
                         <li>
                             <a class="active" href="/Lector/Inicio">Inicio</a>
                         </li>
@@ -150,7 +143,7 @@
                             <a class="nav-link" href="/Lector/Perfil">
                                 <i class="fas fa-user-circle iconoUser"></i>
                                 @*@{ String nombre = oUsuario.Nombre; }
-                    <span class="ms-2" style="color:#ffffff">@nombre</span>*@
+                                    <span class="ms-2" style="color:#ffffff">@nombre</span>*@
                             </a>
                         </li>
                         <li class="nav-item">
@@ -162,11 +155,21 @@
                 </div>
             </nav>
 
+
+
+
         }
     }
     <div class="spinner" id="spinner">
-        <i class="fas fa-spinner fa-spin"></i>
+        <div class="loader"></div>
     </div>
+
+    @*/*SPINNER 2*/*@
+    @*<div class="spinner" id="spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+        </div>*@
+
+
     <div class="container body-content">
         @RenderBody()
         @*<hr />
@@ -191,7 +194,7 @@
             alertConfirm('¿Está seguro de cerrar sesión?',
                 'Si acepta saldrá del sistema').then(() => {
                     window.location.href = "/Acceso/Logout";
-                })            
+                })
         });
         //Cambiar ACTIVE DEL NAVBAR
         document.addEventListener('DOMContentLoaded', () => {
@@ -205,9 +208,12 @@
         })
 
         $(document).ready(function () {
-            var idLector = @(((Usuario)Session["Usuario"]).Id);
-            ContarNotificaciones(idLector)
-            $("#spinner").hide(); // Ocultar el spinner al cargar la página
+            var tipoUsuario = "@(((Usuario)Session["Usuario"]).TipoUsuario)";
+            console.log(tipoUsuario)
+            if (tipoUsuario === "lector") {
+                var idLector = @(((Usuario)Session["Usuario"]).Id);
+                ContarNotificaciones(idLector)
+            }
         })
         // Mostrar el spinner al hacer una petición AJAX
         $(document).ajaxStart(function () {

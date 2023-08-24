@@ -79,3 +79,9 @@ input[type="radio"] {
     }
 
 
+.botonRojo{
+    color: #ff0000; 
+}
+.botonVerde {
+    color: #2cae63;
+}

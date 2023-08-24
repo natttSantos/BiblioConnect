@@ -43,7 +43,6 @@
                                 <th>Idioma</th>
                                 <th>Ejemplares</th>
                                 <th>Ubicación</th>
-                                <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -296,15 +295,6 @@
                     { "data": "Idioma" },
                     { "data": "numEjemplares" },
                     { "data": "Ubicacion" },
-                    {
-                        "data": "Estado", "render": function (data) {
-                            if (data) {
-                                return '<span class="badge text-bg-success p-2">Activo</span>'
-                            } else {
-                                return '<span class="badge text-bg-danger p-2">No Activo</span>'
-                            }
-                        }
-                    },
                     {
                         "data": "Id",
                         "render": function (data, type, row, meta) {

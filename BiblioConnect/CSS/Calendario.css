@@ -12,13 +12,13 @@
 }
 
 /*evntos*/
-/*.fc-event {
-    background-color: #a4a6a9;
+.fc-event {
+    background-color: #0a5483;
     color: #fff;
     border-radius: 5px;
-}*/
+}
     .fc-event:hover {
-        background-color: #fef0c9;  
+        background-color: #488bb5;  
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
         cursor: pointer; 
     }

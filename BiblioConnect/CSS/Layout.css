@@ -90,7 +90,7 @@ nav {
     font-size: 1.25rem;
     line-height: inherit;
     color: #ffffff;
-    margin-right: 480px;
+    margin-right: 455px;
 
     font-family: 'EB Garamond', serif;
     font-size: 30px; 
@@ -107,18 +107,44 @@ nav ul {
         margin: 0 5px;
     }
 
-        nav ul li a{
+        nav ul li a {
             color: #ffffff;
             font-size: 16px;
             padding: 7px 13px;
             border-radius: 3px;
-            text-decoration: none; /* Elimina el subrayado en todos los elementos a */
+            text-decoration: none;
+            transition: .2s; 
         }
-
             nav ul li a.active,
             nav ul li a:hover {
-                background: #808080;
+                background: #ffffff;
+                color: #000000;
                 transition: .2s;
+            }
+            nav ul li a:hover {
+                background: #c6c6c6; 
+                color: #000000; 
+            }
+
+        nav ul li a i {
+            color: #ffffff;
+            font-size: 16px;
+            padding: 5px 5px;
+            border-radius: 3px;
+            text-decoration: none;
+            transition: .2s;
+        }
+
+            nav ul li a.active i,
+            nav ul li a:hover i{
+                background: #ffffff;
+                color: #000000;
+                transition: .2s;
+            }
+
+            nav ul li a:hover i{
+                background: #c6c6c6;
+                color: #000000;
             }
 
 
@@ -152,7 +178,7 @@ nav ul {
     background-color: orangered;
     line-height: 25px;
     height: 25px;
-    margin-left: 3px;
+    margin-left: -5px;
     width: 25px;
     border-radius: 50%;
 }

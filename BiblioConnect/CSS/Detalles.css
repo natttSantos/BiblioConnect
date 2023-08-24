@@ -13,7 +13,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 30px; 
+    margin-top: 20px; 
 }
 .row-start {
     justify-content: center;
@@ -97,7 +97,7 @@ body {
 
 /*ENLACE PERFIL BIBLIOTECA*/
 #Biblioteca a {
-    color: #336c40;
+    color: #457c51;
     font-weight: 600;
     text-decoration: none; /* Elimina el subrayado del enlace */
     transition: color 0.3s ease;

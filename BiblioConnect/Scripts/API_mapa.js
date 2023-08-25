@@ -42,8 +42,6 @@ function getUserCurrentPosition() {
 
 //LEAFLET
 function mostrarMapa(latitud, longitud) {
-    console.log(latitud); 
-    console.log(longitud); 
     var map = L.map('map').setView([latitud, longitud], 17);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
@@ -51,7 +49,18 @@ function mostrarMapa(latitud, longitud) {
     }).addTo(map);
 
     L.marker([latitud, longitud]).addTo(map)
-        /*.bindPopup('A pretty CSS popup.<br> Easily customizable.')*/
+/*        .bindPopup('A pretty CSS popup.<br> Easily customizable.')*/
+        .openPopup();
+}
+function mostrarMapa_withdistance(latitud, longitud, mensajePopUp) {
+    var map = L.map('map').setView([latitud, longitud], 17);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    L.marker([latitud, longitud]).addTo(map)
+        .bindPopup(mensajePopUp)
         .openPopup();
 }
 

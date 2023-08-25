@@ -366,10 +366,6 @@ function getReseñas() {
                         btnTransaccion.text("Préstamo");
                     } else {
                         txtCard.text("El ejemplar no está disponible, resérvalo y te avisaremos cuando lo esté.");
-                        //getPrestamo().then(function (prestamo) {
-                        //    txtCard.text("El ejemplar no está disponible, resérvalo y te avisaremos cuando lo esté.");
-                        //    //txtCard.text("Próximo ejemplar disponible el " + getDate(prestamo.FechaDevolucion));
-                        //})
                         ValidarUsuarioRepetido(oReserva)
                         btnTransaccion.text("Reserva");
                     }
@@ -494,7 +490,10 @@ function getReseñas() {
             const coordinatesLibro = await getLatLong(biblio.Calle, biblio.Ciudad, biblio.Estado, biblio.Pais, biblio.CodPostal);
             const lat = coordinatesLibro[0];
             const lon = coordinatesLibro[1];
-            mostrarMapa(lat, lon);
+            const distanciaLector = await getDistance(lat, lon);
+            var mensajePopUp = "Usted está a " + distanciaLector + " kilómetros del libro."
+            mostrarMapa_withdistance(lat, lon, mensajePopUp);
+
             // Crear el enlace con el icono de biblioteca
             const bibliotecaContainer = $("#Biblioteca");
             const bibliotecaIcon = $("<i>").addClass("fas fa-book icono-biblioteca");
@@ -506,6 +505,20 @@ function getReseñas() {
         } catch (error) {
             console.log("Error:", error);
         }
+    }
+    function getDistance(lat1, lon1) {
+        return new Promise(function (resolve, reject) {
+            //Coordinates Biblioteca
+                    //Coordinates User
+                    return getUserCurrentPosition()
+                        .then(function (coordinatesUser) {
+                            const lat2 = coordinatesUser[0];
+                            const lon2 = coordinatesUser[1];
+                            const distance = calculateDistance(lat1, lon1, lat2, lon2);
+                            const roundedDistance = distance.toFixed(2);
+                            resolve(roundedDistance);
+                        });
+        });
     }
     function getLector(idLector) {
         return new Promise((resolve, reject) => {

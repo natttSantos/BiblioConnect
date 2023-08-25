@@ -28,15 +28,19 @@ h6 {
     }
 
 /*BOTONES EDITAR Y ELIMINAR*/
-.btn-editar, .btn-recogida, .btn-devolver {
+.btn-editar, .btn-recogida, .btn-devolver, .btn-detalle {
     background-color: #0a5483;
-    color: #fff; 
+    color: #fff;
 }
+    .btn-editar:hover, .btn-recogida:hover, .btn-devolver:hover, .btn-detalle:hover {
+        background-color: #589ecb;
+        color: #fff;
+    }
 
-.btn-eliminar {
-    background-color: #c83131; 
-    color: #fff; 
-}
+    .btn-eliminar {
+        background-color: #c83131;
+        color: #fff;
+    }
     .btn-editar:not(:last-child),
     .btn-eliminar:not(:last-child) {
         margin-right: 7px;

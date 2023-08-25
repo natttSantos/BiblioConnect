@@ -106,7 +106,9 @@
                 const coordinatesLibro = await getLatLong(biblio.Calle, biblio.Ciudad, biblio.Estado, biblio.Pais, biblio.CodPostal);
                 const lat = coordinatesLibro[0];
                 const lon = coordinatesLibro[1];
-                mostrarMapa(lat, lon);
+                const distanciaLector = await getDistance(lat, lon);
+                var mensajePopUp = "Usted está a " + distanciaLector + " kilómetros del evento."
+                mostrarMapa_withdistance(lat, lon, mensajePopUp);
 
                 mostrarInformacion(evento);
 
@@ -118,9 +120,22 @@
                     .text(biblio.Nombre)
                     .prepend(bibliotecaIcon);
                 bibliotecaContainer.empty().append(bibliotecaLink);
+
             } catch (error) {
                 console.log("Error:", error);
             }
+        }
+         function getDistance(lat1, lon1) {
+            return new Promise(function (resolve, reject) {
+                    return getUserCurrentPosition()
+                        .then(function (coordinatesUser) {
+                            const lat2 = coordinatesUser[0];
+                            const lon2 = coordinatesUser[1];
+                            const distance = calculateDistance(lat1, lon1, lat2, lon2);
+                            const roundedDistance = distance.toFixed(2);
+                            resolve(roundedDistance);
+                        });
+             });
         }
     });
 </script>

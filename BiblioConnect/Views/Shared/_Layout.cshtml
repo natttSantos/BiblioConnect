@@ -154,20 +154,12 @@
                     </ul>
                 </div>
             </nav>
-
-
-
-
         }
     }
-    <div class="spinner" id="spinner">
-        <div class="loader"></div>
+    <div class="spinner-container">
+        <div class="spinner"></div>
     </div>
 
-    @*/*SPINNER 2*/*@
-    @*<div class="spinner" id="spinner">
-            <i class="fas fa-spinner fa-spin"></i>
-        </div>*@
 
 
     <div class="container body-content">
@@ -215,15 +207,16 @@
                 ContarNotificaciones(idLector)
             }
         })
-        // Mostrar el spinner al hacer una petición AJAX
+        // Mostrar el spinner cuando se inicie una petición AJAX
         $(document).ajaxStart(function () {
-            $("#spinner").show();
+            $(".spinner-container").show(); // Muestra el contenedor del spinner
         });
 
         // Ocultar el spinner cuando todas las peticiones AJAX se completen
         $(document).ajaxStop(function () {
-            $("#spinner").hide();
+            $(".spinner-container").hide(); // Oculta el contenedor del spinner
         });
+
     </script>
     @RenderSection("scripts", required: false)
 </body>

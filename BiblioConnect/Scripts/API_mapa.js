@@ -32,6 +32,7 @@ function getUserCurrentPosition() {
         navigator.geolocation.getCurrentPosition(function (position) {
             var latitud = position.coords.latitude;
             var longitud = position.coords.longitude;
+            console.log(latitud + " y " + longitud)
             resolve([latitud, longitud]);
         }, function (error) {
             console.log("Error al obtener la posición del usuario:", error);

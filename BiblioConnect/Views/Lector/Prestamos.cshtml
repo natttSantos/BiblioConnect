@@ -27,23 +27,34 @@
 @* Carga Script js API Paises*@
 <script src="~/Scripts/Fechas.js"></script>
 <script>
-    $(document).ready(function () {
-        var idLector =  @(((Usuario)Session["Usuario"]).Id);
-        var reservasContainer = $("#reserva-container");
-        var numeroPrestamos = 0; 
-        $.ajax({
-            url: "/Lector/ListarPrestamosLector",
-            type: "GET",
-            data: { id: idLector },
-            success: function (data) {
-                $.each(data.data, function (index, reserva) {
-                    numeroPrestamos++; 
-                    var reservaItem = $("<div>").addClass("reserva-item").appendTo(reservasContainer);
-                    var reservaInfo = $("<div>").addClass("reserva-info").appendTo(reservaItem);
-                    var reservaImage = $("<div>").addClass("reserva-image").appendTo(reservaItem);
+$(document).ready(function () {
+    var idLector = @(((Usuario)Session["Usuario"]).Id);
+    var reservasContainer = $("#reserva-container");
+    var numeroPrestamos = 0;
+    var promises = [];
+
+    $.ajax({
+        url: "/Lector/ListarPrestamosLector",
+        type: "GET",
+        data: { id: idLector },
+        success: function (data) {
+            var devueltos = [];
+            var enEspera = [];
+            var pendienteRecogida = [];
+            var pendienteDevolucion = [];
+
+            $.each(data.data, function (index, reserva) {
+                console.log(reserva.Estado + numeroPrestamos);
+                numeroPrestamos++;
+
+                // Crear una promesa para cada llamada a getBiblioteca
+                var promise = getBiblioteca(reserva.idBiblioteca).then(function (biblioteca) {
+                    var reservaItem = $("<div>").addClass("reserva-item");
+                    var reservaInfo = $("<div>").addClass("reserva-info");
+                    var reservaImage = $("<div>").addClass("reserva-image");
 
                     $("<p>").text(reserva.Titulo).addClass("titulo").appendTo(reservaInfo);
-                    $("<p>").text(reserva.Autor).addClass("autor").appendTo(reservaInfo);
+                    $("<p>").text(biblioteca.Nombre).addClass("autor").appendTo(reservaInfo);
                     $("<img>").attr("src", reserva.Foto).attr("alt", "Feature image").appendTo(reservaImage);
 
                     if (reserva.Estado === "Devuelto") {
@@ -63,16 +74,62 @@
                         $("<p>").text(reserva.Estado).addClass("pendiente").appendTo(reservaInfo);
                         $("<p>").text("*El libro ya está disponible para ser recogido en la biblioteca.").addClass("mensaje").appendTo(reservaInfo);
                     }
+
+                    reservaItem.append(reservaInfo, reservaImage);
+
+                    // Organizar reservas por estado
+                    if (reserva.Estado === "Devuelto") {
+                        devueltos.push(reservaItem);
+                    } else if (reserva.Estado === "En espera") {
+                        enEspera.push(reservaItem);
+                    }else if (reserva.Estado === "Pendiente recogida") {
+                        pendienteRecogida.push(reservaItem);
+                    } else if (reserva.Estado === "Pendiente devolución") {
+                        pendienteDevolucion.push(reservaItem);
+                    }
                 });
+
+                promises.push(promise);
+            });
+
+
+            Promise.all(promises).then(function () {
+                reservasContainer.append(devueltos);
+                reservasContainer.append(enEspera);
+                reservasContainer.append(pendienteRecogida);
+                reservasContainer.append(pendienteDevolucion);
 
                 if (numeroPrestamos == 0) {
                     $("<p>").text("Todavía no ha realizado ningún préstamo de libro. ").appendTo(reservasContainer);
                 }
+            });
+        },
+
+        error: function (error) {
+            console.log("Error al obtener los datos del libro:", error);
+        }
+    });
+});
+
+function getBiblioteca(idBiblioteca) {
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url: "/Lector/ObtenerBiblio",
+            type: "GET",
+            data: { id: idBiblioteca },
+            success: function (data) {
+                var biblioteca = data.data;
+                console.log(biblioteca.Nombre);
+                resolve(biblioteca);
             },
             error: function (error) {
-                console.log("Error al obtener los datos del libro:", error);
+                console.log("Error al obtener los datos de la Biblioteca:", error);
+                reject(error);
             }
         });
-    })
+    });
+}
+
+
 </script>
 

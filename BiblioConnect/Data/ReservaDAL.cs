@@ -181,7 +181,7 @@ namespace BiblioConnect.Data
         {
             using (SqlConnection connection = new SqlConnection(Conexion.CN))
             {
-                string sql = "select t.Estado, l.Foto, l.Titulo, l.Autor from Reserva r inner " +
+                string sql = "select t.Estado, l.Foto, l.Titulo, l.Autor, l.idBiblioteca from Reserva r inner " +
                     "join Transaccion t on t.Id = r.Id inner join Biblioteca b on b.Id = t.idBiblioteca " +
                     "inner join Lector lec on lec.Id = t.idLector " +
                     "inner join Libro l on l.Id = t.idLibro inner " +
@@ -210,6 +210,7 @@ namespace BiblioConnect.Data
                         Autor = Convert.ToString(row["Autor"]),
                         Estado = Convert.ToString(row["Estado"]),
                         Foto = Convert.ToString(row["Foto"]),
+                        idBiblioteca = int.Parse(row["idBiblioteca"].ToString())
                     };
 
                     listaDatos.Add(datos);

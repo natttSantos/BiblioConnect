@@ -1,27 +1,28 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500&family=Merriweather:wght@300;400;700&family=Poppins:wght@300;400;500;600&family=Roboto:wght@300&display=swap');
 
 /*SPINNER*/
-.spinner {
+/* Estilo para el spinner */
+.spinner-container {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #ffffff; /* Fondo blanco mientras se carga */
+    background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco semi-transparente mientras se carga */
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
+    z-index: 99999;
 }
 
-    .spinner .loader {
-        border: 8px solid rgba(0, 0, 0, 0.2); /* Borde del loader */
-        border-top: 8px solid #5b3e7b; /* Color del loader */
-        border-radius: 50%;
-        width: 60px;
-        height: 60px;
-        animation: spin 1s linear infinite; /* Animación de rotación */
-    }
+.spinner {
+    border: 8px solid rgba(0, 0, 0, 0.2); /* Borde del loader */
+    border-top: 8px solid #5b3e7b; /* Color del loader */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite; /* Animación de rotación */
+}
 
 @keyframes spin {
     0% {
@@ -32,27 +33,6 @@
         transform: rotate(360deg);
     }
 }
-
-/*SPINNER 2*/
-/*.spinner {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
-
-    .spinner i {
-        font-size: 3rem;
-        color: #ffffff;
-    }*/
-
-
 
 
 /*NAVBAR*/
@@ -69,13 +49,6 @@ nav {
     width: 100%;
     margin-top: -55px;
 }
-
-/*.enlaceLogo {
-    margin-right: 700px;
-    display: inline-block;
-    line-height: 80px;
-    margin: 0 300px;
-}*/
 
 .logo {
     height: 100px;

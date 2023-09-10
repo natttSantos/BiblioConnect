@@ -228,12 +228,12 @@ namespace BiblioConnect.Data
         {
             using (SqlConnection connection = new SqlConnection(Conexion.CN))
             {
-                string sql = "select p.FechaDevolucion, p.FechaEntrega, p.FechaDevolConfirmada, t.Estado, l.Titulo, l.Autor, l.Foto " +
+                string sql = "select p.FechaDevolucion, p.FechaEntrega, p.FechaDevolConfirmada, t.Estado, l.Titulo, l.Autor, l.Foto, l.idBiblioteca " +
                     "from Prestamo p inner join Transaccion t on t.Id = p.Id " +
                     "inner join Biblioteca b on b.Id = t.idBiblioteca " +
                     "inner join Lector lec on lec.Id = t.idLector " +
                     "inner join Libro l on l.Id = t.idLibro " +
-                    "inner join Usuario u on u.Id = lec.Id where lec.Id = @idLector";
+                    "inner join Usuario u on u.Id = lec.Id where lec.Id = @idLector ORDER BY t.Estado;";
 
                 SqlCommand cmd = new SqlCommand(sql, connection);
 
@@ -267,6 +267,7 @@ namespace BiblioConnect.Data
                         Autor = Convert.ToString(row["Autor"]),
                         Estado = Convert.ToString(row["Estado"]),
                         Foto = Convert.ToString(row["Foto"]),
+                        idBiblioteca = int.Parse(row["idBiblioteca"].ToString())
                     };
 
                     listaDatos.Add(datos);
